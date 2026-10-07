@@ -6,6 +6,7 @@ import dev.aaronhowser.mods.aaron.container.ContainerContainer
 import dev.aaronhowser.mods.aaron.container.ExtractOnlyInvWrapper
 import dev.aaronhowser.mods.aaron.container.ImprovedSimpleContainer
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.loadEnergy
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.saveEnergy
 import dev.aaronhowser.mods.aaron.misc.ItemCatcher
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.EnderQuarryUpgradeType
@@ -643,7 +644,7 @@ class EnderQuarryBlockEntity(
 
 		ContainerHelper.loadAllItems(tag, bufferContainer.items, registries)
 
-		tag.saveEnergy(STORED_ENERGY_NBT, energyStorage, registries)
+		tag.loadEnergy(STORED_ENERGY_NBT, energyStorage, registries)
 
 		if (tag.contains(MIN_BOUNDARY_NBT) && tag.contains(MAX_BOUNDARY_NBT)) {
 			minBoundary = BlockPos.of(tag.getLong(MIN_BOUNDARY_NBT))

@@ -3,6 +3,7 @@
 ### Fixed
 
 - Fixed certain capability checks crashing when passed in a null Direction
+- Fixed the Ender Quarry losing its stored energy when reloaded (#75)
 
 # 1.10.0
 
