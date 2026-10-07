@@ -5,6 +5,7 @@
 - Fixed certain capability checks crashing when passed in a null Direction
 - Fixed the Ender Quarry losing its stored energy when reloaded (#75)
 - Fixed Ender and Quantum Quarries leaking fake players and changing identity when reloaded (#76)
+- Fixed the Ender Quarry beam remaining visible after its target was cleared (#77)
 
 # 1.10.0
 

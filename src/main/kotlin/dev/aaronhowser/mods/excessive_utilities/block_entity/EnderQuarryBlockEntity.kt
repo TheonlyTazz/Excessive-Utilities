@@ -655,6 +655,8 @@ class EnderQuarryBlockEntity(
 
 		if (tag.contains(TARGET_POS_NBT)) {
 			targetPos = BlockPos.of(tag.getLong(TARGET_POS_NBT))
+		} else {
+			targetPos = null
 		}
 
 		if (tag.contains(BOUNDARY_TYPE_NBT)) {
