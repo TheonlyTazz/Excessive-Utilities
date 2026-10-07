@@ -46,8 +46,6 @@ class EnderQuarryBlock : SimpleContainerBlock(Properties.ofFullCopy(Blocks.OBSID
 
 		val be = level.getBlockEntity(pos)
 		if (level is ServerLevel && be is EnderQuarryBlockEntity) {
-			be.trySetBoundaries(level)
-
 			player.tell("Min Position: ${be.minBoundary ?: "Not Set"}")
 			player.tell("Max Position: ${be.maxBoundary ?: "Not Set"}")
 		}
