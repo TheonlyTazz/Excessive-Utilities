@@ -70,6 +70,7 @@ class QuantumQuarryBlockEntity(
 	override fun getContainers(): List<Container> = listOf(bufferContainer, upgradesContainer)
 
 	private var fakePlayer: WeakReference<FakePlayer>? = null
+	private var fakePlayerUuid = UUID.randomUUID()
 
 	private var targetChunk: ChunkPos? = null
 	private var targetBlockPos: BlockPos? = null
@@ -329,7 +330,7 @@ class QuantumQuarryBlockEntity(
 	private fun initFakePlayer() {
 		val level = level as? ServerLevel ?: return
 
-		val gameProfile = GameProfile(UUID.randomUUID(), "EU_QuantumQuarry")
+		val gameProfile = GameProfile(fakePlayerUuid, "EU_QuantumQuarry")
 		val fakePlayer = FakePlayerFactory.get(level, gameProfile)
 
 		fakePlayer.isSilent = true
@@ -371,6 +372,7 @@ class QuantumQuarryBlockEntity(
 		}
 
 		tag.putInt(AMOUNT_BLOCKS_BROKEN_NBT, amountBlocksBroken)
+		tag.putUUID(FAKE_PLAYER_UUID_NBT, fakePlayerUuid)
 	}
 
 	override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
@@ -395,6 +397,10 @@ class QuantumQuarryBlockEntity(
 		}
 
 		amountBlocksBroken = tag.getInt(AMOUNT_BLOCKS_BROKEN_NBT)
+
+		if (tag.hasUUID(FAKE_PLAYER_UUID_NBT)) {
+			fakePlayerUuid = tag.getUUID(FAKE_PLAYER_UUID_NBT)
+		}
 	}
 
 	override fun getDisplayName(): Component = blockState.block.name
@@ -410,6 +416,7 @@ class QuantumQuarryBlockEntity(
 		const val BUFFER_CONTAINER_NBT = "Buffer"
 		const val UPGRADE_CONTAINER_NBT = "Upgrades"
 		const val AMOUNT_BLOCKS_BROKEN_NBT = "AmountBlocksBroken"
+		const val FAKE_PLAYER_UUID_NBT = "FakePlayerUuid"
 
 		const val UPGRADE_CONTAINER_SIZE = 3
 		const val ITEM_FILTER_SLOT_INDEX = 0

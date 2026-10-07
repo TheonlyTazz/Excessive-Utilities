@@ -62,6 +62,7 @@ class EnderQuarryBlockEntity(
 	override fun getContainers(): List<ImprovedSimpleContainer> = listOf(bufferContainer)
 
 	private var fakePlayer: WeakReference<FakePlayer>? = null
+	private var fakePlayerUuid = UUID.randomUUID()
 
 	private val upgradePositions: MutableSet<BlockPos> = mutableSetOf()
 	fun addUpgrade(upgradeBe: EnderQuarryUpgradeBlockEntity): Boolean {
@@ -599,7 +600,7 @@ class EnderQuarryBlockEntity(
 	private fun initFakePlayer() {
 		val level = level as? ServerLevel ?: return
 
-		val gameProfile = GameProfile(UUID.randomUUID(), "EU_EnderQuarry")
+		val gameProfile = GameProfile(fakePlayerUuid, "EU_EnderQuarry")
 		val fakePlayer = FakePlayerFactory.get(level, gameProfile)
 
 		fakePlayer.isSilent = true
@@ -637,6 +638,7 @@ class EnderQuarryBlockEntity(
 
 		val upgradePositionLongs = upgradePositions.map(BlockPos::asLong).toLongArray()
 		tag.put(UPGRADE_POSITIONS_NBT, LongArrayTag(upgradePositionLongs))
+		tag.putUUID(FAKE_PLAYER_UUID_NBT, fakePlayerUuid)
 	}
 
 	override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
@@ -666,6 +668,9 @@ class EnderQuarryBlockEntity(
 			upgradePositions.add(BlockPos.of(posLong))
 		}
 
+		if (tag.hasUUID(FAKE_PLAYER_UUID_NBT)) {
+			fakePlayerUuid = tag.getUUID(FAKE_PLAYER_UUID_NBT)
+		}
 	}
 
 	companion object {
@@ -675,6 +680,7 @@ class EnderQuarryBlockEntity(
 		const val STORED_ENERGY_NBT = "StoredEnergy"
 		const val BOUNDARY_TYPE_NBT = "BoundaryType"
 		const val UPGRADE_POSITIONS_NBT = "UpgradePositions"
+		const val FAKE_PLAYER_UUID_NBT = "FakePlayerUuid"
 
 		fun tick(
 			level: Level,
