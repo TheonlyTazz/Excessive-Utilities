@@ -4,6 +4,7 @@
 
 - Added an entity type tag `#excessive_utilities:death_generator_doom_blacklist` that stops the Death Generator from applying Doom (#87)
 	- Contains `mekanism:robot` by default
+- Items with the `#excessive_utilities:infinite_enchant_stacking` item tag now bypass the Anvil's "Too Expensive" mechanic (#86)
 
 ### Fixed
 

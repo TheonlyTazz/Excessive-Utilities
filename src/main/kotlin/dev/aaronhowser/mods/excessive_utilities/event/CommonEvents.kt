@@ -32,8 +32,10 @@ import dev.aaronhowser.mods.excessive_utilities.handler.rainbow_generator.Rainbo
 import dev.aaronhowser.mods.excessive_utilities.item.*
 import dev.aaronhowser.mods.excessive_utilities.packet.ModPacketHandler
 import dev.aaronhowser.mods.excessive_utilities.registry.*
+import net.minecraft.core.component.DataComponents
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.world.inventory.AnvilMenu
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.enchantment.EnchantmentHelper
 import net.minecraft.world.item.enchantment.ItemEnchantments
@@ -381,6 +383,8 @@ object CommonEvents {
 			val bookEnchantments = EnchantmentHelper.getEnchantmentsForCrafting(rightStack)
 
 			val newEnchantments = ItemEnchantments.Mutable(currentEnchantments)
+			var operationCost = leftStack.getOrDefault(DataComponents.REPAIR_COST, 0).toLong()
+			operationCost += rightStack.getOrDefault(DataComponents.REPAIR_COST, 0).toLong()
 
 			for ((enchantment, level) in bookEnchantments.entrySet()) {
 				val currentLevel = newEnchantments.getLevel(enchantment)
@@ -396,13 +400,26 @@ object CommonEvents {
 				}
 
 				newEnchantments.set(enchantment, newLevel)
+
+				val costPerLevel = maxOf(1, enchantment.value().anvilCost / 2)
+				val enchantmentCost = costPerLevel.toLong() * newLevel
+				operationCost += enchantmentCost.coerceAtMost(Long.MAX_VALUE - operationCost)
 			}
 
 			val output = leftStack.copy()
 			EnchantmentHelper.setEnchantments(output, newEnchantments.toImmutable())
 
+			val previousRepairCost = maxOf(
+				leftStack.getOrDefault(DataComponents.REPAIR_COST, 0),
+				rightStack.getOrDefault(DataComponents.REPAIR_COST, 0)
+			)
+			output.set(
+				DataComponents.REPAIR_COST,
+				AnvilMenu.calculateIncreasedRepairCost(previousRepairCost)
+			)
+
 			event.output = output
-			event.cost = 40
+			event.cost = operationCost
 		}
 	}
 
