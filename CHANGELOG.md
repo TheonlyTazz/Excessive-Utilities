@@ -8,6 +8,7 @@
 
 ### Fixed
 
+- Fixed Ineffable Glass behavior being incorrect (#83)
 - Fixed certain capability checks crashing when passed in a null Direction
 - Fixed the Ender Quarry losing its stored energy when reloaded (#75)
 - Fixed Ender and Quantum Quarries leaking fake players and changing identity when reloaded (#76)

@@ -432,15 +432,15 @@ object ModBlocks : AaronBlockRegistry() {
 	val REDSTONE_GLASS =
 		basicGlassBlock("redstone_glass")
 	val ETHEREAL_GLASS: DeferredBlock<SemiPermeableGlassBlock> =
-		registerBlock("ethereal_glass") { SemiPermeableGlassBlock(isSolidForMobsOnly = false) }
+		registerBlock("ethereal_glass") { SemiPermeableGlassBlock(isInverted = false) }
 	val INVERTED_ETHEREAL_GLASS: DeferredBlock<SemiPermeableGlassBlock> =
-		registerBlock("inverted_ethereal_glass") { SemiPermeableGlassBlock(isSolidForMobsOnly = true) }
+		registerBlock("inverted_ethereal_glass") { SemiPermeableGlassBlock(isInverted = true) }
 	val INEFFABLE_GLASS: DeferredBlock<SemiPermeableGlassBlock> =
-		registerBlock("ineffable_glass") { SemiPermeableGlassBlock(isSolidForMobsOnly = false) }
+		registerBlock("ineffable_glass") { SemiPermeableGlassBlock(isInverted = false) }
 	val INVERTED_INEFFABLE_GLASS: DeferredBlock<SemiPermeableGlassBlock> =
-		registerBlock("inverted_ineffable_glass") { SemiPermeableGlassBlock(isSolidForMobsOnly = true) }
+		registerBlock("inverted_ineffable_glass") { SemiPermeableGlassBlock(isInverted = true) }
 	val DARK_INEFFABLE_GLASS: DeferredBlock<SemiPermeableGlassBlock> =
-		registerBlock("dark_ineffable_glass") { SemiPermeableGlassBlock.Dark(isSolidForMobsOnly = false) }
+		registerBlock("dark_ineffable_glass") { SemiPermeableGlassBlock.Dark(isInverted = false) }
 
 	// Compressed Blocks
 
