@@ -7,6 +7,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModItemLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMenuLang
 import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilActivation
 import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilInversion
+import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilSetupResult
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
@@ -99,7 +100,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 
 			val result = DivisionSigilActivation.isValidSetup(level, pos)
 			sendMessages(player, result.messages)
-			return result.isValid
+			return result is DivisionSigilSetupResult.Ready
 		}
 
 		private fun checkInversionReady(
@@ -111,7 +112,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 
 			val result = DivisionSigilInversion.isValidSetup(level, pos)
 			sendMessages(player, result.messages)
-			return result.isValid
+			return result is DivisionSigilSetupResult.Ready
 		}
 
 		private fun sendMessages(

@@ -91,7 +91,7 @@ object DivisionSigilActivation {
 
 		for (checkPos in searchArea) {
 			val result = isValidSetup(level, checkPos)
-			if (result.isValid) {
+			if (result is DivisionSigilSetupResult.Ready) {
 				return checkPos.immutable()
 			}
 		}
@@ -102,73 +102,71 @@ object DivisionSigilActivation {
 	fun isValidSetup(
 		level: ServerLevel,
 		enchantingTablePos: BlockPos
-	): ActivationResult {
-		val result = ActivationResult(isValid = true)
-
+	): DivisionSigilSetupResult {
 		if (!level.isLoaded(enchantingTablePos)) {
-			result.isValid = false
-			return result
+			return DivisionSigilSetupResult.Invalid(emptyList())
 		}
 
 		if (!level.getBlockState(enchantingTablePos).isBlock(Blocks.ENCHANTING_TABLE)) {
-			result.isValid = false
-			return result
+			return DivisionSigilSetupResult.Invalid(emptyList())
 		}
 
-		checkActivationBiome(level, enchantingTablePos, result)
-		checkActivationSkyAccess(level, enchantingTablePos, result)
-		if (!result.isValid) {
-			return result
+		val messages: MutableList<Component> = mutableListOf()
+
+		checkActivationBiome(level, enchantingTablePos, messages)
+		checkActivationSkyAccess(level, enchantingTablePos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkActivationRedstoneRing(level, enchantingTablePos, result)
-		if (!result.isValid) {
-			return result
+		checkActivationRedstoneRing(level, enchantingTablePos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkActivationDirtBase(level, enchantingTablePos, result)
-		if (!result.isValid) {
-			return result
+		checkActivationDirtBase(level, enchantingTablePos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkActivationTime(level, result)
-		checkActivationDarkness(level, enchantingTablePos, result)
-		if (!result.isValid) {
-			return result
+		checkActivationTime(level, messages)
+		checkActivationDarkness(level, enchantingTablePos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		result.addMessages(
-			ModMessageLang.DIVISION_READY_ONE.toComponent(),
-			ModMessageLang.DIVISION_READY_TWO.toComponent()
+		return DivisionSigilSetupResult.Ready(
+			listOf(
+				ModMessageLang.DIVISION_READY_ONE.toComponent(),
+				ModMessageLang.DIVISION_READY_TWO.toComponent()
+			)
 		)
-
-		return result
 	}
 
 	private fun checkActivationBiome(
 		level: ServerLevel,
 		pos: BlockPos,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		if (!level.getBiome(pos).isHolder(Tags.Biomes.IS_OVERWORLD)) {
-			result.failWithMessages(ModMessageLang.DIVISION_OVERWORLD_ONLY.toComponent())
+			messages += ModMessageLang.DIVISION_OVERWORLD_ONLY.toComponent()
 		}
 	}
 
 	private fun checkActivationSkyAccess(
 		level: ServerLevel,
 		pos: BlockPos,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		if (!level.canSeeSky(pos)) {
-			result.failWithMessages(ModMessageLang.DIVISION_SEE_SKY.toComponent())
+			messages += ModMessageLang.DIVISION_SEE_SKY.toComponent()
 		}
 	}
 
 	private fun checkActivationRedstoneRing(
 		level: ServerLevel,
 		enchantingTablePos: BlockPos,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		val radius = 1
 
@@ -178,7 +176,7 @@ object DivisionSigilActivation {
 
 				val checkPos = enchantingTablePos.offset(dx, 0, dz)
 				if (!level.getBlockState(checkPos).isBlock(Blocks.REDSTONE_WIRE)) {
-					result.failWithMessages(
+					messages += listOf(
 						ModMessageLang.DIVISION_REDSTONE.toComponent(),
 						ModMessageLang.DIVISION_REDSTONE_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
 					)
@@ -190,7 +188,7 @@ object DivisionSigilActivation {
 	private fun checkActivationDirtBase(
 		level: ServerLevel,
 		enchantingTablePos: BlockPos,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		val dirtRadius = 5
 		val dirtArea = BlockPos.betweenClosed(
@@ -200,7 +198,7 @@ object DivisionSigilActivation {
 
 		for (checkPos in dirtArea) {
 			if (!level.getBlockState(checkPos).isBlock(BlockTags.DIRT)) {
-				result.failWithMessages(
+				messages += listOf(
 					ModMessageLang.DIVISION_DIRT.toComponent(),
 					ModMessageLang.DIVISION_DIRT_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
 				)
@@ -210,44 +208,28 @@ object DivisionSigilActivation {
 
 	private fun checkActivationTime(
 		level: ServerLevel,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		val minTime = 17_500L
 		val maxTime = 18_500L
 		val timeOfDay = level.dayTime % 24_000L
 		if (timeOfDay !in minTime..maxTime) {
-			result.failWithMessages(ModMessageLang.DIVISION_MIDNIGHT.toComponent())
+			messages += ModMessageLang.DIVISION_MIDNIGHT.toComponent()
 		}
 	}
 
 	private fun checkActivationDarkness(
 		level: ServerLevel,
 		enchantingTablePos: BlockPos,
-		result: ActivationResult
+		messages: MutableList<Component>
 	) {
 		val lightAbove = level.getBrightness(LightLayer.BLOCK, enchantingTablePos.above())
 		val maxLight = 7
 		if (lightAbove > maxLight) {
-			result.failWithMessages(ModMessageLang.DIVISION_DARKNESS.toComponent())
+			messages += ModMessageLang.DIVISION_DARKNESS.toComponent()
 		}
 	}
 
 	//endregion
-
-	class ActivationResult(
-		var isValid: Boolean
-	) {
-		val messages: MutableList<Component> = mutableListOf()
-
-		fun failWithMessages(vararg message: Component) {
-			messages += message
-			isValid = false
-		}
-
-		fun addMessages(vararg message: Component) {
-			messages += message
-		}
-	}
-
 
 }

@@ -18,6 +18,7 @@ import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.tags.TagKey
 import net.minecraft.world.entity.LivingEntity
@@ -87,7 +88,7 @@ object DivisionSigilInversion {
 
 		for (checkPos in searchArea) {
 			val result = isValidSetup(level, checkPos)
-			if (result.isValid) {
+			if (result is DivisionSigilSetupResult.Ready) {
 				return checkPos.immutable()
 			}
 		}
@@ -98,61 +99,59 @@ object DivisionSigilInversion {
 	fun isValidSetup(
 		level: ServerLevel,
 		beaconPos: BlockPos
-	): DivisionSigilActivation.ActivationResult {
-		val result = DivisionSigilActivation.ActivationResult(isValid = true)
-
+	): DivisionSigilSetupResult {
 		if (!level.isLoaded(beaconPos)) {
-			result.isValid = false
-			return result
+			return DivisionSigilSetupResult.Invalid(emptyList())
 		}
 
 		if (!level.getBlockState(beaconPos).isBlock(Blocks.BEACON)) {
-			result.isValid = false
-			return result
+			return DivisionSigilSetupResult.Invalid(emptyList())
 		}
 
-		checkInversionBiome(level, beaconPos, result)
-		if (!result.isValid) {
-			return result
+		val messages: MutableList<Component> = mutableListOf()
+
+		checkInversionBiome(level, beaconPos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkInversionChests(level, beaconPos, result)
-		if (!result.isValid) {
-			return result
+		checkInversionChests(level, beaconPos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkInversionPattern(level, beaconPos, result)
-		if (!result.isValid) {
-			return result
+		checkInversionPattern(level, beaconPos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		checkInversionItemContents(level, beaconPos, result)
-		if (!result.isValid) {
-			return result
+		checkInversionItemContents(level, beaconPos, messages)
+		if (messages.isNotEmpty()) {
+			return DivisionSigilSetupResult.Invalid(messages.toList())
 		}
 
-		result.addMessages(
-			ModMessageLang.INVERSION_READY_ONE.toComponent(),
-			ModMessageLang.INVERSION_READY_TWO.toComponent()
+		return DivisionSigilSetupResult.Ready(
+			listOf(
+				ModMessageLang.INVERSION_READY_ONE.toComponent(),
+				ModMessageLang.INVERSION_READY_TWO.toComponent()
+			)
 		)
-
-		return result
 	}
 
 	private fun checkInversionBiome(
 		level: ServerLevel,
 		beaconPos: BlockPos,
-		result: DivisionSigilActivation.ActivationResult
+		messages: MutableList<Component>
 	) {
 		if (!level.getBiome(beaconPos).isHolder(Tags.Biomes.IS_END)) {
-			result.failWithMessages(ModMessageLang.INVERSION_END_ONLY.toComponent())
+			messages += ModMessageLang.INVERSION_END_ONLY.toComponent()
 		}
 	}
 
 	private fun checkInversionChests(
 		level: ServerLevel,
 		beaconPos: BlockPos,
-		result: DivisionSigilActivation.ActivationResult
+		messages: MutableList<Component>
 	) {
 		for (direction in Direction.Plane.HORIZONTAL) {
 			val checkPos = beaconPos.offset(direction.normal.multiply(CHEST_HORIZONTAL_OFFSET))
@@ -163,9 +162,7 @@ object DivisionSigilInversion {
 			)
 
 			if (itemHandler == null) {
-				result.failWithMessages(
-					ModMessageLang.INVERSION_MISSING_CHEST.toComponent(direction.getDirectionName())
-				)
+				messages += ModMessageLang.INVERSION_MISSING_CHEST.toComponent(direction.getDirectionName())
 			}
 		}
 	}
@@ -173,7 +170,7 @@ object DivisionSigilInversion {
 	private fun checkInversionPattern(
 		level: ServerLevel,
 		beaconPos: BlockPos,
-		result: DivisionSigilActivation.ActivationResult
+		messages: MutableList<Component>
 	) {
 		// ◼ = redstone wire, ◻ = tripwire (string), B = beacon (center, skipped)
 		val patternRows = listOf(
@@ -199,16 +196,20 @@ object DivisionSigilInversion {
 				val checkState = level.getBlockState(checkPos)
 
 				if (character == '◼' && !checkState.isBlock(Blocks.REDSTONE_WIRE)) {
-					result.failWithMessages(
-						ModMessageLang.INVERSION_MISSING_REDSTONE.toComponent(checkPos.x, checkPos.y, checkPos.z)
+					messages += ModMessageLang.INVERSION_MISSING_REDSTONE.toComponent(
+						checkPos.x,
+						checkPos.y,
+						checkPos.z
 					)
 
 					return
 				}
 
 				if (character == '◻' && !checkState.isBlock(Blocks.TRIPWIRE)) {
-					result.failWithMessages(
-						ModMessageLang.INVERSION_MISSING_STRING.toComponent(checkPos.x, checkPos.y, checkPos.z)
+					messages += ModMessageLang.INVERSION_MISSING_STRING.toComponent(
+						checkPos.x,
+						checkPos.y,
+						checkPos.z
 					)
 
 					return
@@ -220,7 +221,7 @@ object DivisionSigilInversion {
 	private fun checkInversionItemContents(
 		level: ServerLevel,
 		beaconPos: BlockPos,
-		result: DivisionSigilActivation.ActivationResult
+		messages: MutableList<Component>
 	) {
 		val contentRequirements = mapOf(
 			Direction.NORTH to ModItemTagsProvider.CHILDREN_OF_FIRE,
@@ -247,13 +248,11 @@ object DivisionSigilInversion {
 
 			val requiredUniqueCount = 12
 			if (count < requiredUniqueCount) {
-				result.failWithMessages(
-					ModMessageLang.INVERSION_MISSING_ITEMS.toComponent(
-						requiredUniqueCount,
-						itemTag.location.toString(),
-						direction.getDirectionName(),
-						count
-					)
+				messages += ModMessageLang.INVERSION_MISSING_ITEMS.toComponent(
+					requiredUniqueCount,
+					itemTag.location.toString(),
+					direction.getDirectionName(),
+					count
 				)
 			}
 		}
