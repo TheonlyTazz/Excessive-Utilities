@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.EntityTypeTagsProvider
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.entity.EntityType
 import net.neoforged.neoforge.common.data.ExistingFileHelper
@@ -32,6 +33,9 @@ class ModEntityTypeTagsProvider(
 
 		tag(INVERSION_RITUAL_DESPAWN_ON_START)
 			.add(EntityType.ENDERMAN)
+
+		tag(DEATH_GENERATOR_DOOM_BLACKLIST)
+			.addOptional(ResourceLocation.fromNamespaceAndPath("mekanism", "robit"))
 	}
 
 	companion object {
@@ -42,6 +46,7 @@ class ModEntityTypeTagsProvider(
 		val CURSED_EARTH_BLACKLIST = create("cursed_earth_blacklist")
 		val MECHANICAL_USER_LEFT_CLICK_BLACKLIST = create("mechanical_user_left_click_blacklist")
 		val MECHANICAL_USER_RIGHT_CLICK_BLACKLIST = create("mechanical_user_right_click_blacklist")
+		val DEATH_GENERATOR_DOOM_BLACKLIST = create("death_generator_doom_blacklist")
 
 		val INVERSION_RITUAL_SACRIFICE = create("inversion_ritual_sacrifice")
 		val INVERSION_RITUAL_DESPAWN_ON_START = create("inversion_ritual_despawn_on_start")

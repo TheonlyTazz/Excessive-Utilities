@@ -1,10 +1,12 @@
 package dev.aaronhowser.mods.excessive_utilities.block_entity.generator
 
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isEntity
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.nextRange
 import dev.aaronhowser.mods.excessive_utilities.block.GeneratorBlock
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.generator.SingleInputDataDrivenGeneratorType
 import dev.aaronhowser.mods.excessive_utilities.config.ClientConfig
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
+import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlockEntityTypes
 import dev.aaronhowser.mods.excessive_utilities.registry.ModMobEffects
 import net.minecraft.core.BlockPos
@@ -33,7 +35,10 @@ class DeathGeneratorBlockEntity(
 		val entities = level.getEntitiesOfClass(LivingEntity::class.java, aabb)
 
 		for (entity in entities) {
-			if (entity.hasInfiniteMaterials() || entity.hasEffect(ModMobEffects.DOOM)) continue
+			if (entity.hasInfiniteMaterials()
+				|| entity.isEntity(ModEntityTypeTagsProvider.DEATH_GENERATOR_DOOM_BLACKLIST)
+				|| entity.hasEffect(ModMobEffects.DOOM)
+			) continue
 
 			val effect = MobEffectInstance(ModMobEffects.DOOM, 20 * 60)
 			entity.addEffect(effect)

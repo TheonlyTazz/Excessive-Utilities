@@ -1,5 +1,10 @@
 # 1.11.0
 
+### Changed
+
+- Added an entity type tag `#excessive_utilities:death_generator_doom_blacklist` that stops the Death Generator from applying Doom (#87)
+	- Contains `mekanism:robot` by default
+
 ### Fixed
 
 - Fixed certain capability checks crashing when passed in a null Direction
