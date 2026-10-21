@@ -82,7 +82,7 @@ class EnderFrequencyNetwork : SavedData() {
 		return didTransfer
 	}
 
-	override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag = tag
+	fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag = tag
 
 	data class NetworkKey(
 		val frequency: EnderFrequencyComponent,
@@ -101,7 +101,12 @@ class EnderFrequencyNetwork : SavedData() {
 
 		fun get(server: MinecraftServer): EnderFrequencyNetwork {
 			val storage = server.overworld().dataStorage
-			return storage.computeIfAbsent(Factory(::EnderFrequencyNetwork, ::load), SAVED_DATA_NAME)
+			return storage.computeIfAbsent(net.minecraft.world.level.saveddata.SavedDataType(
+                dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities.modResource(SAVED_DATA_NAME),
+                ::EnderFrequencyNetwork,
+                CompoundTag.CODEC.xmap({ EnderFrequencyNetwork() }, { CompoundTag() }),
+                net.minecraft.util.datafix.DataFixTypes.SAVED_DATA_COMMAND_STORAGE
+            ))
 		}
 	}
 }

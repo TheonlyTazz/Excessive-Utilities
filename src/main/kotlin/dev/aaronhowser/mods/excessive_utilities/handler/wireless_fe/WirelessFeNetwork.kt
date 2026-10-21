@@ -13,30 +13,23 @@ class WirelessFeNetwork(
 	fun addBattery(battery: WirelessFeBatteryBlockEntity) = batteries.add(battery)
 	fun removeBattery(battery: WirelessFeBatteryBlockEntity) = batteries.remove(battery)
 
-	val energyStorage: IEnergyStorage = NetworkEnergyStorage()
+    val energyStorage: net.neoforged.neoforge.transfer.energy.EnergyHandler = NetworkEnergyStorage()
 
-	private inner class NetworkEnergyStorage : IEnergyStorage {
-
-		override fun receiveEnergy(toReceive: Int, simulate: Boolean): Int = 0
-		override fun canReceive(): Boolean = false
-
-		override fun getEnergyStored(): Int = batteries.sumOf { it.energyStorage.energyStored }
-		override fun getMaxEnergyStored(): Int = batteries.sumOf { it.energyStorage.maxEnergyStored }
-		override fun canExtract(): Boolean = batteries.any { it.energyStorage.canExtract() }
-
-		override fun extractEnergy(toExtract: Int, simulate: Boolean): Int {
-			var amountExtracted = 0
-
-			for (battery in batteries) {
-				if (amountExtracted >= toExtract) break
-
-				val extracted = battery.energyStorage.extractEnergy(toExtract - amountExtracted, simulate)
-				amountExtracted += extracted
-			}
-
-			return amountExtracted
-		}
-
-	}
-
+    private inner class NetworkEnergyStorage : net.neoforged.neoforge.transfer.energy.EnergyHandler {
+        override fun getAmountAsLong(): Long = batteries.sumOf { it.energyStorage.amountAsLong }
+        override fun getCapacityAsLong(): Long = batteries.sumOf { it.energyStorage.capacityAsLong }
+        override fun insert(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+            require(amount >= 0)
+            return 0
+        }
+        override fun extract(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+            require(amount >= 0)
+            var extracted = 0
+            for (battery in batteries) {
+                if (extracted == amount) break
+                extracted += battery.energyStorage.extract(amount - extracted, transaction)
+            }
+            return extracted
+        }
+    }
 }

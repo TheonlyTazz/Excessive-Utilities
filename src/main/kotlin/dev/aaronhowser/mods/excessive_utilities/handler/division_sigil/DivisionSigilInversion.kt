@@ -154,9 +154,9 @@ object DivisionSigilInversion {
 		messages: MutableList<Component>
 	) {
 		for (direction in Direction.Plane.HORIZONTAL) {
-			val checkPos = beaconPos.offset(direction.normal.multiply(CHEST_HORIZONTAL_OFFSET))
+			val checkPos = beaconPos.offset(direction.unitVec3i.multiply(CHEST_HORIZONTAL_OFFSET))
 			val itemHandler = level.getCapability(
-				Capabilities.ItemHandler.BLOCK,
+				Capabilities.Item.BLOCK,
 				checkPos,
 				direction.opposite
 			)
@@ -172,17 +172,17 @@ object DivisionSigilInversion {
 		beaconPos: BlockPos,
 		messages: MutableList<Component>
 	) {
-		// ◼ = redstone wire, ◻ = tripwire (string), B = beacon (center, skipped)
+		// â—¼ = redstone wire, â—» = tripwire (string), B = beacon (center, skipped)
 		val patternRows = listOf(
-			"◼◻◻◻◻◻◻◻◻",
-			"◼◻◼◼◼◼◼◼◼",
-			"◼◻◼◻◻◻◻◻◼",
-			"◼◻◼◻◼◼◼◻◼",
-			"◼◻◼◻B◻◼◻◼",
-			"◼◻◼◼◼◻◼◻◼",
-			"◼◻◻◻◻◻◼◻◼",
-			"◼◼◼◼◼◼◼◻◼",
-			"◻◻◻◻◻◻◻◻◼",
+			"â—¼â—»â—»â—»â—»â—»â—»â—»â—»",
+			"â—¼â—»â—¼â—¼â—¼â—¼â—¼â—¼â—¼",
+			"â—¼â—»â—¼â—»â—»â—»â—»â—»â—¼",
+			"â—¼â—»â—¼â—»â—¼â—¼â—¼â—»â—¼",
+			"â—¼â—»â—¼â—»Bâ—»â—¼â—»â—¼",
+			"â—¼â—»â—¼â—¼â—¼â—»â—¼â—»â—¼",
+			"â—¼â—»â—»â—»â—»â—»â—¼â—»â—¼",
+			"â—¼â—¼â—¼â—¼â—¼â—¼â—¼â—»â—¼",
+			"â—»â—»â—»â—»â—»â—»â—»â—»â—¼",
 		)
 
 		val centerRow = 4
@@ -195,7 +195,7 @@ object DivisionSigilInversion {
 				val checkPos = beaconPos.north(northOffset).west(westOffset)
 				val checkState = level.getBlockState(checkPos)
 
-				if (character == '◼' && !checkState.isBlock(Blocks.REDSTONE_WIRE)) {
+				if (character == 'â—¼' && !checkState.isBlock(Blocks.REDSTONE_WIRE)) {
 					messages += ModMessageLang.INVERSION_MISSING_REDSTONE.toComponent(
 						checkPos.x,
 						checkPos.y,
@@ -205,7 +205,7 @@ object DivisionSigilInversion {
 					return
 				}
 
-				if (character == '◻' && !checkState.isBlock(Blocks.TRIPWIRE)) {
+				if (character == 'â—»' && !checkState.isBlock(Blocks.TRIPWIRE)) {
 					messages += ModMessageLang.INVERSION_MISSING_STRING.toComponent(
 						checkPos.x,
 						checkPos.y,
@@ -231,10 +231,10 @@ object DivisionSigilInversion {
 		)
 
 		for ((direction, itemTag) in contentRequirements) {
-			val checkPos = beaconPos.offset(direction.normal.multiply(CHEST_HORIZONTAL_OFFSET))
+			val checkPos = beaconPos.offset(direction.unitVec3i.multiply(CHEST_HORIZONTAL_OFFSET))
 
 			val itemHandler = level.getCapability(
-				Capabilities.ItemHandler.BLOCK,
+				Capabilities.Item.BLOCK,
 				checkPos,
 				direction.opposite
 			) ?: continue
@@ -259,12 +259,12 @@ object DivisionSigilInversion {
 	}
 
 	private fun countMatchingStacks(
-		itemHandler: IItemHandler,
+		itemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>,
 		itemTag: TagKey<Item>
 	): Int {
 		var count = 0
-		for (slot in 0 until itemHandler.slots) {
-			val stack = itemHandler.getStackInSlot(slot)
+		for (slot in 0 until itemHandler.size()) {
+			val stack = itemHandler.getResource(slot).toStack(itemHandler.getAmountAsInt(slot))
 			if (stack.isItem(itemTag)) {
 				count += stack.count
 			}
@@ -273,12 +273,12 @@ object DivisionSigilInversion {
 	}
 
 	private fun countUniqueMatchingItems(
-		itemHandler: IItemHandler,
+		itemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>,
 		itemTag: TagKey<Item>
 	): Int {
 		val uniqueItems = mutableSetOf<Item>()
-		for (slot in 0 until itemHandler.slots) {
-			val stack = itemHandler.getStackInSlot(slot)
+		for (slot in 0 until itemHandler.size()) {
+			val stack = itemHandler.getResource(slot).toStack(itemHandler.getAmountAsInt(slot))
 			if (stack.isItem(itemTag)) {
 				uniqueItems.add(stack.item)
 			}

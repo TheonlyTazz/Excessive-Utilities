@@ -24,7 +24,7 @@ class RainbowGeneratorHandler : SavedData() {
 		generatorNetworks.entries.removeIf { (_, network) -> network.isEmpty() }
 	}
 
-	override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
+	fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
 		return tag
 	}
 
@@ -41,8 +41,16 @@ class RainbowGeneratorHandler : SavedData() {
 			}
 
 			val storage = level.dataStorage
-			val factory = Factory(::RainbowGeneratorHandler, ::load)
-			return storage.computeIfAbsent(factory, SAVED_DATA_NAME)
+			val type = net.minecraft.world.level.saveddata.SavedDataType(
+                dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities.modResource(SAVED_DATA_NAME),
+                ::RainbowGeneratorHandler,
+                CompoundTag.CODEC.xmap(
+                    { tag -> load(tag, level.registryAccess()) },
+                    { data -> data.save(CompoundTag(), level.registryAccess()) }
+                ),
+                net.minecraft.util.datafix.DataFixTypes.SAVED_DATA_COMMAND_STORAGE
+            )
+            return storage.computeIfAbsent(type)
 		}
 
 	}
