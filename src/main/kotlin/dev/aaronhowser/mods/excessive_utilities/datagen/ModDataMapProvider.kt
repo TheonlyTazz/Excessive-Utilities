@@ -1,7 +1,6 @@
 package dev.aaronhowser.mods.excessive_utilities.datagen
 
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getDefaultInstance
-import dev.aaronhowser.mods.aaron.misc.AaronExtensions.registryHolder
 import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeight
 import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
 import dev.aaronhowser.mods.excessive_utilities.datamap.ReversingHoeConversion
@@ -41,47 +40,47 @@ class ModDataMapProvider(
 
 		builder(InversionRitualEnemyWeight.DATA_MAP)
 			.add(
-				EntityType.PHANTOM.registryHolder(),
+				EntityType.PHANTOM.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(5.0),
 				false
 			)
 			.add(
-				EntityType.ZOMBIE.registryHolder(),
+				EntityType.ZOMBIE.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.ZOMBIE_VILLAGER.registryHolder(),
+				EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.HUSK.registryHolder(),
+				EntityType.HUSK.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.SKELETON.registryHolder(),
+				EntityType.SKELETON.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.BOGGED.registryHolder(),
+				EntityType.BOGGED.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.STRAY.registryHolder(),
+				EntityType.STRAY.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.WITHER_SKELETON.registryHolder(),
+				EntityType.WITHER_SKELETON.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(3.0),
 				false
 			)
 			.add(
-				EntityType.ENDERMAN.registryHolder(),
+				EntityType.ENDERMAN.builtInRegistryHolder(),
 				InversionRitualEnemyWeight(6.0),
 				false
 			)
@@ -103,12 +102,12 @@ class ModDataMapProvider(
 				false
 			)
 			.add(
-				Blocks.MAGMA_BLOCK.registryHolder(),
+				Blocks.MAGMA_BLOCK.builtInRegistryHolder(),
 				ReversingHoeConversion(Blocks.LAVA.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.OBSIDIAN.registryHolder(),
+				Blocks.OBSIDIAN.builtInRegistryHolder(),
 				ReversingHoeConversion(Blocks.LAVA.defaultBlockState()),
 				false
 			)
@@ -118,17 +117,17 @@ class ModDataMapProvider(
 				false
 			)
 			.add(
-				Blocks.FARMLAND.registryHolder(),
+				Blocks.FARMLAND.builtInRegistryHolder(),
 				ReversingHoeConversion(Blocks.DIRT.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.DIRT.registryHolder(),
+				Blocks.DIRT.builtInRegistryHolder(),
 				ReversingHoeConversion(Blocks.GRASS_BLOCK.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.DEAD_BUSH.registryHolder(),
+				Blocks.DEAD_BUSH.builtInRegistryHolder(),
 				ReversingHoeConversion(Blocks.OAK_SAPLING.defaultBlockState()),
 				false
 			)
