@@ -16,6 +16,7 @@ import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
@@ -23,8 +24,9 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class EnderQuarryUpgradeBlock(
-	val type: EnderQuarryUpgradeType
-) : Block(Properties.ofFullCopy(Blocks.OBSIDIAN)), EntityBlock {
+	val type: EnderQuarryUpgradeType,
+	properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties
+) : Block(properties), EntityBlock {
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
 		return SHAPE
@@ -67,11 +69,13 @@ class EnderQuarryUpgradeBlock(
 
 	override fun updateShape(
 		state: BlockState,
-		direction: Direction,
-		neighborState: BlockState,
-		level: LevelAccessor,
+		level: net.minecraft.world.level.LevelReader,
+		 ticks: net.minecraft.world.level.ScheduledTickAccess,
 		pos: BlockPos,
-		neighborPos: BlockPos
+		 directionToNeighbour: Direction,
+		 neighbourPos: BlockPos,
+		 neighbourState: BlockState,
+		 random: net.minecraft.util.RandomSource
 	): BlockState {
 		return if (canSurvive(state, level, pos)) {
 			state
@@ -112,3 +116,17 @@ class EnderQuarryUpgradeBlock(
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

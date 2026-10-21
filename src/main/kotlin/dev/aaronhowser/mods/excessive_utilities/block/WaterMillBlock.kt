@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class WaterMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
+class WaterMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.WATER_MILL.get()
@@ -21,3 +21,13 @@ class WaterMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

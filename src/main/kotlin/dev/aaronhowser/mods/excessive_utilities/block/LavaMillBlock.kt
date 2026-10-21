@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class LavaMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
+class LavaMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.LAVA_MILL.get()
@@ -21,3 +21,13 @@ class LavaMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

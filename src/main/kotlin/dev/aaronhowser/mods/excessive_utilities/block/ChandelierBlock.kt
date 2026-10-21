@@ -7,11 +7,12 @@ import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
-class ChandelierBlock : Block(Properties.ofFullCopy(Blocks.TORCH)), EntityBlock {
+class ChandelierBlock(properties: Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return ChandelierBlockEntity(pos, state)
@@ -23,11 +24,13 @@ class ChandelierBlock : Block(Properties.ofFullCopy(Blocks.TORCH)), EntityBlock 
 
 	override fun updateShape(
 		state: BlockState,
-		direction: Direction,
-		neighborState: BlockState,
-		level: LevelAccessor,
+		level: net.minecraft.world.level.LevelReader,
+		 ticks: net.minecraft.world.level.ScheduledTickAccess,
 		pos: BlockPos,
-		neighborPos: BlockPos
+		 directionToNeighbour: Direction,
+		 neighbourPos: BlockPos,
+		 neighbourState: BlockState,
+		 random: net.minecraft.util.RandomSource
 	): BlockState {
 		return if (canSurvive(state, level, pos)) {
 			state
@@ -37,3 +40,13 @@ class ChandelierBlock : Block(Properties.ofFullCopy(Blocks.TORCH)), EntityBlock 
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

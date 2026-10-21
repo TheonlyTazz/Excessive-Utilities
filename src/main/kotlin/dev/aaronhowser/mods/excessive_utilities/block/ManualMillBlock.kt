@@ -17,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class ManualMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOcclusion()) {
+class ManualMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.MANUAL_MILL.get()
@@ -31,7 +31,7 @@ class ManualMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOccl
 		val blockEntity = level.getBlockEntity(pos)
 		if (blockEntity is ManualMillBlockEntity) {
 			blockEntity.startCranking(player)
-			return InteractionResult.sidedSuccess(level.isClientSide)
+			return InteractionResult.SUCCESS
 		}
 
 		return InteractionResult.PASS
@@ -46,3 +46,14 @@ class ManualMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOccl
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+

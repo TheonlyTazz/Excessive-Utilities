@@ -19,10 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.level.block.state.properties.DirectionProperty
+import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
 
-class QuantumQuarryActuatorBlock : Block(Properties.ofFullCopy(Blocks.OBSIDIAN)), EntityBlock {
+class QuantumQuarryActuatorBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	init {
 		registerDefaultState(
@@ -74,11 +74,13 @@ class QuantumQuarryActuatorBlock : Block(Properties.ofFullCopy(Blocks.OBSIDIAN))
 
 	override fun updateShape(
 		state: BlockState,
-		direction: Direction,
-		neighborState: BlockState,
-		level: LevelAccessor,
+		level: net.minecraft.world.level.LevelReader,
+		 ticks: net.minecraft.world.level.ScheduledTickAccess,
 		pos: BlockPos,
-		neighborPos: BlockPos
+		 directionToNeighbour: Direction,
+		 neighbourPos: BlockPos,
+		 neighbourState: BlockState,
+		 random: net.minecraft.util.RandomSource
 	): BlockState {
 		return if (canSurvive(state, level, pos)) {
 			state
@@ -101,11 +103,23 @@ class QuantumQuarryActuatorBlock : Block(Properties.ofFullCopy(Blocks.OBSIDIAN))
 			player.openMenu(blockEntity)
 		}
 
-		return InteractionResult.sidedSuccess(level.isClientSide)
+		return InteractionResult.SUCCESS
 	}
 
 	companion object {
-		val FACING: DirectionProperty = BlockStateProperties.FACING
+		val FACING: EnumProperty<Direction> = BlockStateProperties.FACING
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

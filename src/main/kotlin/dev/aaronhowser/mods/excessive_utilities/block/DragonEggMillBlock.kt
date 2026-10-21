@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class DragonEggMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
+class DragonEggMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.DRAGON_EGG_MILL.get()
@@ -21,4 +21,14 @@ class DragonEggMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE)) {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
 

@@ -45,25 +45,35 @@ abstract class GpDrainBlock(
 		)
 	}
 
-	override fun onRemove(state: BlockState, level: Level, pos: BlockPos, newState: BlockState, movedByPiston: Boolean) {
-		if (!state.isBlock(newState.block)) {
+	override fun affectNeighborsAfterRemoval(state: BlockState, level: net.minecraft.server.level.ServerLevel, pos: BlockPos, movedByPiston: Boolean) {
+		if (true) {
 			val be = level.getBlockEntity(pos)
 			if (be is ContainerContainer) {
 				be.dropContents(level, pos)
 			}
 		}
 
-		super.onRemove(state, level, pos, newState, movedByPiston)
+		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston)
 	}
 
 	override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
 		val be = level.getBlockEntity(pos)
 		if (be is MenuProvider) {
 			player.openMenu(be)
-			return InteractionResult.sidedSuccess(level.isClientSide)
+			return InteractionResult.SUCCESS
 		}
 
 		return InteractionResult.PASS
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

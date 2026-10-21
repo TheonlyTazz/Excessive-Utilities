@@ -3,7 +3,7 @@ package dev.aaronhowser.mods.excessive_utilities.block
 import dev.aaronhowser.mods.excessive_utilities.block_entity.DrumBlockEntity
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
-import net.minecraft.world.ItemInteractionResult
+import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 import net.neoforged.neoforge.fluids.FluidUtil
 
-class DrumBlock : Block(Properties.ofFullCopy(Blocks.IRON_BLOCK)), EntityBlock {
+class DrumBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return DrumBlockEntity(pos, state)
@@ -32,9 +32,9 @@ class DrumBlock : Block(Properties.ofFullCopy(Blocks.IRON_BLOCK)), EntityBlock {
 		player: Player,
 		hand: InteractionHand,
 		hitResult: BlockHitResult
-	): ItemInteractionResult {
+	): InteractionResult {
 		val fluidTransferred = FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.direction)
-		return if (fluidTransferred) ItemInteractionResult.sidedSuccess(level.isClientSide) else ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+		return if (fluidTransferred) InteractionResult.SUCCESS else InteractionResult.PASS
 	}
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
@@ -46,3 +46,15 @@ class DrumBlock : Block(Properties.ofFullCopy(Blocks.IRON_BLOCK)), EntityBlock {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.CropBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.common.Tags
 
-class RedOrchidBlock : CropBlock(Properties.ofFullCopy(Blocks.WHEAT)) {
+class RedOrchidBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : CropBlock(properties) {
 
 	override fun getBaseSeedId(): ItemLike = ModItems.RED_ORCHID.get()
 
@@ -19,3 +19,13 @@ class RedOrchidBlock : CropBlock(Properties.ofFullCopy(Blocks.WHEAT)) {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

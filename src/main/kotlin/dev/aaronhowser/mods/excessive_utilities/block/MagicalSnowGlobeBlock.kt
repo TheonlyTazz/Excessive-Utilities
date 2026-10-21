@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class MagicalSnowGlobeBlock : Block(Properties.ofFullCopy(Blocks.OAK_PLANKS)), EntityBlock {
+class MagicalSnowGlobeBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
 		return SHAPE
@@ -37,3 +37,13 @@ class MagicalSnowGlobeBlock : Block(Properties.ofFullCopy(Blocks.OAK_PLANKS)), E
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

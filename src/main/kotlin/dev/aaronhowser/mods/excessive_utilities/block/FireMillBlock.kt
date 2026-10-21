@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class FireMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOcclusion()) {
+class FireMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.FIRE_MILL.get()
@@ -40,3 +40,13 @@ class FireMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOcclus
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

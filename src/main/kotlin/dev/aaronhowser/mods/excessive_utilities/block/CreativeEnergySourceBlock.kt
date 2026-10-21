@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class CreativeEnergySourceBlock : Block(Properties.ofFullCopy(Blocks.STONE)), EntityBlock {
+class CreativeEnergySourceBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return CreativeEnergySourceBlockEntity(pos, state)
@@ -32,3 +32,13 @@ class CreativeEnergySourceBlock : Block(Properties.ofFullCopy(Blocks.STONE)), En
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

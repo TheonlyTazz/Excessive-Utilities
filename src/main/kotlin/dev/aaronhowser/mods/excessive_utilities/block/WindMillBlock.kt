@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class WindMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOcclusion()) {
+class WindMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.WIND_MILL.get()
@@ -40,3 +40,13 @@ class WindMillBlock : GpSourceBlock(Properties.ofFullCopy(Blocks.STONE).noOcclus
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

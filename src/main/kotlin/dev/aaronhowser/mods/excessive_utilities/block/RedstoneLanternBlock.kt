@@ -22,9 +22,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
 //TODO: The model for the numbers etc
-class RedstoneLanternBlock : Block(
-	Properties.ofFullCopy(Blocks.STONE)
-) {
+class RedstoneLanternBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties) {
 
 	init {
 		registerDefaultState(
@@ -71,3 +69,13 @@ class RedstoneLanternBlock : Block(
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
