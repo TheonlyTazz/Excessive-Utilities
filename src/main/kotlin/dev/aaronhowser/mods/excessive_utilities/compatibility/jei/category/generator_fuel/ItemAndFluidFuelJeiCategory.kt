@@ -14,8 +14,9 @@ import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 class ItemAndFluidFuelJeiCategory(
@@ -36,7 +37,7 @@ class ItemAndFluidFuelJeiCategory(
 		val itemInputSlot = builder.addInputSlot(9, 1)
 
 		itemInputSlot
-			.addItemStacks(recipe.itemIngredient.items.toList())
+			.addItemStacks(recipe.itemIngredient.items().map(::ItemStack).toList())
 			.setStandardSlotBackground()
 
 		val fluidInputSlot = builder.addInputSlot(9, 22)
@@ -45,9 +46,9 @@ class ItemAndFluidFuelJeiCategory(
 
 		val fluidIngredient = recipe.fluidIngredient
 
-		for (fluid in fluidIngredient.fluids) {
+		for (fluid in fluidIngredient.ingredient().fluids()) {
 			fluidInputSlot
-				.addFluidStack(fluid.fluid, fluid.amount.toLong())
+				.addFluidStack(fluid.value(), fluidIngredient.amount().toLong())
 		}
 	}
 
@@ -79,7 +80,7 @@ class ItemAndFluidFuelJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<ItemAndFluidFuelRecipe>): ResourceLocation = recipe.id()
+	override fun getRegistryName(recipe: RecipeHolder<ItemAndFluidFuelRecipe>): Identifier = recipe.id.identifier()
 
 	companion object {
 		fun registerCategories(registration: IRecipeCategoryRegistration) {
@@ -96,7 +97,7 @@ class ItemAndFluidFuelJeiCategory(
 
 		fun registerRecipes(level: Level, registration: IRecipeRegistration) {
 			for ((generatorType, recipeType) in ModJeiPlugin.ITEM_AND_FLUID_FUELS) {
-				val recipes = ItemAndFluidFuelRecipe.getAllRecipesOfType(generatorType, level.recipeManager)
+				val recipes = ItemAndFluidFuelRecipe.getAllRecipesOfType(generatorType, dev.aaronhowser.mods.excessive_utilities.recipe.base.ModRecipes.recipes(level))
 				registration.addRecipes(recipeType, recipes)
 			}
 		}

@@ -9,8 +9,9 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStack
 
 class CrusherJeiCategory(
 	recipeType: RecipeType<RecipeHolder<CrusherRecipe>>,
@@ -30,7 +31,7 @@ class CrusherJeiCategory(
 		val primaryOutputSlot = builder.addOutputSlot(63, 9)
 
 		inputSlot
-			.addItemStacks(recipe.ingredient.items.toList())
+			.addItemStacks(recipe.ingredient.items().map(::ItemStack).toList())
 			.setStandardSlotBackground()
 
 		primaryOutputSlot
@@ -61,6 +62,6 @@ class CrusherJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<CrusherRecipe>): ResourceLocation = recipe.id
+	override fun getRegistryName(recipe: RecipeHolder<CrusherRecipe>): Identifier = recipe.id.identifier()
 
 }

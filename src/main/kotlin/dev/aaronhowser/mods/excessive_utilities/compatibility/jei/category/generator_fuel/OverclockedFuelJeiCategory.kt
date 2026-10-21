@@ -50,7 +50,7 @@ class OverclockedFuelJeiCategory(
 		fun registerRecipes(level: Level, registration: IRecipeRegistration) {
 			val ingredientManager = registration.jeiHelpers.ingredientManager
 
-			val fuels = getStackFuels(ingredientManager)
+			val fuels = getStackFuels(level, ingredientManager)
 			val recipes = mutableListOf<Recipe>()
 
 			val fePerBurnTick = ServerConfig.CONFIG.overclockedGeneratorFePerBurnTick.get()

@@ -14,8 +14,9 @@ import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 class SingleItemFuelJeiCategory(
@@ -36,7 +37,7 @@ class SingleItemFuelJeiCategory(
 		val inputSlot = builder.addInputSlot(9, 9)
 
 		inputSlot
-			.addItemStacks(recipe.ingredient.items.toList())
+			.addItemStacks(recipe.ingredient.items().map(::ItemStack).toList())
 			.setStandardSlotBackground()
 	}
 
@@ -68,7 +69,7 @@ class SingleItemFuelJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<SingleItemFuelRecipe>): ResourceLocation = recipe.id()
+	override fun getRegistryName(recipe: RecipeHolder<SingleItemFuelRecipe>): Identifier = recipe.id.identifier()
 
 	companion object {
 		fun registerCategory(registration: IRecipeCategoryRegistration) {
@@ -85,7 +86,7 @@ class SingleItemFuelJeiCategory(
 
 		fun registerRecipes(level: Level, registration: IRecipeRegistration) {
 			for ((generatorType, recipeType) in ModJeiPlugin.SINGLE_ITEM_FUELS) {
-				val recipes = SingleItemFuelRecipe.getAllRecipesOfType(generatorType, level.recipeManager)
+				val recipes = SingleItemFuelRecipe.getAllRecipesOfType(generatorType, dev.aaronhowser.mods.excessive_utilities.recipe.base.ModRecipes.recipes(level))
 				registration.addRecipes(recipeType, recipes)
 			}
 		}

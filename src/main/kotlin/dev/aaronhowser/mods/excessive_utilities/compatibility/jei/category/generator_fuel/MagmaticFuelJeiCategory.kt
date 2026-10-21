@@ -10,7 +10,7 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class MagmaticFuelJeiCategory(
@@ -33,9 +33,9 @@ class MagmaticFuelJeiCategory(
 
 		val fluidIngredient = recipe.fluidIngredient
 
-		for (fluid in fluidIngredient.fluids) {
+		for (fluid in fluidIngredient.ingredient().fluids()) {
 			inputSlot
-				.addFluidStack(fluid.fluid, fluid.amount.toLong())
+				.addFluidStack(fluid.value(), fluidIngredient.amount().toLong())
 		}
 	}
 
@@ -67,6 +67,6 @@ class MagmaticFuelJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<MagmaticFuelRecipe>): ResourceLocation = recipe.id()
+	override fun getRegistryName(recipe: RecipeHolder<MagmaticFuelRecipe>): Identifier = recipe.id.identifier()
 
 }

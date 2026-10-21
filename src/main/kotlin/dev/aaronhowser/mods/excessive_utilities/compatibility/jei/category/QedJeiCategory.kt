@@ -10,7 +10,7 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 
@@ -55,7 +55,7 @@ class QedJeiCategory(
 					} else null
 
 				slot
-					.addItemStacks(ingredient?.items?.toList() ?: listOf(ItemStack.EMPTY))
+					.addItemStacks(ingredient?.orElse(null)?.items()?.map(::ItemStack)?.toList() ?: listOf(ItemStack.EMPTY))
 					.setStandardSlotBackground()
 			}
 		}
@@ -79,6 +79,6 @@ class QedJeiCategory(
 		).setPosition(58, 4).setColor(0xFF808080.toInt())
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<QedRecipe>): ResourceLocation = recipe.id()
+	override fun getRegistryName(recipe: RecipeHolder<QedRecipe>): Identifier = recipe.id.identifier()
 
 }

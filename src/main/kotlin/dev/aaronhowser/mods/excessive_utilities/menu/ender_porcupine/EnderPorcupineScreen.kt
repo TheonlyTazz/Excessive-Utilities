@@ -6,21 +6,19 @@ import dev.aaronhowser.mods.aaron.packet.c2s.ClientClickedMenuButton
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMenuLang
 import dev.aaronhowser.mods.excessive_utilities.menu.ExcessiveUtilitiesScreen
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.ImageButton
 import net.minecraft.client.gui.components.WidgetSprites
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.player.Inventory
 
 class EnderPorcupineScreen(
 	menu: EnderPorcupineMenu,
 	playerInventory: Inventory,
 	title: Component
-) : ExcessiveUtilitiesScreen<EnderPorcupineMenu>(menu, playerInventory, title) {
-
-	override val background: ScreenBackground = BACKGROUND
-	override val titleLabelSprite: ResourceLocation = TEAL_LABEL
+) : ExcessiveUtilitiesScreen<EnderPorcupineMenu>(menu, playerInventory, title, BACKGROUND) {
+	override val titleLabelSprite: Identifier = TEAL_LABEL
 
 	override val showInventoryLabel: Boolean = false
 
@@ -185,14 +183,14 @@ class EnderPorcupineScreen(
 
 	}
 
-	override fun renderLabels(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {
-		super.renderLabels(guiGraphics, mouseX, mouseY)
+	override fun extractLabels(guiGraphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+		super.extractLabels(guiGraphics, mouseX, mouseY)
 
 		val currentOffsetX = menu.getCurrentOffsetX()
 		val currentOffsetY = menu.getCurrentOffsetY()
 		val currentOffsetZ = menu.getCurrentOffsetZ()
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			ModMenuLang.CURRENT_OFFSET.toComponent(currentOffsetX, currentOffsetY, currentOffsetZ),
 			8,
@@ -209,7 +207,7 @@ class EnderPorcupineScreen(
 		val yStringX = 32
 		val zStringX = 48
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			ModMenuLang.MIN_OFFSET.toComponent(minX, minY, minZ),
 			8,
@@ -220,7 +218,7 @@ class EnderPorcupineScreen(
 
 		val minStringY = 72
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			minX,
 			xStringX - (font.width(minX) / 2),
@@ -229,7 +227,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			minY,
 			yStringX - (font.width(minY) / 2),
@@ -238,7 +236,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			minZ,
 			zStringX - (font.width(minZ) / 2),
@@ -251,7 +249,7 @@ class EnderPorcupineScreen(
 		val maxY = menu.getMaxY().toString()
 		val maxZ = menu.getMaxZ().toString()
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			ModMenuLang.MAX_OFFSET.toComponent(maxX, maxY, maxZ),
 			8,
@@ -262,7 +260,7 @@ class EnderPorcupineScreen(
 
 		val maxStringY = 144
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			maxX,
 			xStringX - (font.width(maxX) / 2),
@@ -271,7 +269,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			maxY,
 			yStringX - (font.width(maxY) / 2),
@@ -280,7 +278,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			font,
 			maxZ,
 			zStringX - (font.width(maxZ) / 2),

@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStack
 
 class ResonatorJeiCategory(
 	recipeType: RecipeType<RecipeHolder<ResonatorRecipe>>,
@@ -31,7 +32,7 @@ class ResonatorJeiCategory(
 		val outputSlot = builder.addOutputSlot(65, 9)
 
 		inputSlot
-			.addItemStacks(recipe.ingredient.items.toList())
+			.addItemStacks(recipe.ingredient.items().map(::ItemStack).toList())
 			.setStandardSlotBackground()
 
 		outputSlot

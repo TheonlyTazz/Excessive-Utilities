@@ -12,8 +12,9 @@ import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class EnchanterJeiCategory(
@@ -34,12 +35,12 @@ class EnchanterJeiCategory(
 		val rightInputSlot = builder.addInputSlot(33, 19)
 		val outputSlot = builder.addOutputSlot(90, 19)
 
-		val inputs = recipe.leftIngredient.items.map { it.copyWithCount(recipe.leftIngredient.count()) }
+		val inputs = recipe.leftIngredient.ingredient().items().map { ItemStack(it, recipe.leftIngredient.count()) }.toList()
 		leftInputSlot
 			.addItemStacks(inputs)
 			.setStandardSlotBackground()
 
-		val rightInputs = recipe.rightIngredient.items.map { it.copyWithCount(recipe.rightIngredient.count()) }
+		val rightInputs = recipe.rightIngredient.ingredient().items().map { ItemStack(it, recipe.rightIngredient.count()) }.toList()
 		rightInputSlot
 			.addItemStacks(rightInputs)
 			.setStandardSlotBackground()
@@ -82,6 +83,6 @@ class EnchanterJeiCategory(
 		)
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<EnchanterRecipe>): ResourceLocation = recipe.id
+	override fun getRegistryName(recipe: RecipeHolder<EnchanterRecipe>): Identifier = recipe.id.identifier()
 
 }

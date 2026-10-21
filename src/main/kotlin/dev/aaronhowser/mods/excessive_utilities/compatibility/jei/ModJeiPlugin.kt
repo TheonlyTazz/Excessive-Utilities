@@ -25,12 +25,13 @@ import dev.aaronhowser.mods.excessive_utilities.recipe.machine.generator_fuel.Ma
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.generator_fuel.SingleItemFuelRecipe
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlocks
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
+import dev.aaronhowser.mods.excessive_utilities.recipe.base.ModRecipes
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.constants.RecipeTypes
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.registration.*
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.neoforged.fml.ModList
@@ -38,7 +39,7 @@ import net.neoforged.fml.ModList
 @JeiPlugin
 class ModJeiPlugin : IModPlugin {
 
-	override fun getPluginUid(): ResourceLocation = ID
+	override fun getPluginUid(): Identifier = ID
 
 	override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
 		registration.addRecipeCatalyst(ModBlocks.FURNACE, RecipeTypes.SMELTING)
@@ -77,19 +78,20 @@ class ModJeiPlugin : IModPlugin {
 
 	override fun registerRecipes(registration: IRecipeRegistration) {
 		val level = AaronClientUtil.localLevel ?: return
+		val recipes = ModRecipes.recipes(level)
 
-		val enchanterRecipes = EnchanterRecipe.getAllRecipes(level.recipeManager)
+		val enchanterRecipes = EnchanterRecipe.getAllRecipes(recipes)
 		registration.addRecipes(ENCHANTER, enchanterRecipes)
 
 		val crusherRecipes = CrusherRecipe
-			.getAllRecipes(level.recipeManager)
+			.getAllRecipes(recipes)
 		registration.addRecipes(CRUSHER, crusherRecipes)
 
 		val qedRecipes = QedRecipe
-			.getAllRecipes(level.recipeManager)
+			.getAllRecipes(recipes)
 		registration.addRecipes(QED, qedRecipes)
 
-		val resonatorRecipes = ResonatorRecipe.getAllRecipes(level.recipeManager)
+		val resonatorRecipes = ResonatorRecipe.getAllRecipes(recipes)
 		registration.addRecipes(RESONATOR, resonatorRecipes)
 
 		SingleItemFuelJeiCategory.registerRecipes(level, registration)
@@ -97,7 +99,7 @@ class ModJeiPlugin : IModPlugin {
 		DynamicItemFuelJeiCategory.registerRecipes(level, registration)
 		OverclockedFuelJeiCategory.registerRecipes(level, registration)
 
-		val magmaticRecipes = MagmaticFuelRecipe.getAllRecipes(level.recipeManager)
+		val magmaticRecipes = MagmaticFuelRecipe.getAllRecipes(recipes)
 		registration.addRecipes(MAGMATIC_FUELS, magmaticRecipes)
 
 		val potionRecipes = PotionFuelJeiCategory.getAllRecipes(level, registration)
@@ -112,9 +114,9 @@ class ModJeiPlugin : IModPlugin {
 	override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
 		val craftingCategory = registration.craftingCategory
 
-		craftingCategory.addExtension(KeepPaintbrushRecipe::class.java, ShapedRecipeExtension())
-		craftingCategory.addExtension(DamageGlassCutterRecipe::class.java, ShapedRecipeExtension())
-		craftingCategory.addExtension(SnowGlobeRecipe::class.java, ShapedRecipeExtension())
+		craftingCategory.addExtension(KeepPaintbrushRecipe::class.java, ShapedRecipeExtension<KeepPaintbrushRecipe>())
+		craftingCategory.addExtension(DamageGlassCutterRecipe::class.java, ShapedRecipeExtension<DamageGlassCutterRecipe>())
+		craftingCategory.addExtension(SnowGlobeRecipe::class.java, ShapedRecipeExtension<SnowGlobeRecipe>())
 		craftingCategory.addExtension(ShapedUnstableRecipe::class.java, ShapedUnstableRecipeExtension())
 		craftingCategory.addExtension(ShapedDivisionRecipe::class.java, ShapedDivisionRecipeExtension())
 	}
@@ -128,7 +130,7 @@ class ModJeiPlugin : IModPlugin {
 	}
 
 	companion object {
-		val ID: ResourceLocation = ResourceLocation.fromNamespaceAndPath(ExcessiveUtilities.MOD_ID, "jei_plugin")
+		val ID: Identifier = Identifier.fromNamespaceAndPath(ExcessiveUtilities.MOD_ID, "jei_plugin")
 
 		val CRUSHER: RecipeType<RecipeHolder<CrusherRecipe>> = makeRecipeType("crusher")
 		val ENCHANTER: RecipeType<RecipeHolder<EnchanterRecipe>> = makeRecipeType("enchanter")
@@ -168,7 +170,7 @@ class ModJeiPlugin : IModPlugin {
 			return RecipeType.create(ExcessiveUtilities.MOD_ID, id, RecipeHolder::class.java).cast()
 		}
 
-		private fun <T> makeRecipeType(id: String, recipeClass: Class<T>): RecipeType<T> {
+		private fun <T : Any> makeRecipeType(id: String, recipeClass: Class<T>): RecipeType<T> {
 			return RecipeType.create(ExcessiveUtilities.MOD_ID, id, recipeClass)
 		}
 

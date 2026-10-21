@@ -1,19 +1,21 @@
 package dev.aaronhowser.mods.excessive_utilities.menu
 
 import dev.aaronhowser.mods.aaron.menu.BaseScreen
-import dev.aaronhowser.mods.aaron.menu.components.TexturedLabel
+import dev.aaronhowser.mods.excessive_utilities.menu.base.components.TexturedLabel
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
+import dev.aaronhowser.mods.aaron.menu.textures.ScreenBackground
 
 abstract class ExcessiveUtilitiesScreen<M : AbstractContainerMenu>(
 	menu: M,
 	playerInventory: Inventory,
-	title: Component
-) : BaseScreen<M>(menu, playerInventory, title) {
+	title: Component,
+	background: ScreenBackground
+) : BaseScreen<M>(menu, playerInventory, title, background) {
 
 	override val titleLabelOffsetX: Int = 4
 	override val titleLabelOffsetY: Int = 4
@@ -21,7 +23,7 @@ abstract class ExcessiveUtilitiesScreen<M : AbstractContainerMenu>(
 	override val inventoryLabelOffsetY: Int = -5
 	override val inventoryLabelOffsetX: Int = -4
 
-	protected open val titleLabelSprite: ResourceLocation = PLAIN_LABEL
+	protected open val titleLabelSprite: Identifier = PLAIN_LABEL
 
 	override fun baseInit() {
 		super.baseInit()
@@ -57,26 +59,24 @@ abstract class ExcessiveUtilitiesScreen<M : AbstractContainerMenu>(
 		}
 	}
 
-	override fun renderLabels(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int) {}
-
 	companion object {
 		const val LABEL_TEXT_COLOR: Int = 4210752
 
-		val BLUE_LABEL: ResourceLocation =
+		val BLUE_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/blue")
-		val BRIGHT_TEAL_LABEL: ResourceLocation =
+		val BRIGHT_TEAL_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/bright_teal")
-		val DARK_RED_LABEL: ResourceLocation =
+		val DARK_RED_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/dark_red")
-		val PLAIN_LABEL: ResourceLocation =
+		val PLAIN_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/plain")
-		val RED_LABEL: ResourceLocation =
+		val RED_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/red")
-		val TEAL_LABEL: ResourceLocation =
+		val TEAL_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/teal")
-		val YELLOW_LABEL: ResourceLocation =
+		val YELLOW_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/yellow")
-		val INVENTORY_LABEL: ResourceLocation =
+		val INVENTORY_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/inventory")
 	}
 

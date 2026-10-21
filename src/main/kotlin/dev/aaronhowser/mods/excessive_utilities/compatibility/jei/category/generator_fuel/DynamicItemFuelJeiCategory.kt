@@ -105,7 +105,7 @@ class DynamicItemFuelJeiCategory(
 			val survivalistFePerTick = ServerConfig.CONFIG.survivalistGeneratorFePerTick.get()
 			val survivalistBurnTimeMultiplier = ServerConfig.CONFIG.survivalistGeneratorBurnTimeMultiplier.get()
 
-			val fuels = getStackFuels(ingredientManager)
+			val fuels = getStackFuels(level, ingredientManager)
 			val furnaceRecipes = mutableListOf<Recipe>()
 			val survivalistRecipes = mutableListOf<Recipe>()
 
@@ -155,11 +155,11 @@ class DynamicItemFuelJeiCategory(
 				.toList()
 		}
 
-		fun getStackFuels(ingredientManager: IIngredientManager): List<Pair<Int, List<ItemStack>>> {
+		fun getStackFuels(level: Level, ingredientManager: IIngredientManager): List<Pair<Int, List<ItemStack>>> {
 			return ingredientManager.allItemStacks
 				.asSequence()
 				.mapNotNull { stack ->
-					val burnTime = stack.getBurnTime(RecipeType.SMELTING)
+					val burnTime = stack.getBurnTime(RecipeType.SMELTING, level.fuelValues())
 					if (burnTime > 0) {
 						burnTime to stack
 					} else {
