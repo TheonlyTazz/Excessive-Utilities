@@ -14,7 +14,7 @@ class LoveEffect : MobEffect(
 		return true
 	}
 
-	override fun applyEffectTick(livingEntity: LivingEntity, amplifier: Int): Boolean {
+	override fun applyEffectTick(level: net.minecraft.server.level.ServerLevel, livingEntity: LivingEntity, amplifier: Int): Boolean {
 		if (livingEntity is Animal) {
 			livingEntity.inLoveTime = 10
 		}

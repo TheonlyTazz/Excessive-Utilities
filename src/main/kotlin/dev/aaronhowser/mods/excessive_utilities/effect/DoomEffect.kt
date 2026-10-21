@@ -19,7 +19,7 @@ class DoomEffect : MobEffect(
 		return true
 	}
 
-	override fun applyEffectTick(livingEntity: LivingEntity, amplifier: Int): Boolean {
+	override fun applyEffectTick(level: net.minecraft.server.level.ServerLevel, livingEntity: LivingEntity, amplifier: Int): Boolean {
 		if (livingEntity.isClientSide || livingEntity.isDeadOrDying) return true
 
 		if (livingEntity.hasInfiniteMaterials()) {

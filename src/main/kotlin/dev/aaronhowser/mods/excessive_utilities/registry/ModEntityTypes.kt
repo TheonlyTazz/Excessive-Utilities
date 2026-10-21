@@ -45,7 +45,7 @@ object ModEntityTypes {
 			EntityType.Builder.of(entityFactory, category)
 				.sized(width, height)
 				.apply(builderModifier)
-				.build(name)
+				.build(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, ExcessiveUtilities.modResource(name)))
 		})
 	}
 

@@ -18,7 +18,7 @@ class PurgingEffect : MobEffect(
 
 	override fun shouldApplyEffectTickThisTick(duration: Int, amplifier: Int): Boolean = true
 
-	override fun applyEffectTick(livingEntity: LivingEntity, amplifier: Int): Boolean {
+	override fun applyEffectTick(level: net.minecraft.server.level.ServerLevel, livingEntity: LivingEntity, amplifier: Int): Boolean {
 		if (livingEntity.isClientSide) {
 			spawnVomitParticles(livingEntity, amplifier)
 			return true

@@ -19,7 +19,7 @@ class OilyEffect : MobEffect(
 		return true
 	}
 
-	override fun applyEffectTick(livingEntity: LivingEntity, amplifier: Int): Boolean {
+	override fun applyEffectTick(level: net.minecraft.server.level.ServerLevel, livingEntity: LivingEntity, amplifier: Int): Boolean {
 		if (livingEntity is Player && !livingEntity.abilities.flying) {
 			if (livingEntity.level().isRainingAt(livingEntity.blockPosition())) {
 				livingEntity.addDeltaMovement(

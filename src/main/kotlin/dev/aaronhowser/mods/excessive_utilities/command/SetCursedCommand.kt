@@ -16,7 +16,7 @@ object SetCursedCommand : AaronCommandHelper {
 
 	fun register(): ArgumentBuilder<CommandSourceStack, *> {
 		return literal("set-cursed") {
-			requires { it.hasPermission(2) }
+			requires(net.minecraft.commands.Commands.hasPermission(net.minecraft.commands.Commands.LEVEL_GAMEMASTERS))
 
 			executes {
 				val source = it.source
