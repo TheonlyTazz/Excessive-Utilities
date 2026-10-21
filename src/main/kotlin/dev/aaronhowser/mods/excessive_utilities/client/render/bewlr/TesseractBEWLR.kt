@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack
 import org.joml.Vector3fc
 import java.util.function.Consumer
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 class TesseractBEWLR(private val gui: Boolean = false) : SpecialModelRenderer<Void> {
     override fun extractArgument(stack: ItemStack): Void? = null
@@ -34,8 +35,13 @@ class TesseractBEWLR(private val gui: Boolean = false) : SpecialModelRenderer<Vo
         val dx = x2 - x1
         val dy = y2 - y1
         val dz = z2 - z1
-        v.addVertex(p, x1, y1, z1).setColor(c).setNormal(p, dx, dy, dz).setLineWidth(1.0f)
-        v.addVertex(p, x2, y2, z2).setColor(c).setNormal(p, dx, dy, dz).setLineWidth(1.0f)
+        val length = sqrt(dx * dx + dy * dy + dz * dz)
+        require(length > 0f) { "Cannot render a Tesseract line with zero length" }
+        val nx = dx / length
+        val ny = dy / length
+        val nz = dz / length
+        v.addVertex(p, x1, y1, z1).setColor(c).setNormal(p, nx, ny, nz).setLineWidth(1.0f)
+        v.addVertex(p, x2, y2, z2).setColor(c).setNormal(p, nx, ny, nz).setLineWidth(1.0f)
     }
     data class Unbaked(val gui: Boolean = false) : SpecialModelRenderer.Unbaked<Void> { companion object { val CODEC: MapCodec<Unbaked> = com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec { it.group(com.mojang.serialization.Codec.BOOL.optionalFieldOf("gui", false).forGetter(Unbaked::gui)).apply(it, ::Unbaked) } }; override fun type()=CODEC; override fun bake(context: SpecialModelRenderer.BakingContext)=TesseractBEWLR(gui) }
 }
