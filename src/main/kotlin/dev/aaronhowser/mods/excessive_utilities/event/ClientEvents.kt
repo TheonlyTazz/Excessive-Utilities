@@ -23,11 +23,11 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.handler.key_handler.ClientKeyHandler
 import dev.aaronhowser.mods.excessive_utilities.item.*
 import dev.aaronhowser.mods.excessive_utilities.registry.*
+import dev.aaronhowser.mods.excessive_utilities.recipe.base.ModRecipes
 import net.minecraft.ChatFormatting
-import net.minecraft.client.renderer.ItemBlockRenderTypes
-import net.minecraft.client.renderer.RenderType
-import net.minecraft.client.renderer.item.ItemProperties
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.client.particle.ParticleProvider
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.DyeColor
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent
@@ -35,7 +35,6 @@ import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.*
 import net.neoforged.neoforge.client.event.sound.PlaySoundEvent
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry
@@ -49,149 +48,35 @@ object ClientEvents {
 	@SubscribeEvent
 	fun onClientSetup(event: FMLClientSetupEvent) {
 
-		// Doing it here instead of in the model because Athena doesn't even LOAD the model
-		val cutout = listOf(
-			ModBlocks.THICKENED_GLASS.get(),
-			ModBlocks.EDGED_GLASS.get(),
-			ModBlocks.SWIRLING_GLASS.get(),
-			ModBlocks.HEART_GLASS.get(),
-			ModBlocks.GLASS_BRICKS.get(),
-			ModBlocks.CARVED_GLASS.get(),
-			ModBlocks.GOLDEN_EDGED_GLASS.get(),
-			ModBlocks.BLOCK_OF_UNSTABLE_INGOT.get(),
-			ModBlocks.PATTERNED_GLASS.get(),
-			ModBlocks.REDSTONE_GLASS.get()
-		)
-
-		for (block in cutout) {
-			ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout())
-		}
-
-		val translucent = listOf(
-			ModBlocks.INEFFABLE_GLASS.get(),
-			ModBlocks.INVERTED_INEFFABLE_GLASS.get(),
-			ModBlocks.DARK_INEFFABLE_GLASS.get(),
-			ModBlocks.ETHEREAL_GLASS.get(),
-			ModBlocks.INVERTED_ETHEREAL_GLASS.get(),
-			ModBlocks.OBSIDIAN_GLASS.get(),
-			ModBlocks.REINFORCED_DARK_GLASS.get(),
-			ModBlocks.GLOWING_GLASS.get()
-		)
-
-		for (block in translucent) {
-			ItemBlockRenderTypes.setRenderLayer(block, RenderType.translucent())
-		}
-
-
 	}
 
-	@SubscribeEvent
-	fun onModelRegistry(event: ModelEvent.RegisterAdditional) {
-		ItemProperties.register(
-			ModItems.GOLDEN_LASSO.get(),
-			EntityLassoItem.HAS_ENTITY,
-			EntityLassoItem::hasEntityPredicate
-		)
+    @SubscribeEvent
+    fun registerItemProperties(event: RegisterRangeSelectItemModelPropertyEvent) {
+        event.register(ExcessiveUtilities.modResource("item_predicate"), dev.aaronhowser.mods.excessive_utilities.client.item.ItemVariantProperty.CODEC)
+    }
 
-		ItemProperties.register(
-			ModItems.CURSED_LASSO.get(),
-			EntityLassoItem.HAS_ENTITY,
-			EntityLassoItem::hasEntityPredicate
-		)
+    @SubscribeEvent
+    fun registerItemColors(event: RegisterColorHandlersEvent.ItemTintSources) {
+        event.register(ExcessiveUtilities.modResource("item_color"), dev.aaronhowser.mods.excessive_utilities.client.item.ItemColorSource.CODEC)
+    }
 
-		ItemProperties.register(
-			ModItems.ANGEL_RING.get(),
-			AngelRingItem.RING_TYPE,
-			AngelRingItem::hasEntityPredicate
-		)
-
-		ItemProperties.register(
-			ModItems.ENDER_SHARD.get(),
-			ModItemModelProvider.ENDER_SHARD_COUNT
-		) { stack, level, entity, seed -> stack.count.toFloat() }
-
-		ItemProperties.register(
-			ModItems.WATERING_CAN.get(),
-			WateringCanItem.IS_BROKEN_PREDICATE,
-			WateringCanItem::isBroken
-		)
-
-		ItemProperties.register(
-			ModItems.MAGICAL_BOOMERANG.get(),
-			MagicalBoomerangItem.THROWN_PREDICATE,
-			MagicalBoomerangItem::isThrown
-		)
-
-		ItemProperties.register(
-			ModItems.COMPOUND_BOW.get(),
-			ResourceLocation.withDefaultNamespace("pull")
-		) { stack, level, entity, seed ->
-			if (entity == null || entity.useItem != stack) {
-				return@register 0f
-			}
-
-			return@register (stack.getUseDuration(entity) - entity.useItemRemainingTicks) / 20f
-		}
-
-		ItemProperties.register(
-			ModItems.COMPOUND_BOW.get(),
-			ResourceLocation.withDefaultNamespace("pulling")
-		) { stack, level, entity, seed ->
-			if (entity != null && entity.isUsingItem && entity.getUseItem() == stack) 1.0f else 0.0f
-		}
-	}
+    @SubscribeEvent
+    fun registerBlockColors(event: RegisterColorHandlersEvent.BlockTintSources) {
+        val fluidTint = object : net.minecraft.client.color.block.BlockTintSource {
+            override fun color(state: net.minecraft.world.level.block.state.BlockState): Int = -1
+            override fun colorInWorld(state: net.minecraft.world.level.block.state.BlockState, level: net.minecraft.client.renderer.block.BlockAndTintGetter, pos: net.minecraft.core.BlockPos): Int = DrumBlockEntity.getBlockColor(state, level, pos, 1)
+        }
+        event.register(listOf(net.minecraft.client.color.block.BlockTintSources.constant(-1), fluidTint),
+            ModBlocks.STONE_DRUM.get(), ModBlocks.IRON_DRUM.get(), ModBlocks.REINFORCED_LARGE_DRUM.get(),
+            ModBlocks.DEMONICALLY_GARGANTUAN_DRUM.get(), ModBlocks.BEDROCKIUM_DRUM.get(), ModBlocks.CREATIVE_DRUM.get())
+        for (color in DyeColor.entries) {
+            event.register(listOf(net.minecraft.client.color.block.BlockTintSources.constant(color.textureDiffuseColor)), ModBlocks.getLapisCaelestis(color).get())
+        }
+    }
 
 	@SubscribeEvent
-	fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
-		event.register(HeatingCoilItem::getItemColor, ModItems.HEATING_COIL.get())
-		event.register(SunCrystalItem::getItemColor, ModItems.SUN_CRYSTAL.get())
-
-		event.register(
-			UnstableIngotItem::getColor,
-			ModItems.UNSTABLE_INGOT
-		)
-
-		event.register(PaintbrushItem::getItemColor, ModItems.PAINTBRUSH.get())
-
-		event.register(
-			DrumBlockEntity::getItemStackColor,
-			ModBlocks.STONE_DRUM.get(),
-			ModBlocks.IRON_DRUM.get(),
-			ModBlocks.REINFORCED_LARGE_DRUM.get(),
-			ModBlocks.DEMONICALLY_GARGANTUAN_DRUM.get(),
-			ModBlocks.BEDROCKIUM_DRUM.get(),
-			ModBlocks.CREATIVE_DRUM.get()
-		)
-
-
-		for (color in DyeColor.entries) {
-			event.register(
-				{ stack, tintIndex -> color.textureDiffuseColor },
-				ModBlocks.getLapisCaelestis(color).get()
-			)
-		}
-	}
-
-	@SubscribeEvent
-	fun registerBlockColors(event: RegisterColorHandlersEvent.Block) {
-
-		event.register(
-			DrumBlockEntity::getBlockColor,
-			ModBlocks.STONE_DRUM.get(),
-			ModBlocks.IRON_DRUM.get(),
-			ModBlocks.REINFORCED_LARGE_DRUM.get(),
-			ModBlocks.DEMONICALLY_GARGANTUAN_DRUM.get(),
-			ModBlocks.BEDROCKIUM_DRUM.get(),
-			ModBlocks.CREATIVE_DRUM.get()
-		)
-
-		for (color in DyeColor.entries) {
-			event.register(
-				{ state, level, pos, tintIndex -> color.textureDiffuseColor },
-				ModBlocks.getLapisCaelestis(color).get()
-			)
-		}
-
+	fun recipesReceived(event: RecipesReceivedEvent) {
+		ModRecipes.clientRecipes = event.recipeMap
 	}
 
 	@SubscribeEvent
@@ -209,19 +94,19 @@ object ClientEvents {
 		)
 	}
 
-	@SubscribeEvent
-	fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
-		event.registerItem(OpiniumCoreBEWLR.ClientItemExtensions, ModItems.OPINIUM_CORE.get())
-		event.registerItem(TesseractBEWLR.ClientItemExtensions, ModItems.TESSERACT.get())
-		event.registerItem(ManualMillBEWLR.ClientItemExtensions, ModBlocks.MANUAL_MILL.asItem())
-	}
+    @SubscribeEvent
+    fun registerSpecialModels(event: RegisterSpecialModelRendererEvent) {
+        event.register(ExcessiveUtilities.modResource("manual_mill"), ManualMillBEWLR.Unbaked.CODEC)
+        event.register(ExcessiveUtilities.modResource("opinium_core"), OpiniumCoreBEWLR.Unbaked.CODEC)
+        event.register(ExcessiveUtilities.modResource("tesseract"), TesseractBEWLR.Unbaked.CODEC)
+    }
 
 	@SubscribeEvent
 	fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
 		event.registerEntityRenderer(ModEntityTypes.FLAT_TRANSFER_NODE.get(), ::FlatTransferNodeEntityRenderer)
 		event.registerEntityRenderer(ModEntityTypes.MAGICAL_BOOMERANG.get(), ::MagicalBoomerangEntityRenderer)
 
-		event.registerBlockEntityRenderer(ModBlockEntityTypes.ENDER_QUARRY.get(), ::EnderQuarryBER)
+		event.registerBlockEntityRenderer(ModBlockEntityTypes.ENDER_QUARRY.get()) { _ -> EnderQuarryBER() } 
 		event.registerBlockEntityRenderer(ModBlockEntityTypes.MANUAL_MILL.get(), ::ManualMillBER)
 		event.registerBlockEntityRenderer(ModBlockEntityTypes.RESTURBED_MOB_SPAWNER.get(), ::ResturbedMobSpawnerBER)
 		event.registerBlockEntityRenderer(ModBlockEntityTypes.RAINBOW_GENERATOR.get(), ::RainbowGeneratorBER)
@@ -235,7 +120,11 @@ object ClientEvents {
 
 	@SubscribeEvent
 	fun registerParticleProviders(event: RegisterParticleProvidersEvent) {
-		event.registerSpriteSet(ModParticleTypes.VOMIT.get(), VomitParticle::Provider)
+		event.registerSpriteSet(ModParticleTypes.VOMIT.get()) { sprites ->
+			ParticleProvider<SimpleParticleType> { type, level, x, y, z, xSpeed, ySpeed, zSpeed, random ->
+				VomitParticle.Provider(sprites).createParticle(type, level, x, y, z, xSpeed, ySpeed, zSpeed, random)
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -254,7 +143,7 @@ object ClientEvents {
 	}
 
 	@SubscribeEvent
-	fun onRenderBlockHighlight(event: RenderHighlightEvent.Block) {
+	fun onRenderBlockHighlight(event: ExtractBlockOutlineRenderStateEvent) {
 		WandRenderer.renderTargetBlocks(event)
 	}
 

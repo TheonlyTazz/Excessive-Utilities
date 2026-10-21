@@ -252,6 +252,12 @@ abstract class JsonResourceProvider(private val output: PackOutput, protected va
         val itemPaths = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "items")
         (blockModels.entries + itemModels.entries).forEach { (id, model) ->
             writes.add(DataProvider.saveStable(cache, model.toJson(), modelPaths.json(id)))
+            if (id.path == "item/manual_mill") {
+                val body = model.toJson().deepCopy().apply {
+                    addProperty("parent", "$namespace:block/manual_mill")
+                }
+                writes.add(DataProvider.saveStable(cache, body, modelPaths.json(id.withPath("item/manual_mill_body"))))
+            }
         }
         blockStates.forEach { (id, json) -> writes.add(DataProvider.saveStable(cache, json, statePaths.json(id))) }
         itemModels.entries.forEach { (id, model) ->
@@ -282,15 +288,36 @@ abstract class JsonResourceProvider(private val output: PackOutput, protected va
     }
 
     private fun itemDefinition(model: JsonModelBuilder): JsonObject {
-        if (model.location.path in setOf("item/opinium_core", "item/tesseract")) {
-            return JsonObject().apply {
+        if (model.location.path in setOf("item/opinium_core", "item/tesseract", "item/manual_mill")) {
+            fun special(gui: Boolean, baseModel: String = model.location.toString()): JsonObject = JsonObject().apply {
                 addProperty("type", "minecraft:special")
-                addProperty("base", model.location.toString())
+                addProperty("base", baseModel)
                 add("model", JsonObject().apply {
                     addProperty("type", "${ExcessiveUtilities.MOD_ID}:${model.location.path.removePrefix("item/")}")
+                    if (model.location.path == "item/tesseract") addProperty("gui", gui)
                 })
             }
+            if (model.location.path == "item/manual_mill") {
+                return JsonObject().apply {
+                    addProperty("type", "minecraft:composite")
+                    add("models", JsonArray().apply {
+                        add(reference(ModelFile(model.location.withPath("item/manual_mill_body"))))
+                        add(special(false, model.location.withPath("item/manual_mill_body").toString()))
+                    })
+                }
+            }
+            if (model.location.path != "item/tesseract") return special(false)
+            return JsonObject().apply {
+                addProperty("type", "minecraft:select")
+                addProperty("property", "minecraft:display_context")
+                add("cases", JsonArray().apply { add(JsonObject().apply {
+                    addProperty("when", "gui")
+                    add("model", special(true))
+                }) })
+                add("fallback", special(false))
+            }
         }
+
         // Later overrides win. Each branch preserves the complete earlier selection below its threshold.
         var result = reference(model)
         for (override in model.overrides) {

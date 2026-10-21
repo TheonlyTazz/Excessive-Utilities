@@ -8,29 +8,28 @@ import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import top.theillusivec4.curios.api.CuriosApi
 import kotlin.jvm.optionals.getOrNull
 
 object RingRechargeGuiRenderer {
 
-	val LAYER_NAME: ResourceLocation = ExcessiveUtilities.modResource("ring_recharge_gui_layer")
+	val LAYER_NAME: Identifier = ExcessiveUtilities.modResource("ring_recharge_gui_layer")
 
 	//TODO: Render with horse jump bar or whatever instead
-	fun render(guiGraphics: GuiGraphics, deltaTracker: DeltaTracker) {
+	fun render(guiGraphics: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
 		val player = AaronClientUtil.localPlayer ?: return
 
 		var ringStack = ItemStack.EMPTY
 
-		for (compartment in player.inventory.compartments) {
-			for (stack in compartment) {
-				if (stack.isItem(ModItems.RING_OF_THE_FLYING_SQUID) || stack.isItem(ModItems.CHICKEN_WING_RING)) {
-					ringStack = stack
-					break
-				}
+		for (slot in 0 until player.inventory.containerSize) {
+			val stack = player.inventory.getItem(slot)
+			if (stack.isItem(ModItems.RING_OF_THE_FLYING_SQUID) || stack.isItem(ModItems.CHICKEN_WING_RING)) {
+				ringStack = stack
+				break
 			}
 		}
 
@@ -59,7 +58,7 @@ object RingRechargeGuiRenderer {
 
 		val component = Component.literal("$charge / $maxCharge")
 
-		guiGraphics.drawString(
+		guiGraphics.text(
 			Minecraft.getInstance().font,
 			component,
 			guiGraphics.guiWidth() / 2 + 5,

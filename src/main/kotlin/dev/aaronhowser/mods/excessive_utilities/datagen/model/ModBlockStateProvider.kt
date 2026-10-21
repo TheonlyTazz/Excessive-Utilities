@@ -1022,7 +1022,8 @@ class ModBlockStateProvider(
 				}
 			}
 
-		simpleBlockItem(block, itemModel)
+		// The item model is already registered above; simpleBlockItem would create
+		// a second model whose parent is itself.
 	}
 
 	private fun transferPipes() {
@@ -1916,7 +1917,7 @@ class ModBlockStateProvider(
 
 		itemModels()
 			.getBuilder(name(block))
-			.parent(ModelFile.UncheckedModelFile("builtin/entity"))
+			.parent(ModelFile.UncheckedModelFile("block/block"))
 			.transforms {
 				transform(ItemDisplayContext.GUI) {
 					rotation(30f, 225f, 0f)
