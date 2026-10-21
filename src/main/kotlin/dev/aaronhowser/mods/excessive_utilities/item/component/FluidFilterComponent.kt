@@ -84,7 +84,7 @@ data class FluidFilterComponent(
 			if (filterFluid.isEmpty) continue
 
 			if (useTags) {
-				val tagsMatch = filterFluid.tags.anyMatch { checkedStack.isFluid(it) }
+				val tagsMatch = filterFluid.tags().anyMatch { checkedStack.isFluid(it) }
 				if (tagsMatch) return !isInverted
 			}
 
@@ -156,3 +156,8 @@ data class FluidFilterComponent(
 	}
 
 }
+
+
+
+
+
