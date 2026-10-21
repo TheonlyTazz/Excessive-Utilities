@@ -1,14 +1,14 @@
 package dev.aaronhowser.mods.excessive_utilities.menu
 
 import dev.aaronhowser.mods.aaron.menu.BaseScreen
-import dev.aaronhowser.mods.excessive_utilities.menu.base.components.TexturedLabel
+import dev.aaronhowser.mods.aaron.menu.textures.ScreenBackground
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
-import dev.aaronhowser.mods.aaron.menu.textures.ScreenBackground
 
 abstract class ExcessiveUtilitiesScreen<M : AbstractContainerMenu>(
 	menu: M,
@@ -25,42 +25,54 @@ abstract class ExcessiveUtilitiesScreen<M : AbstractContainerMenu>(
 
 	protected open val titleLabelSprite: Identifier = PLAIN_LABEL
 
-	override fun baseInit() {
-		super.baseInit()
-
+	override fun extractLabels(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
 		if (showTitleLabel) {
-			val titleLabel = TexturedLabel(
-				x = leftPos + titleLabelOffsetX,
-				y = topPos + titleLabelOffsetY,
-				font = font,
-				messageGetter = { title },
-				backgroundSprite = titleLabelSprite,
-				textColor = LABEL_TEXT_COLOR,
-				verticalPadding = 2,
-				horizontalPadding = 3
+			drawTexturedLabel(
+				graphics,
+				title,
+				titleLabelOffsetX,
+				titleLabelOffsetY,
+				titleLabelSprite
 			)
-
-			addRenderableWidget(titleLabel)
 		}
 
 		if (showInventoryLabel) {
-			val inventoryLabel = TexturedLabel(
-				x = leftPos + inventoryLabelX + inventoryLabelOffsetX,
-				y = topPos + inventoryLabelY + inventoryLabelOffsetY,
-				font = font,
-				messageGetter = { playerInventoryTitle },
-				backgroundSprite = INVENTORY_LABEL,
-				textColor = LABEL_TEXT_COLOR,
-				verticalPadding = 2,
-				horizontalPadding = 3
+			drawTexturedLabel(
+				graphics,
+				playerInventoryTitle,
+				inventoryLabelX + inventoryLabelOffsetX,
+				inventoryLabelY + inventoryLabelOffsetY,
+				INVENTORY_LABEL
 			)
-
-			addRenderableWidget(inventoryLabel)
 		}
 	}
 
+	private fun drawTexturedLabel(
+		graphics: GuiGraphicsExtractor,
+		message: Component,
+		x: Int,
+		y: Int,
+		backgroundSprite: Identifier
+	) {
+		val horizontalPadding = 3
+		val verticalPadding = 2
+		val width = font.width(message) + horizontalPadding * 2
+		val height = font.lineHeight + verticalPadding * 2
+
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, backgroundSprite, x, y, width, height)
+		graphics.text(
+			font,
+			message,
+			x + horizontalPadding,
+			y + verticalPadding,
+			LABEL_TEXT_COLOR,
+			false
+		)
+	}
+
 	companion object {
-		const val LABEL_TEXT_COLOR: Int = 4210752
+		// Opaque ARGB 0xFF404040; GUI text with zero alpha is skipped.
+		const val LABEL_TEXT_COLOR: Int = -0xBFBFC0
 
 		val BLUE_LABEL: Identifier =
 			ExcessiveUtilities.modResource("label/blue")

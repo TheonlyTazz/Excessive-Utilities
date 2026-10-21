@@ -195,7 +195,7 @@ class EnderPorcupineScreen(
 			ModMenuLang.CURRENT_OFFSET.toComponent(currentOffsetX, currentOffsetY, currentOffsetZ),
 			8,
 			24,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -212,7 +212,7 @@ class EnderPorcupineScreen(
 			ModMenuLang.MIN_OFFSET.toComponent(minX, minY, minZ),
 			8,
 			40,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -223,7 +223,7 @@ class EnderPorcupineScreen(
 			minX,
 			xStringX - (font.width(minX) / 2),
 			minStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -232,7 +232,7 @@ class EnderPorcupineScreen(
 			minY,
 			yStringX - (font.width(minY) / 2),
 			minStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -241,7 +241,7 @@ class EnderPorcupineScreen(
 			minZ,
 			zStringX - (font.width(minZ) / 2),
 			minStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -254,7 +254,7 @@ class EnderPorcupineScreen(
 			ModMenuLang.MAX_OFFSET.toComponent(maxX, maxY, maxZ),
 			8,
 			108,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -265,7 +265,7 @@ class EnderPorcupineScreen(
 			maxX,
 			xStringX - (font.width(maxX) / 2),
 			maxStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -274,7 +274,7 @@ class EnderPorcupineScreen(
 			maxY,
 			yStringX - (font.width(maxY) / 2),
 			maxStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -283,7 +283,7 @@ class EnderPorcupineScreen(
 			maxZ,
 			zStringX - (font.width(maxZ) / 2),
 			maxStringY,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 

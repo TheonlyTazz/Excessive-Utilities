@@ -46,7 +46,7 @@ class QuantumQuarryScreen(
 			Component.literal("X: $x"),
 			35,
 			20,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -55,7 +55,7 @@ class QuantumQuarryScreen(
 			Component.literal("Y: $y"),
 			35,
 			30,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -64,7 +64,7 @@ class QuantumQuarryScreen(
 			Component.literal("Z: $z"),
 			35,
 			40,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 
@@ -84,7 +84,7 @@ class QuantumQuarryScreen(
 						component,
 						35,
 						50,
-						4210752,
+						LABEL_TEXT_COLOR,
 						false
 					)
 				}
@@ -101,7 +101,7 @@ class QuantumQuarryScreen(
 			Component.literal("$minedString mined"),
 			35,
 			60,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 

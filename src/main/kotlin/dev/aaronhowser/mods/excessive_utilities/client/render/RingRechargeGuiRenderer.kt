@@ -63,7 +63,7 @@ object RingRechargeGuiRenderer {
 			component,
 			guiGraphics.guiWidth() / 2 + 5,
 			guiGraphics.guiHeight() / 2 + 5,
-			0xFFFFFF
+			0xFFFFFFFF.toInt()
 		)
 	}
 

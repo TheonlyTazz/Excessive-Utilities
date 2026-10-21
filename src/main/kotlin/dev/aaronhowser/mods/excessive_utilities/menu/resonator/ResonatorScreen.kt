@@ -44,7 +44,7 @@ class ResonatorScreen(
 			ModMenuLang.GP.toComponent(gpUsage),
 			71,
 			20,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 	}

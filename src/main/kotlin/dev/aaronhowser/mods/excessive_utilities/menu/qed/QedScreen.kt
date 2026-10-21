@@ -39,7 +39,7 @@ class QedScreen(
 			Component.literal(nearbyCrystals.toString() + "x"),
 			95,
 			30,
-			4210752,
+			LABEL_TEXT_COLOR,
 			false
 		)
 	}
