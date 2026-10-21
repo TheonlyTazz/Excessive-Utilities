@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.level.storage.ValueInput
+import net.minecraft.world.level.storage.ValueOutput
 import net.minecraft.network.chat.Component
 import net.minecraft.world.ContainerHelper
 import net.minecraft.world.MenuProvider
@@ -27,20 +29,13 @@ class FluidTrashCanBlockEntity(
 	private val filterContainer = ImprovedSimpleContainer(this, 1)
 	val filterStack: ItemStack get() = filterContainer.getItem(FILTER_SLOT)
 
-	private val fluidHandler =
-		object : IFluidHandler {
-			override fun getTanks(): Int = 1
-			override fun getFluidInTank(tank: Int): FluidStack = FluidStack.EMPTY
-			override fun getTankCapacity(tank: Int): Int = Int.MAX_VALUE
-			override fun fill(resource: FluidStack, action: IFluidHandler.FluidAction): Int = resource.amount
-			override fun drain(resource: FluidStack, action: IFluidHandler.FluidAction): FluidStack = FluidStack.EMPTY
-			override fun drain(maxDrain: Int, action: IFluidHandler.FluidAction): FluidStack = FluidStack.EMPTY
-			override fun isFluidValid(tank: Int, stack: FluidStack): Boolean {
-				return passesFilter(stack)
-			}
-		}
-
-	fun getFluidHandler(direction: Direction?): IFluidHandler = fluidHandler
+    private val fluidHandler = object : net.neoforged.neoforge.transfer.VoidingResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>(net.neoforged.neoforge.transfer.fluid.FluidResource.EMPTY) {
+        override fun isValid(index: Int, resource: net.neoforged.neoforge.transfer.fluid.FluidResource): Boolean = passesFilter(resource.toStack(1))
+        override fun insert(index: Int, resource: net.neoforged.neoforge.transfer.fluid.FluidResource, amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+            return if (isValid(index, resource)) super.insert(index, resource, amount, transaction) else 0
+        }
+    }
+    fun getFluidHandler(direction: Direction?): net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource> = fluidHandler
 
 	override fun getDisplayName(): Component {
 		return blockState.block.name
@@ -56,14 +51,14 @@ class FluidTrashCanBlockEntity(
 		return null
 	}
 
-	override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
-		super.saveAdditional(tag, registries)
-		ContainerHelper.saveAllItems(tag, filterContainer.items, registries)
+	override fun saveAdditional(tag: ValueOutput) {
+		super.saveAdditional(tag)
+		ContainerHelper.saveAllItems(tag, filterContainer.items)
 	}
 
-	override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
-		super.loadAdditional(tag, registries)
-		ContainerHelper.loadAllItems(tag, filterContainer.items, registries)
+	override fun loadAdditional(tag: ValueInput) {
+		super.loadAdditional(tag)
+		ContainerHelper.loadAllItems(tag, filterContainer.items)
 	}
 
 	companion object {
