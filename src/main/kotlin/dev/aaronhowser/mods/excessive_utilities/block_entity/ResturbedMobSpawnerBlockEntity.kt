@@ -8,6 +8,8 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.level.storage.ValueInput
+import net.minecraft.world.level.storage.ValueOutput
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.Entity
@@ -46,23 +48,14 @@ class ResturbedMobSpawnerBlockEntity(
 		spawner.clientTick(level, blockPos)
 	}
 
-	override fun collectImplicitComponents(components: DataComponentMap.Builder) {
-		super.collectImplicitComponents(components)
-
-		val level = level ?: return
-		val nbt = saveCustomOnly(level.registryAccess())
-		addEntityType(nbt, type)
-		components.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(nbt))
+	override fun saveAdditional(tag: ValueOutput) {
+		super.saveAdditional(tag)
+		spawner.save(tag.child(SPAWNER_NBT))
 	}
 
-	override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
-		super.saveAdditional(tag, registries)
-		spawner.save(tag)
-	}
-
-	override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
-		super.loadAdditional(tag, registries)
-		spawner.load(level, blockPos, tag)
+	override fun loadAdditional(tag: ValueInput) {
+		super.loadAdditional(tag)
+		spawner.load(level, blockPos, tag.childOrEmpty(SPAWNER_NBT))
 	}
 
 	override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
@@ -72,6 +65,7 @@ class ResturbedMobSpawnerBlockEntity(
 	}
 
 	companion object {
+		private const val SPAWNER_NBT = "Spawner"
 		fun tick(
 			level: Level,
 			blockPos: BlockPos,

@@ -151,20 +151,22 @@ class ModJeiPlugin : IModPlugin {
 		val DISENCHANTMENT_FUELS: RecipeType<DisenchantmentFuelJeiCategory.Recipe> =
 			makeRecipeType("generator_fuel/disenchantment", DisenchantmentFuelJeiCategory.Recipe::class.java)
 
-		val SINGLE_ITEM_FUELS: Map<SingleItemFuelRecipe.GeneratorType, RecipeType<RecipeHolder<SingleItemFuelRecipe>>> =
+		val SINGLE_ITEM_FUELS: Map<SingleItemFuelRecipe.GeneratorType, RecipeType<RecipeHolder<SingleItemFuelRecipe>>> by lazy {
 			buildMap {
 				for (type in SingleItemFuelRecipe.GeneratorType.entries) {
 					val name = "generator_fuel/single_item_fuel/${type.id}"
 					set(type, makeRecipeType(name))
 				}
 			}
-		val ITEM_AND_FLUID_FUELS: Map<ItemAndFluidFuelRecipe.GeneratorType, RecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>> =
+		}
+		val ITEM_AND_FLUID_FUELS: Map<ItemAndFluidFuelRecipe.GeneratorType, RecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>> by lazy {
 			buildMap {
 				for (type in ItemAndFluidFuelRecipe.GeneratorType.entries) {
 					val name = "generator_fuel/item_and_fluid_fuel/${type.id}"
 					set(type, makeRecipeType(name))
 				}
 			}
+		}
 
 		private fun <T : Recipe<*>> makeRecipeType(id: String): RecipeType<RecipeHolder<T>> {
 			return RecipeType.create(ExcessiveUtilities.MOD_ID, id, RecipeHolder::class.java).cast()

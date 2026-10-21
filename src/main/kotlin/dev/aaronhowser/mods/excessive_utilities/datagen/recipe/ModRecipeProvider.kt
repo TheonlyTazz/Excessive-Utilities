@@ -160,7 +160,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			ModItems.TESSERACT,
 			"ERE,RGR,ERE".split(","),
 			mapOf(
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'G' to Tags.Items.GLASS_BLOCKS.asIngredient(),
 				'R' to Tags.Items.RODS_BLAZE.asIngredient()
 			)
@@ -275,7 +275,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			ModBlocks.ENDER_COLLECTOR,
 			"EIE, I ,OOO".split(","),
 			mapOf(
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'I' to ModBlocks.ENDER_INFUSED_OBSIDIAN.asIngredient(),
 				'O' to Tags.Items.OBSIDIANS_NORMAL.asIngredient()
 			)
@@ -521,7 +521,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				'D' to ItemTags.WOODEN_DOORS.asIngredient(),
 				'L' to ItemTags.LOGS.asIngredient(),
 				'A' to Items.GRASS_BLOCK.asIngredient(),
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'W' to Items.NETHER_STAR.asIngredient()
 			)
 		).save(recipeOutput)
@@ -759,7 +759,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 					EntityType.SQUID.builtInRegistryHolder()
 				),
 				'C' to ModItems.CHICKEN_WING_RING.asIngredient(),
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient()
+				'E' to Items.ENDER_PEARL.asIngredient()
 			)
 		).save(recipeOutput)
 
@@ -1106,7 +1106,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			ModBlocks.ENDER_GENERATOR,
 			"EEE,EOE,RMR".split(","),
 			mapOf(
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'O' to Tags.Items.OBSIDIANS_NORMAL.asIngredient(),
 				'R' to Tags.Items.DUSTS_REDSTONE.asIngredient(),
 				'M' to ModBlocks.FURNACE_GENERATOR.asIngredient()
@@ -1265,7 +1265,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 		SpecialShapedRecipeBuilder(ModItems.ENDER_SHARD.toStack(8))
 			.type("damage_glass_cutter", ::DamageGlassCutterRecipe)
 			.pattern("P", "C")
-			.define('P', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('P', Items.ENDER_PEARL.asIngredient())
 			.define('C', ModItems.GLASS_CUTTER.asIngredient())
 			.save(recipeOutput)
 
@@ -1322,7 +1322,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			ModBlocks.TERRAFORMER,
 			"ECE,RPR".split(","),
 			mapOf(
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'C' to ModBlocks.CLIMOGRAPH_BASE_UNIT.asIngredient(),
 				'R' to Tags.Items.DUSTS_REDSTONE.asIngredient(),
 				'P' to Items.REPEATER.asIngredient()
@@ -1375,7 +1375,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			"SES,EME,SES".split(","),
 			mapOf(
 				'S' to Tags.Items.STRINGS.asIngredient(),
-				'E' to Tags.Items.ENDER_PEARLS.asIngredient(),
+				'E' to Items.ENDER_PEARL.asIngredient(),
 				'M' to ModItems.POWER_MANAGER.asIngredient()
 			)
 		).save(recipeOutput)
@@ -1433,7 +1433,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			mapOf(
 				'E' to Tags.Items.GEMS_EMERALD.asIngredient(),
 				'P' to ItemTags.PLANKS.asIngredient(),
-				'N' to Tags.Items.ENDER_PEARLS.asIngredient()
+				'N' to Items.ENDER_PEARL.asIngredient()
 			)
 		).save(recipeOutput)
 
@@ -1765,7 +1765,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 		shapelessRecipe(
 			ModItems.EYE_OF_REDSTONE,
 			listOf(
-				Tags.Items.ENDER_PEARLS.asIngredient(),
+				Items.ENDER_PEARL.asIngredient(),
 				Tags.Items.DUSTS_REDSTONE.asIngredient(),
 				ModItems.RESONATING_REDSTONE_CRYSTAL.asIngredient()
 			)
@@ -2189,7 +2189,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"NMN",
 				" E "
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('N', ModBlocks.ITEM_TRANSFER_NODE.asIngredient())
 			.define('M', Tags.Items.GEMS_EMERALD.asIngredient())
 			.save(recipeOutput)
@@ -2200,7 +2200,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"NDN",
 				" E "
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('N', ModBlocks.FLUID_TRANSFER_NODE.asIngredient())
 			.define('D', Tags.Items.GEMS_DIAMOND.asIngredient())
 			.save(recipeOutput)
@@ -2211,7 +2211,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"NRN",
 				" E "
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('N', ModBlocks.ENERGY_TRANSFER_NODE.asIngredient())
 			.define('R', Tags.Items.DUSTS_REDSTONE.asIngredient())
 			.save(recipeOutput)
@@ -2222,7 +2222,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"QEQ",
 				"ETE"
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('T', Items.REDSTONE_TORCH.asIngredient())
 			.define('Q', Tags.Items.GEMS_QUARTZ.asIngredient())
 			.save(recipeOutput)
@@ -2233,7 +2233,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"QEQ",
 				"EQE"
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('R', Tags.Items.DUSTS_REDSTONE.asIngredient())
 			.define('Q', Tags.Items.GEMS_QUARTZ.asIngredient())
 			.save(recipeOutput)
@@ -2272,7 +2272,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				"O",
 				"O"
 			)
-			.define('E', Tags.Items.ENDER_PEARLS.asIngredient())
+			.define('E', Items.ENDER_PEARL.asIngredient())
 			.define('O', ModBlocks.ENDER_INFUSED_OBSIDIAN.asIngredient())
 			.save(recipeOutput)
 	}
@@ -2284,7 +2284,10 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				ingredient,
 				fePerTick,
 				duration
-			).save(recipeOutput, modLoc(name))
+			).save(
+				recipeOutput,
+				ResourceKey.create(Registries.RECIPE, ExcessiveUtilities.modResource(name))
+			)
 		}
 
 		fun ender(name: String, ingredient: Ingredient, fePerTick: Int, duration: Int) = singleItem(name, SingleItemFuelRecipe.GeneratorType.ENDER, ingredient, fePerTick, duration)
@@ -2296,7 +2299,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 		fun death(name: String, ingredient: Ingredient, fePerTick: Int, duration: Int) = singleItem(name, SingleItemFuelRecipe.GeneratorType.DEATH, ingredient, fePerTick, duration)
 
 
-		ender("ender_pearls", Tags.Items.ENDER_PEARLS.asIngredient(), 40, 20 * (60 + 20)) // 1:20
+		ender("ender_pearls", Items.ENDER_PEARL.asIngredient(), 40, 20 * (60 + 20)) // 1:20
 		ender("ender_eye", Items.ENDER_EYE.asIngredient(), 80, 20 * (2 * 60 + 40)) // 2:40
 
 		// TODO: Make sure these are correct

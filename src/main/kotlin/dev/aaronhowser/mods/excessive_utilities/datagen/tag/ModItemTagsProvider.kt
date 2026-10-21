@@ -89,6 +89,9 @@ class ModItemTagsProvider(
 				ModItems.PIPE_WRENCH
 			)
 
+		tag(Tags.Items.ENDER_PEARLS)
+			.add(Items.ENDER_PEARL)
+
 		tag(Tags.Items.DYES_MAGENTA)
 			.add(
 				ModItems.LUNAR_REACTIVE_DUST

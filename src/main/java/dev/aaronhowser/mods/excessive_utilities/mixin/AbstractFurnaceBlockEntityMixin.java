@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class AbstractFurnaceBlockEntityMixin {
 
 	@Redirect(
-			method = "serverTick",
+			method = "consumeFuel",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"
@@ -34,7 +34,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void eu$redCoalBurnTime(ItemStack fuel, CallbackInfoReturnable<Integer> cir) {
+	private void eu$redCoalBurnTime(net.minecraft.world.level.block.entity.FuelValues fuelValues, ItemStack fuel, CallbackInfoReturnable<Integer> cir) {
 		if (fuel.is(ModItems.RED_COAL)) {
 			cir.setReturnValue(RedCoalItem.getBurnTime(
 					(AbstractFurnaceBlockEntity) (Object) this,
