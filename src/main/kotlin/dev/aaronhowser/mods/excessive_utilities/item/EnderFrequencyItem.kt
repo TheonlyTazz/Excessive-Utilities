@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level
 class EnderFrequencyItem(
 	val role: Role,
 	properties: Properties
-) : Item(properties) {
+) : Item(properties), TooltipItem {
 
 	override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResult {
 		val stack = player.getItemInHand(usedHand)
@@ -39,7 +39,7 @@ class EnderFrequencyItem(
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(stack: ItemStack, context: TooltipContext, display: TooltipDisplay, builder: java.util.function.Consumer<Component>, flag: TooltipFlag) {
+	override fun appendTooltip(stack: ItemStack, context: TooltipContext, display: TooltipDisplay, builder: java.util.function.Consumer<Component>, tooltipFlag: TooltipFlag) {
 		val frequency = stack.get(ModDataComponents.ENDER_FREQUENCY) ?: return
 		builder.accept(Component.literal(frequency.name).withStyle(ChatFormatting.LIGHT_PURPLE))
 		builder.accept(

@@ -16,7 +16,7 @@ import net.neoforged.neoforge.transfer.access.ItemAccess
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.energy.ItemAccessEnergyHandler
 
-class HeatingCoilItem(properties: Properties) : Item(properties) {
+class HeatingCoilItem(properties: Properties) : Item(properties), TooltipItem {
 
 	fun getBurnTime(itemStack: ItemStack, recipeType: RecipeType<*>?): Int {
 		if (recipeType != RecipeType.SMELTING) {
@@ -52,7 +52,7 @@ class HeatingCoilItem(properties: Properties) : Item(properties) {
 		return max - held
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

@@ -19,7 +19,7 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.level.Level
 
-class ItemFilterItem(properties: Properties) : Item(properties) {
+class ItemFilterItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun use(
 		level: Level,
@@ -40,7 +40,7 @@ class ItemFilterItem(properties: Properties) : Item(properties) {
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

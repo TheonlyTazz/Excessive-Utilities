@@ -42,13 +42,11 @@ class MagicalBoomerangItem(properties: Properties) : Item(properties) {
 		entity: Entity,
 		slot: EquipmentSlot?
 	) {
-		if (level is ServerLevel) {
-			val boomerangId = stack.get(ModDataComponents.THROWN_BOOMERANG) ?: return
-			val boomerangEntity = level.getEntity(boomerangId)
+		val boomerangId = stack.get(ModDataComponents.THROWN_BOOMERANG) ?: return
+		val boomerangEntity = level.getEntity(boomerangId)
 
-			if (boomerangEntity == null) {
-				stack.remove(ModDataComponents.THROWN_BOOMERANG)
-			}
+		if (boomerangEntity == null) {
+			stack.remove(ModDataComponents.THROWN_BOOMERANG)
 		}
 	}
 

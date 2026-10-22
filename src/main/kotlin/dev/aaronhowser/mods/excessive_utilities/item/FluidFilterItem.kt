@@ -18,9 +18,9 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.FluidUtil
+import net.neoforged.neoforge.transfer.fluid.FluidUtil
 
-class FluidFilterItem(properties: Properties) : Item(properties) {
+class FluidFilterItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun use(
 		level: Level,
@@ -41,7 +41,7 @@ class FluidFilterItem(properties: Properties) : Item(properties) {
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,
@@ -62,7 +62,7 @@ class FluidFilterItem(properties: Properties) : Item(properties) {
 			for (x in 0 until 4) {
 				val slot = y * 4 + x
 				val ghostStack = filterStacks.getOrNull(slot) ?: continue
-				val fluidStack = FluidUtil.getFluidContained(ghostStack).orElse(FluidStack.EMPTY)
+				val fluidStack = FluidUtil.getFirstStackContained(ghostStack)
 				if (!fluidStack.isEmpty) {
 					stacks.add(fluidStack)
 				}

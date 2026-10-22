@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 
-class UnstableIngotItem(properties: Properties) : Item(properties) {
+class UnstableIngotItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun inventoryTick(
 		stack: ItemStack,
@@ -74,7 +74,7 @@ class UnstableIngotItem(properties: Properties) : Item(properties) {
 		}
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

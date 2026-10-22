@@ -13,6 +13,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import net.minecraft.ChatFormatting
 import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
@@ -43,7 +44,7 @@ import net.neoforged.neoforge.common.Tags
 class EntityLassoItem(
 	val canHoldHostileMobs: Boolean,
 	properties: Properties
-) : Item(properties) {
+) : Item(properties), TooltipItem {
 
 	override fun interactLivingEntity(
 		stack: ItemStack,
@@ -92,7 +93,7 @@ class EntityLassoItem(
 		val customNbt = CustomData.of(entityNbt)
 
 		stack.set(ModDataComponents.ENTITY_DATA, customNbt)
-		stack.set(ModDataComponents.ENTITY_TYPE, interactionTarget.type.builtInRegistryHolder())
+		stack.set(ModDataComponents.ENTITY_TYPE, BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(interactionTarget.type))
 
 		interactionTarget.remove(Entity.RemovalReason.DISCARDED)
 
@@ -129,7 +130,7 @@ class EntityLassoItem(
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,
@@ -192,7 +193,6 @@ class EntityLassoItem(
 			val entityType = level.registryAccess()
 				.lookupOrThrow(Registries.ENTITY_TYPE)
 				.get(Identifier.parse(entityTypeString))
-				?: return null
 
 			val entityHolder = entityType.orElse(null) ?: return null
 			val entity = entityHolder.value().create(level, EntitySpawnReason.LOAD) ?: return null

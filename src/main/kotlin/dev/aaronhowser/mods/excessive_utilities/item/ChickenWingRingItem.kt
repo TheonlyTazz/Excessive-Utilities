@@ -100,7 +100,7 @@ class ChickenWingRingItem(properties: Properties) : Item(properties), ICurioItem
 		}
 
 		private fun addGpConsumer(player: ServerPlayer, ringStack: ItemStack): GridPowerContribution.HeldItem {
-			val handler = GridPowerHandler.get((player.level() as ServerLevel)).getPlayerGrid(player)
+			val handler = GridPowerHandler.get(player.level()).getPlayerGrid(player)
 
 			val currentConsumers = handler.getConsumers()
 			val existing = currentConsumers

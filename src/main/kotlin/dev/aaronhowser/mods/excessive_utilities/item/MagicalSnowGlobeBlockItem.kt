@@ -20,7 +20,7 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.level.Level
 
-class MagicalSnowGlobeBlockItem(properties: Properties) : BlockItem(ModBlocks.MAGICAL_SNOW_GLOBE.get(), properties) {
+class MagicalSnowGlobeBlockItem(properties: Properties) : BlockItem(ModBlocks.MAGICAL_SNOW_GLOBE.get(), properties), TooltipItem {
 
 	override fun inventoryTick(
 		stack: ItemStack,
@@ -44,7 +44,7 @@ class MagicalSnowGlobeBlockItem(properties: Properties) : BlockItem(ModBlocks.MA
 		)
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

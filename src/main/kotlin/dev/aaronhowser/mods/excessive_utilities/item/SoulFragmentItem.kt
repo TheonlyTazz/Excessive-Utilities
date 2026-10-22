@@ -19,7 +19,7 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.level.Level
 
-class SoulFragmentItem(properties: Properties) : Item(properties) {
+class SoulFragmentItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResult {
 		val stack = player.getItemInHand(usedHand)
@@ -32,7 +32,7 @@ class SoulFragmentItem(properties: Properties) : Item(properties) {
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

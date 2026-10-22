@@ -18,7 +18,7 @@ import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.biome.Biome
 
-class BiomeMarkerItem(properties: Properties) : Item(properties) {
+class BiomeMarkerItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun useOn(context: UseOnContext): InteractionResult {
 		val level = context.level
@@ -31,7 +31,7 @@ class BiomeMarkerItem(properties: Properties) : Item(properties) {
 		return InteractionResult.SUCCESS
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

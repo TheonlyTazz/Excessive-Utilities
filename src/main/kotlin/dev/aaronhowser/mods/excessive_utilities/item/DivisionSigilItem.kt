@@ -21,7 +21,7 @@ import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.block.Blocks
 
-class DivisionSigilItem(properties: Properties) : Item(properties) {
+class DivisionSigilItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun useOn(context: UseOnContext): InteractionResult {
 		val level = context.level
@@ -51,7 +51,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		return isInverted(stack)
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

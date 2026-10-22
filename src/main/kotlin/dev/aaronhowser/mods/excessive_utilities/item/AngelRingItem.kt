@@ -35,7 +35,7 @@ import top.theillusivec4.curios.api.SlotContext
 import top.theillusivec4.curios.api.type.capability.ICurioItem
 import kotlin.jvm.optionals.getOrNull
 
-class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
+class AngelRingItem(properties: Properties) : Item(properties), ICurioItem, TooltipItem {
 
 	override fun curioTick(slotContext: SlotContext, stack: ItemStack) {
 		val entity = slotContext.entity()
@@ -60,7 +60,7 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 		return true
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,
@@ -93,7 +93,7 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 		}
 
 		private fun addGpConsumer(player: ServerPlayer, ringStack: ItemStack): GridPowerContribution.HeldItem {
-			val handler = GridPowerHandler.get((player.level() as ServerLevel)).getPlayerGrid(player)
+			val handler = GridPowerHandler.get(player.level()).getPlayerGrid(player)
 
 			val currentConsumers = handler.getConsumers()
 			val existing = currentConsumers
@@ -115,7 +115,7 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 			val flightAttribute = player.getAttribute(NeoForgeMod.CREATIVE_FLIGHT) ?: return
 			val currentlyHasModifier = flightAttribute.hasModifier(ATTRIBUTE_MODIFIER_NAME)
 
-			val handler = GridPowerHandler.get((player.level() as ServerLevel))
+			val handler = GridPowerHandler.get(player.level())
 			if (!handler.isOverloaded(player.uuid)) {
 				if (currentlyHasModifier) return
 

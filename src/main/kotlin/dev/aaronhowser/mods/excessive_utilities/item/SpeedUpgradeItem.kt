@@ -11,9 +11,9 @@ import net.minecraft.world.item.Rarity
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 
-class SpeedUpgradeItem(properties: Properties) : Item(properties) {
+class SpeedUpgradeItem(properties: Properties) : Item(properties), TooltipItem {
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

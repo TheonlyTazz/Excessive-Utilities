@@ -37,7 +37,7 @@ import net.neoforged.neoforge.fluids.SimpleFluidContent
 class WateringCanItem(
 	val isReinforced: Boolean,
 	properties: Properties
-) : Item(properties) {
+) : Item(properties), TooltipItem {
 
 	override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = Int.MAX_VALUE
 	override fun getUseAnimation(stack: ItemStack): ItemUseAnimation = ItemUseAnimation.BOW
@@ -193,7 +193,7 @@ class WateringCanItem(
 		return true
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

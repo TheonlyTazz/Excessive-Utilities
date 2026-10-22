@@ -38,18 +38,19 @@ class HealingAxeItem(properties: Properties) : Item(properties) {
 		player: Player,
 		entity: Entity
 	): Boolean {
-		if (entity.level().isClientSide || entity !is LivingEntity) return false
+		val level = entity.level()
+		if (level !is ServerLevel || entity !is LivingEntity) return false
 
 		val isUndead = entity.isEntity(EntityTypeTags.UNDEAD)
 		val selfHurtDamage = ServerConfig.CONFIG.healingAxeHealthTransferAmount.get().toFloat()
 
 		if (isUndead) {
-			entity.hurt(player.damageSources().playerAttack(player), selfHurtDamage * 4f)
+			entity.hurtServer(level, player.damageSources().playerAttack(player), selfHurtDamage * 4f)
 		} else {
 			entity.heal(selfHurtDamage)
 		}
 
-		player.hurt(player.damageSources().playerAttack(player), selfHurtDamage)
+		player.hurtServer(level, player.damageSources().playerAttack(player), selfHurtDamage)
 
 		return true
 	}

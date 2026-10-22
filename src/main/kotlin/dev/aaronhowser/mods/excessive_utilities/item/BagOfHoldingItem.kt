@@ -21,7 +21,7 @@ import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.level.Level
 import java.util.*
 
-class BagOfHoldingItem(properties: Properties) : Item(properties) {
+class BagOfHoldingItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResult {
 		val usedStack = player.getItemInHand(usedHand)
@@ -56,7 +56,7 @@ class BagOfHoldingItem(properties: Properties) : Item(properties) {
 		}
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,

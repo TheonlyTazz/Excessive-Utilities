@@ -48,6 +48,8 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent
 import net.neoforged.neoforge.event.AnvilUpdateEvent
 import net.neoforged.neoforge.event.RegisterCommandsEvent
+import net.neoforged.neoforge.event.RegisterTooltipAppendersEvent
+import net.neoforged.neoforge.common.tooltip.TooltipLocation
 import net.neoforged.neoforge.event.VanillaGameEvent
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent
@@ -69,6 +71,16 @@ import kotlin.jvm.optionals.getOrNull
 	modid = ExcessiveUtilities.MOD_ID
 )
 object CommonEvents {
+
+	@SubscribeEvent
+	fun registerTooltipAppenders(event: RegisterTooltipAppendersEvent) {
+		event.registerAppender(TooltipLocation.POST_CUSTOM) { stack, context, display, _, flag, builder ->
+			val item = stack.item
+			if (item is TooltipItem) {
+				item.appendTooltip(stack, context, display, builder, flag)
+			}
+		}
+	}
 
 	@SubscribeEvent
 	fun onConfigLoading(event: ModConfigEvent.Loading) {

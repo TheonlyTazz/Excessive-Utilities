@@ -12,7 +12,7 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipDisplay
 import java.awt.Color
 
-class SunCrystalItem(properties: Properties) : Item(properties) {
+class SunCrystalItem(properties: Properties) : Item(properties), TooltipItem {
 
 	override fun onEntityItemUpdate(stack: ItemStack, entity: ItemEntity): Boolean {
 		val level = entity.level()
@@ -46,7 +46,7 @@ class SunCrystalItem(properties: Properties) : Item(properties) {
 		return (charge / MAX_CHARGE.toFloat() * 13).toInt()
 	}
 
-	override fun appendHoverText(
+	override fun appendTooltip(
 		stack: ItemStack,
 		context: TooltipContext,
 		display: TooltipDisplay,
