@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
 class ModBiomeTagsProvider(
 	output: PackOutput,
 	provider: CompletableFuture<HolderLookup.Provider>
-) : BiomeTagsProvider(output, provider) {
+) : BiomeTagsProvider(output, provider, ExcessiveUtilities.MOD_ID) {
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		tag(BIOME_MARKER_BLACKLIST)

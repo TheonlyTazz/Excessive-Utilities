@@ -14,6 +14,9 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
 import net.minecraft.world.entity.ai.attributes.Attributes
 import net.minecraft.world.item.Item.Properties
+import net.minecraft.util.Unit
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.component.ItemAttributeModifiers
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent
 import java.util.*
 
@@ -23,11 +26,11 @@ object SoulRendHandler {
 		Properties()
 			.stacksTo(1)
 			
-			.component(DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE)
+			.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
 			.attributes(
-				net.minecraft.world.item.component.ItemAttributeModifiers.builder()
-                    .add(Attributes.ATTACK_DAMAGE, AttributeModifier(net.minecraft.world.item.Item.BASE_ATTACK_DAMAGE_ID, (OpiniumTier.attackDamageBonus() - 1f).toDouble(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                    .add(Attributes.ATTACK_SPEED, AttributeModifier(net.minecraft.world.item.Item.BASE_ATTACK_SPEED_ID, -2.4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				ItemAttributeModifiers.builder()
+                    .add(Attributes.ATTACK_DAMAGE, AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, (OpiniumTier.attackDamageBonus() - 1f).toDouble(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                    .add(Attributes.ATTACK_SPEED, AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                     .build()
 					.withModifierAdded(
 						ModAttributes.SOUL_RENDING,

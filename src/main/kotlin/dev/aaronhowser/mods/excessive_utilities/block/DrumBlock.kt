@@ -9,16 +9,16 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
-import net.neoforged.neoforge.fluids.FluidUtil
+import net.minecraft.world.level.block.state.BlockBehaviour
+import net.neoforged.neoforge.transfer.fluid.FluidUtil
 
-class DrumBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
+class DrumBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return DrumBlockEntity(pos, state)
@@ -33,7 +33,7 @@ class DrumBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour
 		hand: InteractionHand,
 		hitResult: BlockHitResult
 	): InteractionResult {
-		val fluidTransferred = FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.direction)
+		val fluidTransferred = FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.direction, null)
 		return if (fluidTransferred) InteractionResult.SUCCESS else InteractionResult.PASS
 	}
 

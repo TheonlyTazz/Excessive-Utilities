@@ -29,6 +29,11 @@ import net.minecraft.client.particle.ParticleProvider
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.DyeColor
+import net.minecraft.client.color.block.BlockTintSource
+import net.minecraft.client.color.block.BlockTintSources
+import net.minecraft.client.renderer.block.BlockAndTintGetter
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -37,7 +42,7 @@ import net.neoforged.neoforge.client.event.*
 import net.neoforged.neoforge.client.event.sound.PlaySoundEvent
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry
+import top.theillusivec4.curios.api.client.ICurioRenderer
 
 @EventBusSubscriber(
 	modid = ExcessiveUtilities.MOD_ID,
@@ -62,15 +67,15 @@ object ClientEvents {
 
     @SubscribeEvent
     fun registerBlockColors(event: RegisterColorHandlersEvent.BlockTintSources) {
-        val fluidTint = object : net.minecraft.client.color.block.BlockTintSource {
-            override fun color(state: net.minecraft.world.level.block.state.BlockState): Int = -1
-            override fun colorInWorld(state: net.minecraft.world.level.block.state.BlockState, level: net.minecraft.client.renderer.block.BlockAndTintGetter, pos: net.minecraft.core.BlockPos): Int = DrumBlockEntity.getBlockColor(state, level, pos, 1)
+        val fluidTint = object : BlockTintSource {
+            override fun color(state: BlockState): Int = -1
+            override fun colorInWorld(state: BlockState, level: BlockAndTintGetter, pos: BlockPos): Int = DrumBlockEntity.getBlockColor(state, level, pos, 1)
         }
-        event.register(listOf(net.minecraft.client.color.block.BlockTintSources.constant(-1), fluidTint),
+        event.register(listOf(BlockTintSources.constant(-1), fluidTint),
             ModBlocks.STONE_DRUM.get(), ModBlocks.IRON_DRUM.get(), ModBlocks.REINFORCED_LARGE_DRUM.get(),
             ModBlocks.DEMONICALLY_GARGANTUAN_DRUM.get(), ModBlocks.BEDROCKIUM_DRUM.get(), ModBlocks.CREATIVE_DRUM.get())
         for (color in DyeColor.entries) {
-            event.register(listOf(net.minecraft.client.color.block.BlockTintSources.constant(color.textureDiffuseColor)), ModBlocks.getLapisCaelestis(color).get())
+            event.register(listOf(BlockTintSources.constant(color.textureDiffuseColor)), ModBlocks.getLapisCaelestis(color).get())
         }
     }
 
@@ -168,7 +173,7 @@ object ClientEvents {
 
 	@SubscribeEvent
 	fun addEntityRenderLayers(event: EntityRenderersEvent.AddLayers) {
-		CuriosRendererRegistry.register(ModItems.ANGEL_RING.get(), ::AngelWingRenderer)
+		ICurioRenderer.register(ModItems.ANGEL_RING.get(), ::AngelWingRenderer)
 	}
 
 }

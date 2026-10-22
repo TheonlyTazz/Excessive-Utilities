@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.server.level.ServerLevel
 
 abstract class GpDrainBlock(
 	properties: Properties,
@@ -45,7 +46,7 @@ abstract class GpDrainBlock(
 		)
 	}
 
-	override fun affectNeighborsAfterRemoval(state: BlockState, level: net.minecraft.server.level.ServerLevel, pos: BlockPos, movedByPiston: Boolean) {
+	override fun affectNeighborsAfterRemoval(state: BlockState, level: ServerLevel, pos: BlockPos, movedByPiston: Boolean) {
 		if (true) {
 			val be = level.getBlockEntity(pos)
 			if (be is ContainerContainer) {

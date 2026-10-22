@@ -183,14 +183,14 @@ class EnderPorcupineScreen(
 
 	}
 
-	override fun extractLabels(guiGraphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
-		super.extractLabels(guiGraphics, mouseX, mouseY)
+	override fun extractLabels(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+		super.extractLabels(graphics, mouseX, mouseY)
 
 		val currentOffsetX = menu.getCurrentOffsetX()
 		val currentOffsetY = menu.getCurrentOffsetY()
 		val currentOffsetZ = menu.getCurrentOffsetZ()
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			ModMenuLang.CURRENT_OFFSET.toComponent(currentOffsetX, currentOffsetY, currentOffsetZ),
 			8,
@@ -207,7 +207,7 @@ class EnderPorcupineScreen(
 		val yStringX = 32
 		val zStringX = 48
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			ModMenuLang.MIN_OFFSET.toComponent(minX, minY, minZ),
 			8,
@@ -218,7 +218,7 @@ class EnderPorcupineScreen(
 
 		val minStringY = 72
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			minX,
 			xStringX - (font.width(minX) / 2),
@@ -227,7 +227,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			minY,
 			yStringX - (font.width(minY) / 2),
@@ -236,7 +236,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			minZ,
 			zStringX - (font.width(minZ) / 2),
@@ -249,7 +249,7 @@ class EnderPorcupineScreen(
 		val maxY = menu.getMaxY().toString()
 		val maxZ = menu.getMaxZ().toString()
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			ModMenuLang.MAX_OFFSET.toComponent(maxX, maxY, maxZ),
 			8,
@@ -260,7 +260,7 @@ class EnderPorcupineScreen(
 
 		val maxStringY = 144
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			maxX,
 			xStringX - (font.width(maxX) / 2),
@@ -269,7 +269,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			maxY,
 			yStringX - (font.width(maxY) / 2),
@@ -278,7 +278,7 @@ class EnderPorcupineScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			maxZ,
 			zStringX - (font.width(maxZ) / 2),

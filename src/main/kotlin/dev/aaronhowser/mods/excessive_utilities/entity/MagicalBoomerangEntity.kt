@@ -20,12 +20,14 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.projectile.ThrowableProjectile
 import net.minecraft.world.item.ItemStack
+import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.EntityHitResult
 import net.minecraft.world.phys.Vec3
+import net.minecraft.server.level.ServerLevel
 
 class MagicalBoomerangEntity(
 	entityType: EntityType<MagicalBoomerangEntity>,
@@ -38,7 +40,7 @@ class MagicalBoomerangEntity(
 		boomerangStack: ItemStack
 	) : this(ModEntityTypes.MAGICAL_BOOMERANG.get(), level) {
 		setOwner(entity)
-		enchantments = boomerangStack.enchantments
+		enchantments = boomerangStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
 		setPos(entity.x, entity.eyeY - 0.1, entity.z)
 	}
 
@@ -121,7 +123,9 @@ class MagicalBoomerangEntity(
 	}
 
 	private fun hurtEntity(target: LivingEntity) {
-		target.hurt(
+		val serverLevel = level() as? ServerLevel ?: return
+		target.hurtServer(
+			serverLevel,
 			damageSources().thrown(this, getOwner()),
 			getDamage()
 		)

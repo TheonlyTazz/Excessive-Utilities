@@ -64,6 +64,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.neoforged.neoforge.event.tick.ServerTickEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent
+import net.neoforged.neoforge.event.OnDatapackSyncEvent
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent
 import kotlin.jvm.optionals.getOrNull
 
 
@@ -437,7 +439,7 @@ object CommonEvents {
 	}
 
 	@SubscribeEvent
-	fun onBlockBreak(event: net.neoforged.neoforge.event.level.block.BreakBlockEvent) {
+	fun onBlockBreak(event: BreakBlockEvent) {
 		DestructionWandItem.handleBreakBlockEvent(event)
 	}
 
@@ -490,7 +492,7 @@ object CommonEvents {
 	}
 
     @SubscribeEvent
-    fun syncRecipes(event: net.neoforged.neoforge.event.OnDatapackSyncEvent) {
+    fun syncRecipes(event: OnDatapackSyncEvent) {
         event.sendRecipes(ModRecipeTypes.RECIPE_TYPES_REGISTRY.entries.map { it.get() })
     }
 

@@ -29,7 +29,8 @@ import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
-import net.neoforged.neoforge.items.IItemHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.item.ItemResource
 
 object DivisionSigilInversion {
 
@@ -259,7 +260,7 @@ object DivisionSigilInversion {
 	}
 
 	private fun countMatchingStacks(
-		itemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>,
+		itemHandler: ResourceHandler<ItemResource>,
 		itemTag: TagKey<Item>
 	): Int {
 		var count = 0
@@ -273,7 +274,7 @@ object DivisionSigilInversion {
 	}
 
 	private fun countUniqueMatchingItems(
-		itemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>,
+		itemHandler: ResourceHandler<ItemResource>,
 		itemTag: TagKey<Item>
 	): Int {
 		val uniqueItems = mutableSetOf<Item>()

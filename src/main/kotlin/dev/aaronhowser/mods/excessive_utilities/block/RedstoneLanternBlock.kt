@@ -20,9 +20,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.block.state.BlockBehaviour
 
 //TODO: The model for the numbers etc
-class RedstoneLanternBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties) {
+class RedstoneLanternBlock(properties: BlockBehaviour.Properties) : Block(properties) {
 
 	init {
 		registerDefaultState(

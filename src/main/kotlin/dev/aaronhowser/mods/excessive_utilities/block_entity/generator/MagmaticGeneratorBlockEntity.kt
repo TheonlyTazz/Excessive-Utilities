@@ -21,7 +21,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.capability.IFluidHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.fluid.FluidResource
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.ConfigurableFluidTank
 
 class MagmaticGeneratorBlockEntity(
@@ -89,7 +90,7 @@ class MagmaticGeneratorBlockEntity(
 
 	companion object {
 		const val TANK_NBT = "Tank"
-		fun getFluidCapability(blockEntity: MagmaticGeneratorBlockEntity, direction: Direction?): net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource> {
+		fun getFluidCapability(blockEntity: MagmaticGeneratorBlockEntity, direction: Direction?): ResourceHandler<FluidResource> {
 			return blockEntity.tank
 		}
 	}

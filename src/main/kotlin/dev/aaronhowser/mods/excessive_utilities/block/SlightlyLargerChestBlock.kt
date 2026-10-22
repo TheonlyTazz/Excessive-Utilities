@@ -19,8 +19,9 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class SlightlyLargerChestBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
+class SlightlyLargerChestBlock(properties: BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
 
 	init {
 		registerDefaultState(

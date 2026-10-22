@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.redstone.Orientation
 
 class RedstoneClockBlock(properties: Properties) : Block(properties) {
 
@@ -47,7 +48,7 @@ class RedstoneClockBlock(properties: Properties) : Block(properties) {
 		return if (enabled) 15 else 0
 	}
 
-	override fun neighborChanged(state: BlockState, level: Level, pos: BlockPos, neighborBlock: Block, orientation: net.minecraft.world.level.redstone.Orientation?, movedByPiston: Boolean) {
+	override fun neighborChanged(state: BlockState, level: Level, pos: BlockPos, neighborBlock: Block, orientation: Orientation?, movedByPiston: Boolean) {
 		val wasPowered = state.getValue(POWERED)
 		val shouldBePowered = level.hasNeighborSignal(pos)
 

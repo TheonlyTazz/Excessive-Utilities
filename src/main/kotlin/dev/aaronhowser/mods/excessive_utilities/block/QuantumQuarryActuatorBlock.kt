@@ -21,8 +21,11 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class QuantumQuarryActuatorBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
+class QuantumQuarryActuatorBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	init {
 		registerDefaultState(
@@ -74,13 +77,13 @@ class QuantumQuarryActuatorBlock(properties: net.minecraft.world.level.block.sta
 
 	override fun updateShape(
 		state: BlockState,
-		level: net.minecraft.world.level.LevelReader,
-		 ticks: net.minecraft.world.level.ScheduledTickAccess,
+		level: LevelReader,
+		 ticks: ScheduledTickAccess,
 		pos: BlockPos,
 		 directionToNeighbour: Direction,
 		 neighbourPos: BlockPos,
 		 neighbourState: BlockState,
-		 random: net.minecraft.util.RandomSource
+		 random: RandomSource
 	): BlockState {
 		return if (canSurvive(state, level, pos)) {
 			state

@@ -37,7 +37,8 @@ class AngelWingRenderer : ICurioRenderer {
 		val wingType = slotContext.entity.getData(ModAttachmentTypes.WINGS)
 		if (wingType == AngelRingItem.Type.INVISIBLE) return
 
-		val parentModel = renderLayerParent.model as? HumanoidModel<in T> ?: return
+		val parentModel = renderLayerParent.model
+		if (parentModel !is HumanoidModel<*>) return
 
 		val texture = wingType.textureLocation
 		val flying = !slotContext.entity.onGround()

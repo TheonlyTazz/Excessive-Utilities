@@ -66,8 +66,8 @@ class EnderFrequencyScreen(
 	}
 
 	override fun keyPressed(event: KeyEvent): Boolean {
-		val inventoryKey = minecraft?.options?.keyInventory
-		if (nameBox.isFocused && inventoryKey?.matches(event).isTrue()) {
+		val inventoryKey = minecraft.options.keyInventory
+		if (nameBox.isFocused && inventoryKey.matches(event)) {
 			return true
 		}
 

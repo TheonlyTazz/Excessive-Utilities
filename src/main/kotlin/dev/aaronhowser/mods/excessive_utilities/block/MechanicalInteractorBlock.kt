@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.level.redstone.Orientation
 
 class MechanicalInteractorBlock(
 	private val blockEntityFactory: (BlockPos, BlockState) -> MechanicalInteractorBlockEntity,
@@ -78,7 +79,7 @@ class MechanicalInteractorBlock(
 		level: Level,
 		pos: BlockPos,
 		neighborBlock: Block,
-		orientation: net.minecraft.world.level.redstone.Orientation?,
+		orientation: Orientation?,
 		movedByPiston: Boolean
 	) {
 		super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston)

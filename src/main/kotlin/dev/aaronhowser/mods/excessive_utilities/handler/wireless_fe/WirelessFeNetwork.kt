@@ -1,7 +1,8 @@
 package dev.aaronhowser.mods.excessive_utilities.handler.wireless_fe
 
 import dev.aaronhowser.mods.excessive_utilities.block_entity.WirelessFeBatteryBlockEntity
-import net.neoforged.neoforge.energy.IEnergyStorage
+import net.neoforged.neoforge.transfer.energy.EnergyHandler
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 import java.util.*
 
 class WirelessFeNetwork(
@@ -13,16 +14,16 @@ class WirelessFeNetwork(
 	fun addBattery(battery: WirelessFeBatteryBlockEntity) = batteries.add(battery)
 	fun removeBattery(battery: WirelessFeBatteryBlockEntity) = batteries.remove(battery)
 
-    val energyStorage: net.neoforged.neoforge.transfer.energy.EnergyHandler = NetworkEnergyStorage()
+    val energyStorage: EnergyHandler = NetworkEnergyStorage()
 
-    private inner class NetworkEnergyStorage : net.neoforged.neoforge.transfer.energy.EnergyHandler {
+    private inner class NetworkEnergyStorage : EnergyHandler {
         override fun getAmountAsLong(): Long = batteries.sumOf { it.energyStorage.amountAsLong }
         override fun getCapacityAsLong(): Long = batteries.sumOf { it.energyStorage.capacityAsLong }
-        override fun insert(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+        override fun insert(amount: Int, transaction: TransactionContext): Int {
             require(amount >= 0)
             return 0
         }
-        override fun extract(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+        override fun extract(amount: Int, transaction: TransactionContext): Int {
             require(amount >= 0)
             var extracted = 0
             for (battery in batteries) {

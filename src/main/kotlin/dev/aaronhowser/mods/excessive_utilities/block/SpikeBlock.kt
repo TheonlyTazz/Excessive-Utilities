@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.entity.InsideBlockEffectApplier
 import net.neoforged.neoforge.common.util.FakePlayerFactory
 import java.util.*
 
@@ -55,7 +56,7 @@ class SpikeBlock(
 		}
 	}
 
-	override fun entityInside(state: BlockState, level: Level, pos: BlockPos, entity: Entity, effectApplier: net.minecraft.world.entity.InsideBlockEffectApplier, isPrecise: Boolean) {
+	override fun entityInside(state: BlockState, level: Level, pos: BlockPos, entity: Entity, effectApplier: InsideBlockEffectApplier, isPrecise: Boolean) {
 		if (entity !is LivingEntity || level !is ServerLevel || level.gameTime % 10 != 0L) return
 
 		if (!canKill && entity.health <= damagePerHit) {
@@ -68,9 +69,9 @@ class SpikeBlock(
 				GameProfile(UUID.fromString("21b80106-00e9-4bf0-b903-3a1caf2da923"), "EU_SpikeBlock_Killer")
 			)
 
-			entity.hurt(level.damageSources().playerAttack(fakePlayer), damagePerHit)
+			entity.hurtServer(level, level.damageSources().playerAttack(fakePlayer), damagePerHit)
 		} else {
-			entity.hurt(level.damageSources().cactus(), damagePerHit)
+			entity.hurtServer(level, level.damageSources().cactus(), damagePerHit)
 		}
 	}
 

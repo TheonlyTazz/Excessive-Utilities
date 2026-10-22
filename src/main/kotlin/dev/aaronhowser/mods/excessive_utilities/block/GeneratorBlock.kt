@@ -24,7 +24,6 @@ import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.BaseEntityBlock
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityTicker
@@ -35,7 +34,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
-import net.neoforged.neoforge.fluids.FluidUtil
+import net.neoforged.neoforge.transfer.fluid.FluidUtil
 
 class GeneratorBlock(
 	val beTypeGetter: () -> BlockEntityType<out GeneratorBlockEntity>,
@@ -146,7 +145,7 @@ class GeneratorBlock(
 		hand: InteractionHand,
 		hitResult: BlockHitResult
 	): InteractionResult {
-		val fluidTransferred = FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.direction)
+		val fluidTransferred = FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.direction, null)
 
 		return if (fluidTransferred) {
 			InteractionResult.SUCCESS

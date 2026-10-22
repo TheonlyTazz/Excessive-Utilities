@@ -12,8 +12,9 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class ResturbedMobSpawnerBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
+class ResturbedMobSpawnerBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return ResturbedMobSpawnerBlockEntity(pos, state)

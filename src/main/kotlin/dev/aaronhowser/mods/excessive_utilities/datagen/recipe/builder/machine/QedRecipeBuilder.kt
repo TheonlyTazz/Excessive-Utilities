@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapedRecipePattern
 import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.core.registries.BuiltInRegistries
 
 class QedRecipeBuilder(
 	val result: ItemStack,
@@ -46,7 +47,7 @@ class QedRecipeBuilder(
 		error("Unsupported")
 	}
 
-	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(result.item))
+	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(result.item))
 
 	override fun save(recipeOutput: RecipeOutput, recipeKey: ResourceKey<Recipe<*>>) {
 		val originalId = recipeKey.identifier()

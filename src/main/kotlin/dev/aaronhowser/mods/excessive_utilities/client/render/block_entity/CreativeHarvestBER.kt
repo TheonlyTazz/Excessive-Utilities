@@ -13,13 +13,15 @@ import net.minecraft.client.renderer.item.ItemModelResolver
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.core.Direction
 import net.minecraft.world.item.ItemDisplayContext
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer
+import net.minecraft.world.phys.Vec3
 
 class CreativeHarvestBER(context: BlockEntityRendererProvider.Context) : BlockEntityRenderer<CreativeHarvestBlockEntity, CreativeHarvestRenderState> {
     private val itemResolver: ItemModelResolver = context.itemModelResolver
 
     override fun createRenderState() = CreativeHarvestRenderState()
 
-    override fun extractRenderState(blockEntity: CreativeHarvestBlockEntity, state: CreativeHarvestRenderState, partialTick: Float, cameraPosition: net.minecraft.world.phys.Vec3, crumblingOverlay: net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay?) {
+    override fun extractRenderState(blockEntity: CreativeHarvestBlockEntity, state: CreativeHarvestRenderState, partialTick: Float, cameraPosition: Vec3, crumblingOverlay: ModelFeatureRenderer.CrumblingOverlay?) {
         BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay)
         itemResolver.updateForTopItem(state.item, blockEntity.mimicStack.copy(), ItemDisplayContext.GUI, blockEntity.level, null, 0)
         state.directions.clear()

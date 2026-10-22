@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.ItemStack
+import net.minecraft.util.ARGB
 
 class ItemColorSource(val index: Int) : ItemTintSource {
     override fun calculate(stack: ItemStack, level: ClientLevel?, owner: LivingEntity?): Int {
@@ -19,11 +20,11 @@ class ItemColorSource(val index: Int) : ItemTintSource {
             is HeatingCoilItem -> HeatingCoilItem.getItemColor(stack, index)
             is SunCrystalItem -> SunCrystalItem.getItemColor(stack, index)
             is UnstableIngotItem -> UnstableIngotItem.getColor(stack, index)
-            is PaintbrushItem -> net.minecraft.util.ARGB.opaque(PaintbrushItem.getItemColor(stack, index))
+            is PaintbrushItem -> ARGB.opaque(PaintbrushItem.getItemColor(stack, index))
             is BlockItem -> {
                 if (item.block is DrumBlock) DrumBlockEntity.getItemStackColor(stack, index) else {
                     val color = DyeColor.entries.firstOrNull { ModBlocks.getLapisCaelestis(it).asItem() == item }
-                    net.minecraft.util.ARGB.opaque(requireNotNull(color) { "No item color defined for $item" }.textureDiffuseColor)
+                    ARGB.opaque(requireNotNull(color) { "No item color defined for $item" }.textureDiffuseColor)
                 }
             }
             else -> error("No item color defined for $item")

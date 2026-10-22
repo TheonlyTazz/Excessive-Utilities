@@ -3,6 +3,9 @@ package dev.aaronhowser.mods.excessive_utilities.client.render.bewlr
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.serialization.MapCodec
+import com.mojang.math.Axis
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import dev.aaronhowser.mods.aaron.client.AaronClientUtil
 import dev.aaronhowser.mods.excessive_utilities.config.ClientConfig
 import net.minecraft.client.Minecraft
@@ -22,14 +25,14 @@ class TesseractBEWLR(private val gui: Boolean = false) : SpecialModelRenderer<Vo
     override fun submit(argument: Void?, poseStack: PoseStack, collector: SubmitNodeCollector, lightCoords: Int, overlayCoords: Int, hasFoil: Boolean, outlineColor: Int) {
         val time = (AaronClientUtil.localLevel?.gameTime ?: 0L).toFloat()
         poseStack.pushPose(); poseStack.translate(0.5, 0.5, 0.5); poseStack.scale(0.82f, 0.82f, 0.82f)
-        if (gui) { poseStack.translate(-0.125, -0.125, 0.0); poseStack.scale(0.75f, 0.75f, 0.75f); poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(28f)); poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-36f)) }
+        if (gui) { poseStack.translate(-0.125, -0.125, 0.0); poseStack.scale(0.75f, 0.75f, 0.75f); poseStack.mulPose(Axis.XP.rotationDegrees(28f)); poseStack.mulPose(Axis.YP.rotationDegrees(-36f)) }
         collector.submitCustomGeometry(poseStack, RenderTypes.lines()) { pose, v -> renderCyclingSquares(pose, v, time) }
         poseStack.popPose()
     }
     private fun square(p: PoseStack.Pose, v: VertexConsumer, h: Float, z: Float, c: Int) { line(p,v,-h,-h,z,h,-h,z,c); line(p,v,h,-h,z,h,h,z,c); line(p,v,h,h,z,-h,h,z,c); line(p,v,-h,h,z,-h,-h,z,c) }
     private fun renderCyclingSquares(p: PoseStack.Pose, v: VertexConsumer, time: Float) {
         val inner = ClientConfig.CONFIG.tesseractInnerColor.get(); val outer = ClientConfig.CONFIG.tesseractOuterColor.get()
-        for (i in 0 until 4) { val phase = time * ClientConfig.CONFIG.tesseractSpeed.get() + i * Mth.TWO_PI / 4f; square(p, v, 0.35f, sin(phase.toDouble()).toFloat() * 0.8f, if (i < 2) inner else outer) }
+        for (i in 0 until 4) { val phase = time * ClientConfig.CONFIG.tesseractSpeed.get() + i * Mth.TWO_PI / 4f; square(p, v, 0.35f, sin(phase).toFloat() * 0.8f, if (i < 2) inner else outer) }
     }
     private fun line(p: PoseStack.Pose, v: VertexConsumer, x1: Float, y1: Float, z1: Float, x2: Float, y2: Float, z2: Float, c: Int) {
         val dx = x2 - x1
@@ -43,5 +46,5 @@ class TesseractBEWLR(private val gui: Boolean = false) : SpecialModelRenderer<Vo
         v.addVertex(p, x1, y1, z1).setColor(c).setNormal(p, nx, ny, nz).setLineWidth(1.0f)
         v.addVertex(p, x2, y2, z2).setColor(c).setNormal(p, nx, ny, nz).setLineWidth(1.0f)
     }
-    data class Unbaked(val gui: Boolean = false) : SpecialModelRenderer.Unbaked<Void> { companion object { val CODEC: MapCodec<Unbaked> = com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec { it.group(com.mojang.serialization.Codec.BOOL.optionalFieldOf("gui", false).forGetter(Unbaked::gui)).apply(it, ::Unbaked) } }; override fun type()=CODEC; override fun bake(context: SpecialModelRenderer.BakingContext)=TesseractBEWLR(gui) }
+    data class Unbaked(val gui: Boolean = false) : SpecialModelRenderer.Unbaked<Void> { companion object { val CODEC: MapCodec<Unbaked> = RecordCodecBuilder.mapCodec { it.group(Codec.BOOL.optionalFieldOf("gui", false).forGetter(Unbaked::gui)).apply(it, ::Unbaked) } }; override fun type()=CODEC; override fun bake(context: SpecialModelRenderer.BakingContext)=TesseractBEWLR(gui) }
 }

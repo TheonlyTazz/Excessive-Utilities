@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStackTemplate
 
 class ShapedUnstableRecipeExtension : ICraftingCategoryExtension<ShapedUnstableRecipe> {
 
@@ -51,7 +52,7 @@ class ShapedUnstableRecipeExtension : ICraftingCategoryExtension<ShapedUnstableR
                     ShapedUnstableRecipe.Stability.EITHER -> listOf(stableIngot(), unstableIngot())
                         }
                     }
-                    SlotDisplay.Composite(variants.map { SlotDisplay.ItemStackSlotDisplay(net.minecraft.world.item.ItemStackTemplate.fromNonEmptyStack(it)) })
+                    SlotDisplay.Composite(variants.map { SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(it)) })
                 }
             }
         }

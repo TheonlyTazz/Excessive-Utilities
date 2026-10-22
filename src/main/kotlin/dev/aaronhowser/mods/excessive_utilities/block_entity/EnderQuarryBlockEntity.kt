@@ -1,6 +1,7 @@
 package dev.aaronhowser.mods.excessive_utilities.block_entity
 
 import com.mojang.authlib.GameProfile
+import com.mojang.serialization.Codec
 import dev.aaronhowser.mods.aaron.block_entity.SyncingBlockEntity
 import dev.aaronhowser.mods.aaron.container.ContainerContainer
 import dev.aaronhowser.mods.aaron.container.ExtractOnlyResourceHandler
@@ -38,6 +39,7 @@ import net.minecraft.world.level.block.FenceBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams
+import net.minecraft.core.UUIDUtil
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.util.FakePlayer
 import net.neoforged.neoforge.common.util.FakePlayerFactory
@@ -639,8 +641,8 @@ class EnderQuarryBlockEntity(
 			tag.putString(BOUNDARY_TYPE_NBT, bType.id)
 		}
 
-		tag.store(UPGRADE_POSITIONS_NBT, com.mojang.serialization.Codec.LONG.listOf(), upgradePositions.map(BlockPos::asLong))
-		tag.store(FAKE_PLAYER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC, fakePlayerUuid)
+		tag.store(UPGRADE_POSITIONS_NBT, Codec.LONG.listOf(), upgradePositions.map(BlockPos::asLong))
+		tag.store(FAKE_PLAYER_UUID_NBT, UUIDUtil.CODEC, fakePlayerUuid)
 	}
 
 	override fun loadAdditional(tag: ValueInput) {
@@ -662,13 +664,13 @@ class EnderQuarryBlockEntity(
 			boundaryType = BoundaryType.entries.firstOrNull { it.id == bTypeString }
 		}
 
-		val upgradePositionsTag = tag.read(UPGRADE_POSITIONS_NBT, com.mojang.serialization.Codec.LONG.listOf()).orElseThrow()
+		val upgradePositionsTag = tag.read(UPGRADE_POSITIONS_NBT, Codec.LONG.listOf()).orElseThrow()
 		upgradePositions.clear()
 		for (posLong in upgradePositionsTag) {
 			upgradePositions.add(BlockPos.of(posLong))
 		}
 
-		tag.read(FAKE_PLAYER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).ifPresent { fakePlayerUuid = it }
+		tag.read(FAKE_PLAYER_UUID_NBT, UUIDUtil.CODEC).ifPresent { fakePlayerUuid = it }
 	}
 
 	companion object {

@@ -9,8 +9,9 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class CreativeMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
+class CreativeMillBlock(properties: BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.CREATIVE_MILL.get()

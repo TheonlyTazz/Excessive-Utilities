@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.entity.InsideBlockEffectApplier
 import kotlin.math.abs
 
 class ConveyorBeltBlock(properties: Properties) : Block(properties) {
@@ -42,7 +43,7 @@ class ConveyorBeltBlock(properties: Properties) : Block(properties) {
 		return SHAPE
 	}
 
-	override fun entityInside(state: BlockState, level: Level, pos: BlockPos, entity: Entity, effectApplier: net.minecraft.world.entity.InsideBlockEffectApplier, isPrecise: Boolean) {
+	override fun entityInside(state: BlockState, level: Level, pos: BlockPos, entity: Entity, effectApplier: InsideBlockEffectApplier, isPrecise: Boolean) {
 		if (entity.isCrouching) return
 
 		moveEntityUp(state, pos, entity)

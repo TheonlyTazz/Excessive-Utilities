@@ -51,12 +51,7 @@ class FluidBar(
 	) {
         val model = Minecraft.getInstance().modelManager.fluidStateModelSet.get(fluid.fluid.defaultFluidState())
         val sprite = model.stillMaterial().sprite()
-        val tintSource = model.tintSource()
-        val color = when (tintSource) {
-            null -> -1
-            is net.neoforged.neoforge.client.fluid.FluidTintSource -> tintSource.colorAsStack(fluid)
-            else -> tintSource.color(fluid.fluid.defaultFluidState().createLegacyBlock())
-        }
+        val color = model.fluidTintSource()?.colorAsStack(fluid) ?: -1
 
 		guiGraphics.enableScissor(x, y, x + width, y + height)
 		val tileSize = 16

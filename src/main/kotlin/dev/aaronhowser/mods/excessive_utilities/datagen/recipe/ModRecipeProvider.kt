@@ -48,15 +48,17 @@ import net.minecraft.world.item.enchantment.Enchantments
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.material.Fluids
+import net.minecraft.data.recipes.RecipeProvider
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import net.neoforged.neoforge.registries.DeferredBlock
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import java.util.concurrent.CompletableFuture
 
-class ModRecipeProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : net.minecraft.data.recipes.RecipeProvider.Runner(output, lookupProvider) {
+class ModRecipeProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : RecipeProvider.Runner(output, lookupProvider) {
     override fun getName(): String = "Excessive Utilities recipes"
-    override fun createRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput): net.minecraft.data.recipes.RecipeProvider = Content(registries, output)
+    override fun createRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput): RecipeProvider = Content(registries, output)
 }
 
 private class Content(registries: HolderLookup.Provider, output: RecipeOutput) : AaronRecipeProvider(registries, output) {
@@ -742,7 +744,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				'I' to Tags.Items.INGOTS_IRON.asIngredient(),
 				'L' to ModItems.GOLDEN_LASSO.asIngredient(
 					ModDataComponents.ENTITY_TYPE.get(),
-					EntityType.CHICKEN.builtInRegistryHolder()
+					BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.CHICKEN)
 				),
 				'R' to ModItems.RESONATING_REDSTONE_CRYSTAL.asIngredient()
 			)
@@ -756,7 +758,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				'D' to Tags.Items.GEMS_DIAMOND.asIngredient(),
 				'L' to ModItems.GOLDEN_LASSO.asIngredient(
 					ModDataComponents.ENTITY_TYPE.get(),
-					EntityType.SQUID.builtInRegistryHolder()
+					BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.SQUID)
 				),
 				'C' to ModItems.CHICKEN_WING_RING.asIngredient(),
 				'E' to Items.ENDER_PEARL.asIngredient()
@@ -2059,19 +2061,9 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			bigger: ItemLike,
 			smaller: ItemLike
 		) {
-			val biggerName = bigger
-				.asItem()
-				.builtInRegistryHolder()
-				.key()
-				.identifier()
-				.path
+			val biggerName = BuiltInRegistries.ITEM.getKey(bigger.asItem()).path
 
-			val smallerName = smaller
-				.asItem()
-				.builtInRegistryHolder()
-				.key()
-				.identifier()
-				.path
+			val smallerName = BuiltInRegistries.ITEM.getKey(smaller.asItem()).path
 
 			shapedRecipe(
 				bigger,
@@ -2334,7 +2326,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 			MagmaticFuelRecipeBuilder(ingredient, fePerTick, duration).save(recipeOutput, modLoc(name))
 		}
 
-		magmatic("lavas", SizedFluidIngredient(net.neoforged.neoforge.fluids.crafting.FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA)), 1), 100, 1) // 100,000 FE per bucket
+		magmatic("lavas", SizedFluidIngredient(FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA)), 1), 100, 1) // 100,000 FE per bucket
 
 		fun itemFluid(name: String, type: ItemAndFluidFuelRecipe.GeneratorType, itemIngredient: Ingredient, fluidIngredient: SizedFluidIngredient, fePerTick: Int, duration: Int) {
 			ItemAndFluidFuelRecipeBuilder(
@@ -2352,7 +2344,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 		slimy(
 			"slime_balls_and_milk",
 			Tags.Items.SLIME_BALLS.asIngredient(),
-			SizedFluidIngredient(net.neoforged.neoforge.fluids.crafting.FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.MILK)), 250),
+			SizedFluidIngredient(FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.MILK)), 250),
 			10,
 			5 * 20,
 		)
@@ -2360,7 +2352,7 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 		heatedRedstone(
 			"redstone_and_lava",
 			Tags.Items.DUSTS_REDSTONE.asIngredient(),
-			SizedFluidIngredient(net.neoforged.neoforge.fluids.crafting.FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA)), 250),
+			SizedFluidIngredient(FluidIngredient.of(registries.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA)), 250),
 			3200, // 20,000 FE per cycle
 			125, // 6.25 seconds
 		)
@@ -2647,13 +2639,13 @@ private class Content(registries: HolderLookup.Provider, output: RecipeOutput) :
 				.define(
 					'B', ModItems.GOLDEN_LASSO.asIngredient(
 						ModDataComponents.ENTITY_TYPE.get(),
-						EntityType.BAT.builtInRegistryHolder()
+						BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.BAT)
 					)
 				)
 				.define(
 					'H', ModItems.CURSED_LASSO.asIngredient(
 						ModDataComponents.ENTITY_TYPE.get(),
-						EntityType.GHAST.builtInRegistryHolder()
+						BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.GHAST)
 					)
 				)
 				.define('U', ModItems.UNSTABLE_INGOT.asIngredient())

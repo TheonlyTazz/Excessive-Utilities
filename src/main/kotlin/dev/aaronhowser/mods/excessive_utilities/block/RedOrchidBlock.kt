@@ -8,9 +8,10 @@ import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.CropBlock
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.common.Tags
 
-class RedOrchidBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : CropBlock(properties) {
+class RedOrchidBlock(properties: BlockBehaviour.Properties) : CropBlock(properties) {
 
 	override fun getBaseSeedId(): ItemLike = ModItems.RED_ORCHID.get()
 

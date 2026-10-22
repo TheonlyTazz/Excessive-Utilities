@@ -58,8 +58,8 @@ class ResturbedMobSpawnerBlockEntity(
 		spawner.load(level, blockPos, tag.childOrEmpty(SPAWNER_NBT))
 	}
 
-	override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
-		val tag = saveCustomOnly(registries)
+	override fun getUpdateTag(pRegistries: HolderLookup.Provider): CompoundTag {
+		val tag = saveCustomOnly(pRegistries)
 		tag.remove("SpawnPotentials")
 		return tag
 	}

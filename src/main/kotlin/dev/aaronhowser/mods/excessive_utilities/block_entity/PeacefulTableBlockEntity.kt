@@ -38,6 +38,7 @@ import net.neoforged.neoforge.common.extensions.IOwnedSpawner
 import net.neoforged.neoforge.common.util.FakePlayer
 import net.neoforged.neoforge.event.EventHooks
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil
+import net.neoforged.neoforge.transfer.item.ItemResource
 import java.lang.ref.WeakReference
 import java.util.*
 import net.minecraft.core.UUIDUtil
@@ -118,7 +119,7 @@ class PeacefulTableBlockEntity(
 			for (inv in adjacentInventories) {
 				if (copy.isEmpty) break
 
-				val accepted = ResourceHandlerUtil.insertStacking(inv, net.neoforged.neoforge.transfer.item.ItemResource.of(copy), copy.count, null)
+				val accepted = ResourceHandlerUtil.insertStacking(inv, ItemResource.of(copy), copy.count, null)
 				copy = copy.copyWithCount(copy.count - accepted)
 			}
 

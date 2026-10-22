@@ -11,6 +11,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.*
 import net.minecraft.world.level.Level
+import net.minecraft.core.HolderLookup
 
 class ResonatorRecipe(
 	val ingredient: Ingredient,
@@ -18,7 +19,7 @@ class ResonatorRecipe(
 	val gpCost: Double
 ) : dev.aaronhowser.mods.excessive_utilities.recipe.base.MachineRecipe<SingleRecipeInput> {
     override fun assemble(input: SingleRecipeInput): ItemStack = result.copy()
-    fun getResultItem(registries: net.minecraft.core.HolderLookup.Provider): ItemStack = result.copy()
+    fun getResultItem(registries: HolderLookup.Provider): ItemStack = result.copy()
     override fun getSerializer(): RecipeSerializer<ResonatorRecipe> = ModRecipeSerializers.RESONATOR.get()
     override fun getType(): RecipeType<ResonatorRecipe> = ModRecipeTypes.RESONATOR.get()
 

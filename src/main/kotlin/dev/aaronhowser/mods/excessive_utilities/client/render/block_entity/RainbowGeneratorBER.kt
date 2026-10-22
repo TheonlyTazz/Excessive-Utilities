@@ -11,13 +11,15 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
 import net.minecraft.client.renderer.rendertype.RenderTypes
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.util.RandomSource
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer
+import net.minecraft.world.phys.Vec3
 import java.awt.Color
 import org.joml.Quaternionf
 import org.joml.Vector3f
 class RainbowGeneratorBER(context: BlockEntityRendererProvider.Context) : BlockEntityRenderer<RainbowGeneratorBlockEntity, RainbowGeneratorBER.State> {
  class State : BlockEntityRenderState() { var time=0f; var width=0f; var length=0f; var active=false }
  override fun createRenderState()=State()
- override fun extractRenderState(be: RainbowGeneratorBlockEntity,s:State,partial:Float,camera:net.minecraft.world.phys.Vec3,overlay:net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay?){ BlockEntityRenderState.extractBase(be,s,overlay); s.active=be.blockState.getValue(GeneratorBlock.LIT); s.width=ClientConfig.CONFIG.rainbowGeneratorRayWidth.get().toFloat(); s.length=ClientConfig.CONFIG.rainbowGeneratorRayLength.get().toFloat(); s.time=((be.level?.gameTime ?: 0L)+partial)*ClientConfig.CONFIG.rainbowGeneratorTimeFactor.get().toFloat() }
+ override fun extractRenderState(be: RainbowGeneratorBlockEntity,s:State,partial:Float,camera:Vec3,overlay:ModelFeatureRenderer.CrumblingOverlay?){ BlockEntityRenderState.extractBase(be,s,overlay); s.active=be.blockState.getValue(GeneratorBlock.LIT); s.width=ClientConfig.CONFIG.rainbowGeneratorRayWidth.get().toFloat(); s.length=ClientConfig.CONFIG.rainbowGeneratorRayLength.get().toFloat(); s.time=((be.level?.gameTime ?: 0L)+partial)*ClientConfig.CONFIG.rainbowGeneratorTimeFactor.get().toFloat() }
  override fun submit(s:State,p:PoseStack,c:SubmitNodeCollector,camera:CameraRenderState){
   if(!s.active||s.width<=0||s.length<=0)return
   val center=Color.HSBtoRGB((s.time%1f),1f,1f)

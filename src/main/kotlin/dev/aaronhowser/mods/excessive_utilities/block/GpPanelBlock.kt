@@ -16,10 +16,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.block.state.BlockBehaviour
 
 class GpPanelBlock(
 	val requiresDay: Boolean,
-	properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties
+	properties: BlockBehaviour.Properties
 ) : GpSourceBlock(properties) {
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {

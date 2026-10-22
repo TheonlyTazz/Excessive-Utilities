@@ -3,6 +3,7 @@ package dev.aaronhowser.mods.excessive_utilities.handler.grid_power
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.Tag
+import net.minecraft.core.UUIDUtil
 import java.util.*
 
 class GridGroupManager(
@@ -146,13 +147,13 @@ class GridGroupManager(
 
 		for (group in groups.values) {
 			val groupTag = CompoundTag()
-			groupTag.store(GROUP_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC, group.groupUuid)
-			groupTag.store(OWNER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC, group.ownerUuid)
+			groupTag.store(GROUP_UUID_NBT, UUIDUtil.CODEC, group.groupUuid)
+			groupTag.store(OWNER_UUID_NBT, UUIDUtil.CODEC, group.ownerUuid)
 
 			val memberList = ListTag()
 			for (memberUuid in group.memberUuids) {
 				val memberTag = CompoundTag()
-				memberTag.store(MEMBER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC, memberUuid)
+				memberTag.store(MEMBER_UUID_NBT, UUIDUtil.CODEC, memberUuid)
 				memberList.add(memberTag)
 			}
 
@@ -168,9 +169,9 @@ class GridGroupManager(
 
 		for (groupIndex in groupList.indices) {
 			val groupTag = groupList.getCompound(groupIndex).orElseThrow()
-			if (!groupTag.read(GROUP_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).isPresent) continue
+			if (!groupTag.read(GROUP_UUID_NBT, UUIDUtil.CODEC).isPresent) continue
 
-			val groupUuid = groupTag.read(GROUP_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()
+			val groupUuid = groupTag.read(GROUP_UUID_NBT, UUIDUtil.CODEC).orElseThrow()
 			if (groups.containsKey(groupUuid)) continue
 
 			val memberUuids = loadMemberUuids(groupTag)
@@ -192,9 +193,9 @@ class GridGroupManager(
 
 		for (memberIndex in memberList.indices) {
 			val memberTag = memberList.getCompound(memberIndex).orElseThrow()
-			if (!memberTag.read(MEMBER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).isPresent) continue
+			if (!memberTag.read(MEMBER_UUID_NBT, UUIDUtil.CODEC).isPresent) continue
 
-			val memberUuid = memberTag.read(MEMBER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()
+			val memberUuid = memberTag.read(MEMBER_UUID_NBT, UUIDUtil.CODEC).orElseThrow()
 			if (groupUuidByPlayer.containsKey(memberUuid)) continue
 			memberUuids.add(memberUuid)
 		}
@@ -203,8 +204,8 @@ class GridGroupManager(
 	}
 
 	private fun loadOwnerUuid(groupTag: CompoundTag, memberUuids: Set<UUID>): UUID {
-		if (groupTag.read(OWNER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).isPresent) {
-			val ownerUuid = groupTag.read(OWNER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()
+		if (groupTag.read(OWNER_UUID_NBT, UUIDUtil.CODEC).isPresent) {
+			val ownerUuid = groupTag.read(OWNER_UUID_NBT, UUIDUtil.CODEC).orElseThrow()
 			if (memberUuids.contains(ownerUuid)) return ownerUuid
 		}
 

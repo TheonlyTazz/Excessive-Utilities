@@ -27,6 +27,11 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.levelgen.Heightmap
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
+import net.minecraft.core.Holder
+import net.minecraft.network.protocol.game.ClientboundSoundPacket
+import net.minecraft.world.entity.EntityReference
+import net.minecraft.world.entity.monster.Ghast
+import net.minecraft.world.entity.monster.Phantom
 import net.neoforged.neoforge.event.EventHooks
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import java.util.*
@@ -100,8 +105,8 @@ class InversionRitualActor(
 
 		for (player in getPlayersInArea()) {
 			(player as ServerPlayer).connection.send(
-                net.minecraft.network.protocol.game.ClientboundSoundPacket(
-                    net.minecraft.core.Holder.direct(SoundEvents.WITHER_SPAWN), SoundSource.PLAYERS,
+                ClientboundSoundPacket(
+                    Holder.direct(SoundEvents.WITHER_SPAWN), SoundSource.PLAYERS,
                     player.x, player.y, player.z, 1f, 1f, player.random.nextLong()
                 )
             )
@@ -136,7 +141,7 @@ class InversionRitualActor(
 
 		val spawnPos = findMobSpawnLocation(
 			player,
-			isFlyingMob = mob is net.minecraft.world.entity.monster.Ghast || mob is net.minecraft.world.entity.monster.Phantom
+			isFlyingMob = mob is Ghast || mob is Phantom
 		) ?: return
 
 		mob.snapTo(
@@ -161,7 +166,7 @@ class InversionRitualActor(
 		CurseHandler.setCursed(mob, value = true)
 
 		if (mob is NeutralMob) {
-			mob.persistentAngerTarget = net.minecraft.world.entity.EntityReference.of(player)
+			mob.persistentAngerTarget = EntityReference.of(player)
 			mob.startPersistentAngerTimer()
 		}
 
@@ -261,8 +266,8 @@ class InversionRitualActor(
 
 		for (player in getPlayersInArea()) {
 			player.status("$monstersKilled/$requiredKills")
-			(player as ServerPlayer).connection.send(net.minecraft.network.protocol.game.ClientboundSoundPacket(
-                net.minecraft.core.Holder.direct(sound), SoundSource.PLAYERS,
+			(player as ServerPlayer).connection.send(ClientboundSoundPacket(
+                Holder.direct(sound), SoundSource.PLAYERS,
                 player.x, player.y, player.z, 1f, pitch, player.random.nextLong()
             ))
 		}

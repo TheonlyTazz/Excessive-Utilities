@@ -32,7 +32,7 @@ object ModDataComponents : AaronDataComponentRegistry() {
 	val AMOUNT_BLOCKS: DeferredHolder<DataComponentType<*>, DataComponentType<Int>> =
 		int("amount_blocks")
 	val ENTITY_DATA: DeferredHolder<DataComponentType<*>, DataComponentType<CustomData>> =
-		register("entity_data", CustomData.CODEC, CustomData.STREAM_CODEC)
+		register("entity_data", CustomData.CODEC, ByteBufCodecs.COMPOUND_TAG.map(CustomData::of, CustomData::copyTag))
 	val ENTITY_TYPE: DeferredHolder<DataComponentType<*>, DataComponentType<Holder<EntityType<*>>>> =
 		registryHolder("entity_type", BuiltInRegistries.ENTITY_TYPE)
 	val ENERGY: DeferredHolder<DataComponentType<*>, DataComponentType<Int>> =

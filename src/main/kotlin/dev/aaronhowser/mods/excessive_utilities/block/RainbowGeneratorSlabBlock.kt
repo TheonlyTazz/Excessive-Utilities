@@ -9,10 +9,11 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.block.state.BlockBehaviour
 
 class RainbowGeneratorSlabBlock(
 	val isTop: Boolean,
-	properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties
+	properties: BlockBehaviour.Properties
 ) : Block(properties) {
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {

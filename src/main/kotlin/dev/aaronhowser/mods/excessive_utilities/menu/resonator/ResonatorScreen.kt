@@ -34,12 +34,12 @@ class ResonatorScreen(
 		addRenderableWidget(progressArrow)
 	}
 
-	override fun extractLabels(guiGraphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
-		super.extractLabels(guiGraphics, mouseX, mouseY)
+	override fun extractLabels(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+		super.extractLabels(graphics, mouseX, mouseY)
 
 		val gpUsage = ClientGridPower.format(menu.getGpUsage())
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			ModMenuLang.GP.toComponent(gpUsage),
 			71,

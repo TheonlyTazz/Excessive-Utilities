@@ -24,6 +24,9 @@ import net.minecraft.world.level.block.CaveVines
 import net.minecraft.world.level.levelgen.structure.BoundingBox
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings
 import net.minecraft.world.level.saveddata.SavedData
+import net.minecraft.nbt.ListTag
+import net.minecraft.util.datafix.DataFixTypes
+import net.minecraft.world.level.saveddata.SavedDataType
 
 class DepthsHandler : SavedData() {
 
@@ -142,7 +145,7 @@ class DepthsHandler : SavedData() {
 	}
 
 	fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
-		val listTag = net.minecraft.nbt.ListTag()
+		val listTag = ListTag()
 
 		for (room in rooms) {
 			val roomTag = CompoundTag()
@@ -212,14 +215,14 @@ class DepthsHandler : SavedData() {
 			}
 
 			val storage = level.dataStorage
-			val type = net.minecraft.world.level.saveddata.SavedDataType(
+			val type = SavedDataType(
                 dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities.modResource(SAVED_DATA_NAME),
                 ::DepthsHandler,
                 CompoundTag.CODEC.xmap(
                     { tag -> load(tag, level.registryAccess()) },
                     { data -> data.save(CompoundTag(), level.registryAccess()) }
                 ),
-                net.minecraft.util.datafix.DataFixTypes.SAVED_DATA_COMMAND_STORAGE
+                DataFixTypes.SAVED_DATA_COMMAND_STORAGE
             )
             return storage.computeIfAbsent(type)
 		}
@@ -240,7 +243,7 @@ class DepthsHandler : SavedData() {
 			val damageAmount = ServerConfig.CONFIG.deepDarkDamageAmount.get().toFloat()
 			val damageSource = player.damageSources().source(ModDamageTypeProvider.DARKNESS)
 
-			player.hurt(damageSource, damageAmount)
+			player.hurtServer(level, damageSource, damageAmount)
 		}
 	}
 

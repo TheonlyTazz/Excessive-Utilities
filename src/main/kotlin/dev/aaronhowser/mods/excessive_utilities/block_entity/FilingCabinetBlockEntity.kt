@@ -5,6 +5,7 @@ import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlockEntityTypes
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlocks
 import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Direction
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentPatch
@@ -80,7 +81,7 @@ class FilingCabinetBlockEntity(
     override fun saveAdditional(tag: ValueOutput) {
         super.saveAdditional(tag)
         val item = storedItem ?: return
-        tag.store(ITEM_NBT, Item.CODEC, item.builtInRegistryHolder())
+        tag.store(ITEM_NBT, Item.CODEC, BuiltInRegistries.ITEM.wrapAsHolder(item))
         val entries = tag.childrenList(ENTRIES_NBT)
         for ((data, count) in storedEntries) {
             require(count > 0) { "Filing Cabinet contains a non-positive item count" }

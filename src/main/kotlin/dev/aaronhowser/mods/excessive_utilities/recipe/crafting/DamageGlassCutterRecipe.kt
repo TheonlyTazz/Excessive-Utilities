@@ -22,7 +22,7 @@ class DamageGlassCutterRecipe(
 		for (i in list.indices) {
 			val stack = input.getItem(i)
 
-			stack.item.craftingRemainder?.let { list[i] = it.create() }
+			stack.craftingRemainder?.let { list[i] = it.create() }
 
 			if (stack.isItem(ModItems.GLASS_CUTTER)) {
 				val nextDamage = stack.damageValue + 1

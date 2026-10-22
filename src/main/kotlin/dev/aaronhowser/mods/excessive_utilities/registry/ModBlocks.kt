@@ -11,6 +11,7 @@ import net.minecraft.world.item.DyeColor
 import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.material.MapColor
 import net.neoforged.neoforge.registries.DeferredBlock
 import net.neoforged.neoforge.registries.DeferredRegister
 
@@ -23,7 +24,7 @@ object ModBlocks : AaronBlockRegistry() {
 	// Functional
 
 	val ANGEL_BLOCK: DeferredBlock<AngelBlock> =
-	registerBlockWithoutItem("angel_block", ::AngelBlock, properties = { BlockBehaviour.Properties.of().strength(0f, 1200f).mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK) })
+	registerBlockWithoutItem("angel_block", ::AngelBlock, properties = { BlockBehaviour.Properties.of().strength(0f, 1200f).mapColor(MapColor.COLOR_BLACK) })
 	val BLACKOUT_CURTAIN: DeferredBlock<BlackoutCurtainBlock> =
 	registerBlock("blackout_curtain", ::BlackoutCurtainBlock, properties = { BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).noOcclusion().isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never).isViewBlocking(Blocks::never) })
 	val CONVEYOR_BELT: DeferredBlock<ConveyorBeltBlock> =
@@ -451,15 +452,15 @@ object ModBlocks : AaronBlockRegistry() {
 	// Compressed Blocks
 
 	val COMPRESSED_COBBLESTONES: List<DeferredBlock<CompressedBlock>> =
-		compressedBlocks("cobblestone", Blocks.COBBLESTONE)
+		compressedBlocks("cobblestone", Blocks.COBBLESTONE, baseExplosionResistance = 6f)
 	val COMPRESSED_COBBLED_DEEPSLATES: List<DeferredBlock<CompressedBlock>> =
-		compressedBlocks("cobbled_deepslate", Blocks.COBBLED_DEEPSLATE)
+		compressedBlocks("cobbled_deepslate", Blocks.COBBLED_DEEPSLATE, baseExplosionResistance = 6f)
 	val COMPRESSED_DIRTS: List<DeferredBlock<CompressedBlock>> =
-		compressedBlocks("dirt", Blocks.DIRT)
+		compressedBlocks("dirt", Blocks.DIRT, baseExplosionResistance = 0.5f)
 	val COMPRESSED_SANDS: List<DeferredBlock<CompressedBlock>> =
-		compressedBlocks("sand", Blocks.SAND)
+		compressedBlocks("sand", Blocks.SAND, baseExplosionResistance = 0.5f)
 	val COMPRESSED_GRAVELS: List<DeferredBlock<CompressedBlock>> =
-		compressedBlocks("gravel", Blocks.GRAVEL)
+		compressedBlocks("gravel", Blocks.GRAVEL, baseExplosionResistance = 0.6f)
 
 	fun getCompressedCobblestone(level: Int): DeferredBlock<out CompressedBlock> = COMPRESSED_COBBLESTONES[level - 1]
 	fun getCompressedCobbledDeepslate(level: Int): DeferredBlock<out CompressedBlock> = COMPRESSED_COBBLED_DEEPSLATES[level - 1]
@@ -467,12 +468,11 @@ object ModBlocks : AaronBlockRegistry() {
 	fun getCompressedSand(level: Int): DeferredBlock<out CompressedBlock> = COMPRESSED_SANDS[level - 1]
 	fun getCompressedGravel(level: Int): DeferredBlock<out CompressedBlock> = COMPRESSED_GRAVELS[level - 1]
 
-	private fun compressedBlocks(baseName: String, baseBlock: Block): List<DeferredBlock<CompressedBlock>> {
+	private fun compressedBlocks(baseName: String, baseBlock: Block, baseExplosionResistance: Float): List<DeferredBlock<CompressedBlock>> {
 		return List(16) { i ->
 			val level = i + 1
 
 			val baseDestroyTime = baseBlock.defaultDestroyTime()
-			val baseExplosionResistance = baseBlock.explosionResistance
 
 			val properties = BlockBehaviour.Properties
 				.ofFullCopy(baseBlock)

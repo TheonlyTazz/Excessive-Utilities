@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.core.registries.BuiltInRegistries
 import java.util.*
 
 class WorldInteractionItemRecipeBuilder(
@@ -25,7 +26,7 @@ class WorldInteractionItemRecipeBuilder(
 
 	override fun unlockedBy(name: String, criterion: Criterion<*>): RecipeBuilder = error("Unsupported")
 	override fun group(groupName: String?): RecipeBuilder = error("Unsupported")
-	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(output.item))
+	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(output.item))
 
 	override fun save(recipeOutput: RecipeOutput, recipeKey: ResourceKey<Recipe<*>>) {
 		val id = recipeKey.identifier()

@@ -8,6 +8,7 @@ import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
+import net.minecraft.commands.Commands
 
 object SetCursedCommand : AaronCommandHelper {
 
@@ -16,7 +17,7 @@ object SetCursedCommand : AaronCommandHelper {
 
 	fun register(): ArgumentBuilder<CommandSourceStack, *> {
 		return literal("set-cursed") {
-			requires(net.minecraft.commands.Commands.hasPermission(net.minecraft.commands.Commands.LEVEL_GAMEMASTERS))
+			requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 
 			executes {
 				val source = it.source

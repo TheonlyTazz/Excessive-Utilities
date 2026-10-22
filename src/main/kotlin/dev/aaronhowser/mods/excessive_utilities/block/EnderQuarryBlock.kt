@@ -17,8 +17,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class EnderQuarryBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
+class EnderQuarryBlock(properties: BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return EnderQuarryBlockEntity(pos, state)

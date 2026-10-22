@@ -30,11 +30,11 @@ class QedScreen(
 		addRenderableWidget(progressArrow)
 	}
 
-	override fun extractLabels(guiGraphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
-		super.extractLabels(guiGraphics, mouseX, mouseY)
+	override fun extractLabels(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+		super.extractLabels(graphics, mouseX, mouseY)
 
 		val nearbyCrystals = menu.getAmountNearbyCrystals()
-		guiGraphics.text(
+		graphics.text(
 			font,
 			Component.literal(nearbyCrystals.toString() + "x"),
 			95,

@@ -19,7 +19,10 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.capability.IFluidHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.VoidingResourceHandler
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 class FluidTrashCanBlockEntity(
 	pos: BlockPos,
@@ -29,13 +32,13 @@ class FluidTrashCanBlockEntity(
 	private val filterContainer = ImprovedSimpleContainer(this, 1)
 	val filterStack: ItemStack get() = filterContainer.getItem(FILTER_SLOT)
 
-    private val fluidHandler = object : net.neoforged.neoforge.transfer.VoidingResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>(net.neoforged.neoforge.transfer.fluid.FluidResource.EMPTY) {
-        override fun isValid(index: Int, resource: net.neoforged.neoforge.transfer.fluid.FluidResource): Boolean = passesFilter(resource.toStack(1))
-        override fun insert(index: Int, resource: net.neoforged.neoforge.transfer.fluid.FluidResource, amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int {
+    private val fluidHandler = object : VoidingResourceHandler<FluidResource>(FluidResource.EMPTY) {
+        override fun isValid(index: Int, resource: FluidResource): Boolean = passesFilter(resource.toStack(1))
+        override fun insert(index: Int, resource: FluidResource, amount: Int, transaction: TransactionContext): Int {
             return if (isValid(index, resource)) super.insert(index, resource, amount, transaction) else 0
         }
     }
-    fun getFluidHandler(direction: Direction?): net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource> = fluidHandler
+    fun getFluidHandler(direction: Direction?): ResourceHandler<FluidResource> = fluidHandler
 
 	override fun getDisplayName(): Component {
 		return blockState.block.name

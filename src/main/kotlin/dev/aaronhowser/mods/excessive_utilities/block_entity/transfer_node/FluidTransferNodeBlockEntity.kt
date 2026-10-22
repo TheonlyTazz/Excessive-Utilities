@@ -26,7 +26,10 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.capability.IFluidHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.transaction.Transaction
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.ConfigurableFluidTank
 
 class FluidTransferNodeBlockEntity(
@@ -54,7 +57,7 @@ class FluidTransferNodeBlockEntity(
 		return ItemFilterItem.passesFilter(filterStack, stack)
 	}
 
-	private fun getParentFluidHandler(level: ServerLevel): net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>? {
+	private fun getParentFluidHandler(level: ServerLevel): ResourceHandler<FluidResource>? {
 		return level.getCapability(Capabilities.Fluid.BLOCK, placedOnPos, placedOnDirection.opposite)
 	}
 
@@ -72,10 +75,10 @@ class FluidTransferNodeBlockEntity(
         }
     }
 
-    private fun pushBuffer(handler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>): Int {
+    private fun pushBuffer(handler: ResourceHandler<FluidResource>): Int {
         if (bufferTank.isEmpty) return 0
-        if (!hasCreativeUpgrade()) return net.neoforged.neoforge.transfer.ResourceHandlerUtil.move(bufferTank, handler, { true }, bufferTank.fluidAmount, null)
-        return net.neoforged.neoforge.transfer.transaction.Transaction.openRoot().use { transaction ->
+        if (!hasCreativeUpgrade()) return ResourceHandlerUtil.move(bufferTank, handler, { true }, bufferTank.fluidAmount, null)
+        return Transaction.openRoot().use { transaction ->
             val inserted = handler.insert(bufferTank.getResource(0), bufferTank.fluidAmount, transaction)
             transaction.commit()
             inserted
@@ -87,13 +90,13 @@ class FluidTransferNodeBlockEntity(
         val maxAmount = if (hasStackUpgrade()) 1_000 else 200
         val filter = filterContainer.getItem(0)
         for (handler in getFluidHandlersAroundPing(level)) {
-            val moved = net.neoforged.neoforge.transfer.ResourceHandlerUtil.move(handler, bufferTank,
+            val moved = ResourceHandlerUtil.move(handler, bufferTank,
                 { resource -> !filter.isItem(ModItems.FLUID_FILTER) || FluidFilterItem.passesFilter(filter, resource.toStack(1)) }, maxAmount, null)
             if (moved > 0) { didWorkThisTick = true; return }
         }
     }
 
-	private fun getFluidHandlersAroundPing(level: ServerLevel): List<net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>> {
+	private fun getFluidHandlersAroundPing(level: ServerLevel): List<ResourceHandler<FluidResource>> {
 		return getCapabilitiesAroundPing(level) { neighborPos, side ->
 			level.getCapability(Capabilities.Fluid.BLOCK, neighborPos, side)
 		}
@@ -124,7 +127,7 @@ class FluidTransferNodeBlockEntity(
     override fun pullFromParent(level: ServerLevel) {
         if (worldInteraction(level)) return
         val parent = getParentFluidHandler(level) ?: return
-        val moved = net.neoforged.neoforge.transfer.ResourceHandlerUtil.move(parent, bufferTank, { true }, if (hasStackUpgrade()) 1_000 else 200, null)
+        val moved = ResourceHandlerUtil.move(parent, bufferTank, { true }, if (hasStackUpgrade()) 1_000 else 200, null)
         if (moved > 0) didWorkThisTick = true
     }
 

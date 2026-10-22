@@ -283,6 +283,6 @@ object GridPowerCommand : AaronCommandHelper {
 	}
 
 	private fun getPlayerName(player: ServerPlayer): Component {
-		return player.displayName ?: player.name
+		return player.displayName
 	}
 }

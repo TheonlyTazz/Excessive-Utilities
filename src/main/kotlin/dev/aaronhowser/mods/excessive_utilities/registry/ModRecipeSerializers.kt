@@ -8,6 +8,7 @@ import dev.aaronhowser.mods.excessive_utilities.recipe.machine.generator_fuel.Ma
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.generator_fuel.SingleItemFuelRecipe
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.crafting.RecipeSerializer
+import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
 
@@ -48,7 +49,7 @@ object ModRecipeSerializers {
 	val ITEM_AND_FLUID_FUEL: DeferredHolder<RecipeSerializer<*>, RecipeSerializer<ItemAndFluidFuelRecipe>> =
 		registerRecipeSerializer("item_and_fluid_fuel", { RecipeSerializer(ItemAndFluidFuelRecipe.Serializer.CODEC, ItemAndFluidFuelRecipe.Serializer.STREAM_CODEC) })
 
-	private fun <T : net.minecraft.world.item.crafting.Recipe<*>> registerRecipeSerializer(
+	private fun <T : Recipe<*>> registerRecipeSerializer(
 		name: String,
 		factory: () -> RecipeSerializer<T>
 	): DeferredHolder<RecipeSerializer<*>, RecipeSerializer<T>> {

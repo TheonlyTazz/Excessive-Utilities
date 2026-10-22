@@ -34,14 +34,14 @@ class QuantumQuarryScreen(
 		addRenderableWidget(energyBar)
 	}
 
-	override fun extractLabels(guiGraphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
-		super.extractLabels(guiGraphics, mouseX, mouseY)
+	override fun extractLabels(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+		super.extractLabels(graphics, mouseX, mouseY)
 
 		val x = "%,d".format(menu.getTargetX())
 		val y = "%,d".format(menu.getTargetY())
 		val z = "%,d".format(menu.getTargetZ())
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			Component.literal("X: $x"),
 			35,
@@ -50,7 +50,7 @@ class QuantumQuarryScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			Component.literal("Y: $y"),
 			35,
@@ -59,7 +59,7 @@ class QuantumQuarryScreen(
 			false
 		)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			Component.literal("Z: $z"),
 			35,
@@ -79,7 +79,7 @@ class QuantumQuarryScreen(
 				val biomeKey = biome.unwrapKey().orElseThrow()
 				if (biomeKey != null) {
 					val component = AaronClientUtil.getBiomeDisplay(biomeKey)
-					guiGraphics.text(
+					graphics.text(
 						font,
 						component,
 						35,
@@ -96,7 +96,7 @@ class QuantumQuarryScreen(
 
 		val minedString = DecimalFormat("#,##0.##").format(amountMined + progress)
 
-		guiGraphics.text(
+		graphics.text(
 			font,
 			Component.literal("$minedString mined"),
 			35,

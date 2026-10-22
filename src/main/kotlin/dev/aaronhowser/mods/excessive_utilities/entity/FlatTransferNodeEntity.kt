@@ -26,11 +26,15 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.level.storage.ValueInput
+import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
-import net.neoforged.neoforge.fluids.capability.IFluidHandler
-import net.neoforged.neoforge.items.IItemHandler
-import net.neoforged.neoforge.items.ItemHandlerHelper
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.item.ItemResource
 
 class FlatTransferNodeEntity(
 	entityType: EntityType<*>,
@@ -57,14 +61,14 @@ class FlatTransferNodeEntity(
 
 	private val container: SimpleContainer = FlatTransferNodeContainer()
 
-	val originItemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>?
+	val originItemHandler: ResourceHandler<ItemResource>?
 		get() = level()
 			.getCapability(
 				Capabilities.Item.BLOCK,
 				blockPosition(),
 				aiming
 			)
-	val targetItemHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource>?
+	val targetItemHandler: ResourceHandler<ItemResource>?
 		get() = level()
 			.getCapability(
 				Capabilities.Item.BLOCK,
@@ -72,20 +76,20 @@ class FlatTransferNodeEntity(
 				aiming.opposite
 			)
 
-	val originFluidHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>?
+	val originFluidHandler: ResourceHandler<FluidResource>?
 		get() = level().getCapability(
 			Capabilities.Fluid.BLOCK,
 			blockPosition(),
 			aiming
 		)
-	val targetFluidHandler: net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource>?
+	val targetFluidHandler: ResourceHandler<FluidResource>?
 		get() = level().getCapability(
 			Capabilities.Fluid.BLOCK,
 			blockPosition().relative(aiming),
 			aiming.opposite
 		)
 
-    override fun hurtServer(level: ServerLevel, source: net.minecraft.world.damagesource.DamageSource, amount: Float): Boolean = false
+    override fun hurtServer(level: ServerLevel, source: DamageSource, amount: Float): Boolean = false
 
 	override fun tick() {
 		super.tick()
@@ -139,14 +143,14 @@ class FlatTransferNodeEntity(
 	}
 
     private fun transferFluid(level: ServerLevel) {
-        net.neoforged.neoforge.transfer.ResourceHandlerUtil.move(
+        ResourceHandlerUtil.move(
             originFluidHandler, targetFluidHandler, { true },
             ServerConfig.CONFIG.flatFluidTransferNodeSpeed.get(), null
         )
     }
 
     private fun transferItem(level: ServerLevel) {
-        net.neoforged.neoforge.transfer.ResourceHandlerUtil.moveStacking(
+        ResourceHandlerUtil.moveStacking(
             originItemHandler, targetItemHandler, { true },
             ServerConfig.CONFIG.flatItemTransferNodeSpeed.get(), null
         )
@@ -157,13 +161,13 @@ class FlatTransferNodeEntity(
 		builder.define(AIMING_DATA, Direction.NORTH)
 	}
 
-	override fun addAdditionalSaveData(compound: net.minecraft.world.level.storage.ValueOutput) {
+	override fun addAdditionalSaveData(compound: ValueOutput) {
 		compound.putBoolean(IS_ITEM_NODE_TAG, isItemNode)
 		compound.putString(AIMING_TAG, aiming.serializedName)
 		ContainerHelper.saveAllItems(compound, container.items)
 	}
 
-	override fun readAdditionalSaveData(compound: net.minecraft.world.level.storage.ValueInput) {
+	override fun readAdditionalSaveData(compound: ValueInput) {
 		isItemNode = compound.getBooleanOr(IS_ITEM_NODE_TAG, true)
 		val directionString = compound.getString(AIMING_TAG).orElseThrow()
 		aiming = requireNotNull(Direction.byName(directionString)) { "Invalid transfer node direction: $directionString" }

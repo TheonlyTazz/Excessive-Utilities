@@ -19,8 +19,12 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class CreativeHarvestBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
+class CreativeHarvestBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
 		return CreativeHarvestBlockEntity(pos, state)
@@ -92,13 +96,13 @@ class CreativeHarvestBlock(properties: net.minecraft.world.level.block.state.Blo
 
 	override fun updateShape(
 		state: BlockState,
-		level: net.minecraft.world.level.LevelReader,
-		 ticks: net.minecraft.world.level.ScheduledTickAccess,
+		level: LevelReader,
+		 ticks: ScheduledTickAccess,
 		pos: BlockPos,
 		 directionToNeighbour: Direction,
 		 neighbourPos: BlockPos,
 		 neighbourState: BlockState,
-		 random: net.minecraft.util.RandomSource
+		 random: RandomSource
 	): BlockState {
 		val be = level.getBlockEntity(pos)
 		if (be is CreativeHarvestBlockEntity && level is LevelAccessor) {

@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.redstone.Orientation
 
 class EnderCollectorBlock(properties: Properties) : Block(properties), EntityBlock {
 
@@ -49,7 +50,7 @@ class EnderCollectorBlock(properties: Properties) : Block(properties), EntityBlo
 			.setValue(FACING, context.clickedFace)
 	}
 
-	override fun neighborChanged(state: BlockState, level: Level, pos: BlockPos, neighborBlock: Block, orientation: net.minecraft.world.level.redstone.Orientation?, movedByPiston: Boolean) {
+	override fun neighborChanged(state: BlockState, level: Level, pos: BlockPos, neighborBlock: Block, orientation: Orientation?, movedByPiston: Boolean) {
 		val wasPowered = state.getValue(POWERED)
 		val shouldBePowered = level.hasNeighborSignal(pos)
 

@@ -19,8 +19,10 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class FilingCabinetBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties), EntityBlock {
+class FilingCabinetBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
 	init {
 		registerDefaultState(
@@ -42,7 +44,7 @@ class FilingCabinetBlock(properties: net.minecraft.world.level.block.state.Block
 		return FilingCabinetBlockEntity(pos, state)
 	}
 
-	override fun affectNeighborsAfterRemoval(state: BlockState, level: net.minecraft.server.level.ServerLevel, pos: BlockPos, movedByPiston: Boolean) {
+	override fun affectNeighborsAfterRemoval(state: BlockState, level: ServerLevel, pos: BlockPos, movedByPiston: Boolean) {
 		if (true) {
 			val be = level.getBlockEntity(pos)
 			if (be is FilingCabinetBlockEntity) {

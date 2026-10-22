@@ -21,9 +21,11 @@ abstract class HeldRingGridPowerConsumer(
         }
 
 		val curiosInventory = CuriosApi.getCuriosInventory(player).getOrNull() ?: return false
-		val wornCurios = curiosInventory.equippedCurios
-		for (slot in 0 until wornCurios.slots) {
-			if (wornCurios.getStackInSlot(slot) === gpStack) return true
+		for (handler in curiosInventory.curios.values) {
+			val stacks = handler.stacks
+			for (slot in 0 until stacks.slots) {
+				if (stacks.getStackInSlot(slot) === gpStack) return true
+			}
 		}
 
 		return false

@@ -9,10 +9,13 @@ import net.minecraft.client.renderer.blockentity.state.SpawnerRenderState
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.util.Mth
+import net.minecraft.client.renderer.blockentity.SpawnerRenderer
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer
+import net.minecraft.world.phys.Vec3
 class ResturbedMobSpawnerBER(context: BlockEntityRendererProvider.Context) : BlockEntityRenderer<ResturbedMobSpawnerBlockEntity, SpawnerRenderState> {
  private val dispatcher: EntityRenderDispatcher = context.entityRenderer
  override fun createRenderState()=SpawnerRenderState()
- override fun extractRenderState(be:ResturbedMobSpawnerBlockEntity,s:SpawnerRenderState,partial:Float,camera:net.minecraft.world.phys.Vec3,overlay:net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay?){
+ override fun extractRenderState(be:ResturbedMobSpawnerBlockEntity,s:SpawnerRenderState,partial:Float,camera:Vec3,overlay:ModelFeatureRenderer.CrumblingOverlay?){
   BlockEntityRenderState.extractBase(be,s,overlay)
   val level=be.level ?: return
   val entity=be.spawner.getOrCreateDisplayEntity(level,be.blockPos) ?: return
@@ -25,6 +28,6 @@ class ResturbedMobSpawnerBER(context: BlockEntityRendererProvider.Context) : Blo
  }
  override fun submit(s:SpawnerRenderState,p:PoseStack,c:SubmitNodeCollector,camera:CameraRenderState){
   val displayEntity=s.displayEntity ?: return
-  net.minecraft.client.renderer.blockentity.SpawnerRenderer.submitEntityInSpawner(p,c,displayEntity,dispatcher,s.spin,s.scale,camera)
+  SpawnerRenderer.submitEntityInSpawner(p,c,displayEntity,dispatcher,s.spin,s.scale,camera)
  }
 }

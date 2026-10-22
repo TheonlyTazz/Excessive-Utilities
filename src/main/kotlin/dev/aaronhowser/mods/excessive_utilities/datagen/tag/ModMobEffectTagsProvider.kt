@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture
 class ModMobEffectTagsProvider(
 	output: PackOutput,
 	provider: CompletableFuture<HolderLookup.Provider>
-) : TagsProvider<MobEffect>(output, Registries.MOB_EFFECT, provider) {
+) : TagsProvider<MobEffect>(output, Registries.MOB_EFFECT, provider, ExcessiveUtilities.MOD_ID) {
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		getOrCreateRawBuilder(PURGING_BLACKLIST)

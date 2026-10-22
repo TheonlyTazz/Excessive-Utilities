@@ -16,10 +16,13 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.CropBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.common.Tags
 import kotlin.jvm.optionals.getOrDefault
 
-class EnderLilyBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : CropBlock(properties) {
+class EnderLilyBlock(properties: BlockBehaviour.Properties) : CropBlock(properties) {
 
 	override fun getBaseSeedId(): ItemLike = ModItems.ENDER_LILY.get()
 
@@ -86,13 +89,13 @@ class EnderLilyBlock(properties: net.minecraft.world.level.block.state.BlockBeha
 
 	override fun updateShape(
 		state: BlockState,
-		level: net.minecraft.world.level.LevelReader,
-		 ticks: net.minecraft.world.level.ScheduledTickAccess,
+		level: LevelReader,
+		 ticks: ScheduledTickAccess,
 		pos: BlockPos,
 		 directionToNeighbour: Direction,
 		 neighbourPos: BlockPos,
 		 neighbourState: BlockState,
-		 random: net.minecraft.util.RandomSource
+		 random: RandomSource
 	): BlockState {
 		if (ServerConfig.CONFIG.funnyEnderLilyTeleporting.get()) {
 			val shouldTeleportAway = level.getFluidState(neighbourPos).isFluid(Tags.Fluids.WATER)

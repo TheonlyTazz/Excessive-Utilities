@@ -29,13 +29,13 @@ import net.minecraft.world.level.storage.loot.predicates.LocationCheck
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition
 import net.minecraft.world.level.storage.loot.predicates.TimeCheck
 import net.minecraft.world.clock.WorldClocks
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.registries.DeferredHolder
 
 class ModBlockLootTablesSubProvider(
 	provider: HolderLookup.Provider
 ) : BlockLootSubProvider(setOf(), FeatureFlags.REGISTRY.allFlags(), provider) {
-	private val registries = provider
 
 	override fun getKnownBlocks(): Iterable<Block> {
 		return ModBlocks.BLOCK_REGISTRY.entries.map(DeferredHolder<Block, out Block>::get)
@@ -110,7 +110,7 @@ class ModBlockLootTablesSubProvider(
 					rolls(1f)
 					item(ModBlocks.RESTURBED_MOB_SPAWNER.asItem()) {
 						apply(
-							CopyComponentsFunction.copyComponentsFromBlockEntity(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY)
+							CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 								.include(DataComponents.BLOCK_ENTITY_DATA)
 						)
 					}
@@ -125,7 +125,7 @@ class ModBlockLootTablesSubProvider(
 					rolls(1f)
 					item(ModBlocks.MAGICAL_SNOW_GLOBE.asItem()) {
 						apply(
-							CopyComponentsFunction.copyComponentsFromBlockEntity(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY)
+							CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 								.include(ModDataComponents.MAGICAL_SNOW_GLOBE_PROGRESS.get())
 						)
 					}
@@ -141,7 +141,7 @@ class ModBlockLootTablesSubProvider(
 						rolls(1f)
 						item(drum) {
 							apply(
-								CopyComponentsFunction.copyComponentsFromBlockEntity(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(ModDataComponents.TANK.get())
 							)
 						}

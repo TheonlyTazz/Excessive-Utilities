@@ -5,6 +5,7 @@ import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeig
 import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
 import dev.aaronhowser.mods.excessive_utilities.datamap.ReversingHoeConversion
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.tags.BlockTags
@@ -40,47 +41,47 @@ class ModDataMapProvider(
 
 		builder(InversionRitualEnemyWeight.DATA_MAP)
 			.add(
-				EntityType.PHANTOM.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.PHANTOM),
 				InversionRitualEnemyWeight(5.0),
 				false
 			)
 			.add(
-				EntityType.ZOMBIE.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.ZOMBIE),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.ZOMBIE_VILLAGER),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.HUSK.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.HUSK),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.SKELETON.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.SKELETON),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.BOGGED.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.BOGGED),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.STRAY.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.STRAY),
 				InversionRitualEnemyWeight(10.0),
 				false
 			)
 			.add(
-				EntityType.WITHER_SKELETON.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.WITHER_SKELETON),
 				InversionRitualEnemyWeight(3.0),
 				false
 			)
 			.add(
-				EntityType.ENDERMAN.builtInRegistryHolder(),
+				BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.ENDERMAN),
 				InversionRitualEnemyWeight(6.0),
 				false
 			)
@@ -102,12 +103,12 @@ class ModDataMapProvider(
 				false
 			)
 			.add(
-				Blocks.MAGMA_BLOCK.builtInRegistryHolder(),
+				BuiltInRegistries.BLOCK.wrapAsHolder(Blocks.MAGMA_BLOCK),
 				ReversingHoeConversion(Blocks.LAVA.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.OBSIDIAN.builtInRegistryHolder(),
+				BuiltInRegistries.BLOCK.wrapAsHolder(Blocks.OBSIDIAN),
 				ReversingHoeConversion(Blocks.LAVA.defaultBlockState()),
 				false
 			)
@@ -117,17 +118,17 @@ class ModDataMapProvider(
 				false
 			)
 			.add(
-				Blocks.FARMLAND.builtInRegistryHolder(),
+				BuiltInRegistries.BLOCK.wrapAsHolder(Blocks.FARMLAND),
 				ReversingHoeConversion(Blocks.DIRT.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.DIRT.builtInRegistryHolder(),
+				BuiltInRegistries.BLOCK.wrapAsHolder(Blocks.DIRT),
 				ReversingHoeConversion(Blocks.GRASS_BLOCK.defaultBlockState()),
 				false
 			)
 			.add(
-				Blocks.DEAD_BUSH.builtInRegistryHolder(),
+				BuiltInRegistries.BLOCK.wrapAsHolder(Blocks.DEAD_BUSH),
 				ReversingHoeConversion(Blocks.OAK_SAPLING.defaultBlockState()),
 				false
 			)

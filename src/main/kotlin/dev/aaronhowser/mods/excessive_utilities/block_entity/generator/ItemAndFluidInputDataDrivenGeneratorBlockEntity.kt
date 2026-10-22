@@ -26,7 +26,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.capability.IFluidHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.fluid.FluidResource
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.ConfigurableFluidTank
 
 open class ItemAndFluidInputDataDrivenGeneratorBlockEntity(
@@ -116,7 +117,7 @@ open class ItemAndFluidInputDataDrivenGeneratorBlockEntity(
 			blockState = state
 		)
 
-		fun getFluidCapability(blockEntity: ItemAndFluidInputDataDrivenGeneratorBlockEntity, direction: Direction?): net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.fluid.FluidResource> {
+		fun getFluidCapability(blockEntity: ItemAndFluidInputDataDrivenGeneratorBlockEntity, direction: Direction?): ResourceHandler<FluidResource> {
 			return blockEntity.tank
 		}
 	}

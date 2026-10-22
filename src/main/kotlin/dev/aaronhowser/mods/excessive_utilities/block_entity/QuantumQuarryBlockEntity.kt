@@ -48,6 +48,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams
+import net.minecraft.core.UUIDUtil
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.util.FakePlayer
 import net.neoforged.neoforge.common.util.FakePlayerFactory
@@ -371,7 +372,7 @@ class QuantumQuarryBlockEntity(
 		}
 
 		tag.putInt(AMOUNT_BLOCKS_BROKEN_NBT, amountBlocksBroken)
-		tag.store(FAKE_PLAYER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC, fakePlayerUuid)
+		tag.store(FAKE_PLAYER_UUID_NBT, UUIDUtil.CODEC, fakePlayerUuid)
 	}
 
 	override fun loadAdditional(tag: ValueInput) {
@@ -395,7 +396,7 @@ class QuantumQuarryBlockEntity(
 
 		amountBlocksBroken = tag.getIntOr(AMOUNT_BLOCKS_BROKEN_NBT, 0)
 
-		tag.read(FAKE_PLAYER_UUID_NBT, net.minecraft.core.UUIDUtil.CODEC).ifPresent { fakePlayerUuid = it }
+		tag.read(FAKE_PLAYER_UUID_NBT, UUIDUtil.CODEC).ifPresent { fakePlayerUuid = it }
 	}
 
 	override fun getDisplayName(): Component = blockState.block.name

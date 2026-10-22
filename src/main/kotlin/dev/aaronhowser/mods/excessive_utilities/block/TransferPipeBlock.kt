@@ -21,10 +21,14 @@ import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.Tags
 
-class TransferPipeBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : Block(properties) {
+class TransferPipeBlock(properties: BlockBehaviour.Properties) : Block(properties) {
 
 	init {
 		registerDefaultState(
@@ -48,13 +52,13 @@ class TransferPipeBlock(properties: net.minecraft.world.level.block.state.BlockB
 
 	override fun updateShape(
 		state: BlockState,
-		level: net.minecraft.world.level.LevelReader,
-		 ticks: net.minecraft.world.level.ScheduledTickAccess,
+		level: LevelReader,
+		 ticks: ScheduledTickAccess,
 		pos: BlockPos,
 		 directionToNeighbour: Direction,
 		 neighbourPos: BlockPos,
 		 neighbourState: BlockState,
-		 random: net.minecraft.util.RandomSource
+		 random: RandomSource
 	): BlockState {
 		if (level is Level) {
 			return updateConnections(level, pos, state)

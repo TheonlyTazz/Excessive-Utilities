@@ -21,6 +21,10 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings
 import net.minecraft.world.level.saveddata.SavedData
+import net.minecraft.core.UUIDUtil
+import net.minecraft.nbt.ListTag
+import net.minecraft.util.datafix.DataFixTypes
+import net.minecraft.world.level.saveddata.SavedDataType
 import java.util.*
 
 class LastMillenniumHandler : SavedData() {
@@ -144,11 +148,11 @@ class LastMillenniumHandler : SavedData() {
 	}
 
 	fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
-		val listTag = net.minecraft.nbt.ListTag()
+		val listTag = ListTag()
 
 		for ((uuid, chunkPos) in playerChunks) {
 			val chunkTag = CompoundTag()
-			chunkTag.store(PLAYER_NBT, net.minecraft.core.UUIDUtil.CODEC, uuid)
+			chunkTag.store(PLAYER_NBT, UUIDUtil.CODEC, uuid)
 			chunkTag.putLong(CHUNK_NBT, chunkPos.pack())
 			listTag.add(chunkTag)
 		}
@@ -180,7 +184,7 @@ class LastMillenniumHandler : SavedData() {
 			for (i in listTag.indices) {
 				val coordinateTag = listTag.getCompound(i).orElseThrow()
 
-				val uuid = coordinateTag.read(PLAYER_NBT, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()
+				val uuid = coordinateTag.read(PLAYER_NBT, UUIDUtil.CODEC).orElseThrow()
 				val chunkLong = coordinateTag.getLong(CHUNK_NBT).orElseThrow()
 				val chunkPos = chunkLong.toChunkPos()
 
@@ -196,14 +200,14 @@ class LastMillenniumHandler : SavedData() {
 			}
 
 			val storage = level.dataStorage
-			val type = net.minecraft.world.level.saveddata.SavedDataType(
+			val type = SavedDataType(
                 dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities.modResource(SAVED_DATA_NAME),
                 ::LastMillenniumHandler,
                 CompoundTag.CODEC.xmap(
                     { tag -> load(tag, level.registryAccess()) },
                     { data -> data.save(CompoundTag(), level.registryAccess()) }
                 ),
-                net.minecraft.util.datafix.DataFixTypes.SAVED_DATA_COMMAND_STORAGE
+                DataFixTypes.SAVED_DATA_COMMAND_STORAGE
             )
             return storage.computeIfAbsent(type)
 		}

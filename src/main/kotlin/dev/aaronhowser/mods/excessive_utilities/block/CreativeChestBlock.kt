@@ -21,8 +21,9 @@ import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class CreativeChestBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
+class CreativeChestBlock(properties: BlockBehaviour.Properties) : SimpleContainerBlock(properties), EntityBlock {
 
 	init {
 		registerDefaultState(

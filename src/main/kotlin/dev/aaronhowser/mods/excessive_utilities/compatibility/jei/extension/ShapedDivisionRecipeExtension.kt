@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.ItemStackTemplate
 
 class ShapedDivisionRecipeExtension : ICraftingCategoryExtension<ShapedDivisionRecipe> {
 
@@ -54,7 +55,7 @@ class ShapedDivisionRecipeExtension : ICraftingCategoryExtension<ShapedDivisionR
                     ShapedDivisionRecipe.Inversion.EITHER -> listOf(uninverted(), inverted())
                         }
                     }
-                    SlotDisplay.Composite(variants.map { SlotDisplay.ItemStackSlotDisplay(net.minecraft.world.item.ItemStackTemplate.fromNonEmptyStack(it)) })
+                    SlotDisplay.Composite(variants.map { SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(it)) })
                 }
             }
         }

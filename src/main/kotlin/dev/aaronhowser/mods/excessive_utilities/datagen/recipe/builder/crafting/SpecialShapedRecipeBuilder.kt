@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapedRecipePattern
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.level.ItemLike
+import net.minecraft.core.registries.BuiltInRegistries
 
 class SpecialShapedRecipeBuilder(
 	val output: ItemStack
@@ -66,7 +67,7 @@ class SpecialShapedRecipeBuilder(
 
 	override fun group(groupName: String?): RecipeBuilder = error("Not supported")
 
-	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(output.item))
+	override fun defaultId(): ResourceKey<Recipe<*>> = ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(output.item))
 
 	override fun save(recipeOutput: RecipeOutput, recipeKey: ResourceKey<Recipe<*>>) {
 		val originalId = recipeKey.identifier()

@@ -9,8 +9,9 @@ import net.minecraft.world.item.crafting.display.SlotDisplay
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.item.crafting.CraftingRecipe
 
-class ShapedRecipeExtension<T : net.minecraft.world.item.crafting.CraftingRecipe> : ICraftingCategoryExtension<T> {
+class ShapedRecipeExtension<T : CraftingRecipe> : ICraftingCategoryExtension<T> {
 
 	override fun setRecipe(
 		recipeHolder: RecipeHolder<T>,

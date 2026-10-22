@@ -34,12 +34,15 @@ object RingRechargeGuiRenderer {
 		}
 
 		if (ringStack == ItemStack.EMPTY) {
-			val wornCurios = CuriosApi.getCuriosInventory(player).getOrNull()?.equippedCurios ?: return
-			for (slot in 0 until wornCurios.slots) {
-				val stack = wornCurios.getStackInSlot(slot)
-				if (stack.isItem(ModItems.RING_OF_THE_FLYING_SQUID) || stack.isItem(ModItems.CHICKEN_WING_RING)) {
-					ringStack = stack
-					break
+			val curiosInventory = CuriosApi.getCuriosInventory(player).getOrNull() ?: return
+			curioSlots@ for (handler in curiosInventory.curios.values) {
+				val stacks = handler.stacks
+				for (slot in 0 until stacks.slots) {
+					val stack = stacks.getStackInSlot(slot)
+					if (stack.isItem(ModItems.RING_OF_THE_FLYING_SQUID) || stack.isItem(ModItems.CHICKEN_WING_RING)) {
+						ringStack = stack
+						break@curioSlots
+					}
 				}
 			}
 

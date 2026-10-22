@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.ContainerHelper
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.item.ItemStack
+import net.minecraft.core.UUIDUtil
+import net.minecraft.nbt.NbtOps
 import java.util.*
 
 class BagOfHolding(
@@ -31,8 +33,8 @@ class BagOfHolding(
 	fun toTag(registries: HolderLookup.Provider): CompoundTag {
 		val tag = CompoundTag()
 
-		tag.store(UUID_TAG, net.minecraft.core.UUIDUtil.CODEC, bagUUID)
-		tag.store("Items", ItemStack.OPTIONAL_CODEC.listOf(), registries.createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE), container.items)
+		tag.store(UUID_TAG, UUIDUtil.CODEC, bagUUID)
+		tag.store("Items", ItemStack.OPTIONAL_CODEC.listOf(), registries.createSerializationContext(NbtOps.INSTANCE), container.items)
 
 		return tag
 	}
@@ -46,12 +48,12 @@ class BagOfHolding(
 			registries: HolderLookup.Provider,
 			onChanged: () -> Unit
 		): BagOfHolding? {
-			if (!tag.read(UUID_TAG, net.minecraft.core.UUIDUtil.CODEC).isPresent) return null
+			if (!tag.read(UUID_TAG, UUIDUtil.CODEC).isPresent) return null
 
-			val bagUUID = tag.read(UUID_TAG, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()
+			val bagUUID = tag.read(UUID_TAG, UUIDUtil.CODEC).orElseThrow()
 			val bag = BagOfHolding(bagUUID, onChanged)
 
-			val items = tag.read("Items", ItemStack.OPTIONAL_CODEC.listOf(), registries.createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE)).orElseThrow()
+			val items = tag.read("Items", ItemStack.OPTIONAL_CODEC.listOf(), registries.createSerializationContext(NbtOps.INSTANCE)).orElseThrow()
             require(items.size == SLOT_COUNT) { "Invalid bag inventory size: ${items.size}" }
             items.forEachIndexed { slot, stack -> bag.container.setItem(slot, stack) }
 

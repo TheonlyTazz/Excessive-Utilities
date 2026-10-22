@@ -62,7 +62,7 @@ class InversionRitualEnemyWeight(
 				.filterIsInstance<EntityType<out Mob>>()
 
 			for (type in registry) {
-				val weight = type.builtInRegistryHolder().getData(DATA_MAP)
+				val weight = BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(type).getData(DATA_MAP)
 				if (weight != null) {
 					weights[type] = weight.weight
 				}

@@ -22,7 +22,7 @@ class KeepPaintbrushRecipe(
 		for (i in list.indices) {
 			val stack = input.getItem(i)
 
-			stack.item.craftingRemainder?.let { list[i] = it.create() }
+			stack.craftingRemainder?.let { list[i] = it.create() }
 
 			if (stack.isItem(ModItems.PAINTBRUSH)) {
 				list[i] = stack.copy()

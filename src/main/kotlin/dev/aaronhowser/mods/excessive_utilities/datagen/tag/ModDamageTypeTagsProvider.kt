@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 class ModDamageTypeTagsProvider(
 	output: PackOutput,
 	lookupProvider: CompletableFuture<HolderLookup.Provider>
-) : DamageTypeTagsProvider(output, lookupProvider) {
+) : DamageTypeTagsProvider(output, lookupProvider, ExcessiveUtilities.MOD_ID) {
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		tag(DamageTypeTags.NO_ANGER)

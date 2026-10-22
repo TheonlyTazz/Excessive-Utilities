@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
 class ModEntityTypeTagsProvider(
 	output: PackOutput,
 	provider: CompletableFuture<HolderLookup.Provider>
-) : EntityTypeTagsProvider(output, provider) {
+) : EntityTypeTagsProvider(output, provider, ExcessiveUtilities.MOD_ID) {
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		tag(BOOMERANG_PICKUP)

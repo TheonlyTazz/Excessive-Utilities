@@ -16,8 +16,9 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.block.state.BlockBehaviour
 
-class ManualMillBlock(properties: net.minecraft.world.level.block.state.BlockBehaviour.Properties) : GpSourceBlock(properties) {
+class ManualMillBlock(properties: BlockBehaviour.Properties) : GpSourceBlock(properties) {
 
 	override fun getBlockEntityType(): BlockEntityType<out GpSourceBlockEntity> {
 		return ModBlockEntityTypes.MANUAL_MILL.get()

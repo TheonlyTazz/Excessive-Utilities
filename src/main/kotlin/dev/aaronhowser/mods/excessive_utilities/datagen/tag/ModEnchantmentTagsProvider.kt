@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture
 class ModEnchantmentTagsProvider(
 	output: PackOutput,
 	lookupProvider: CompletableFuture<HolderLookup.Provider>
-) : EnchantmentTagsProvider(output, lookupProvider) {
+) : EnchantmentTagsProvider(output, lookupProvider, ExcessiveUtilities.MOD_ID) {
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		tag(BOOMERANG_BLOCK_INTERACTION)

@@ -37,6 +37,7 @@ import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.item.ItemResource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 abstract class GeneratorBlockEntity(
 	type: BlockEntityType<*>,
@@ -51,8 +52,8 @@ abstract class GeneratorBlockEntity(
 		object : EnergyHandler {
 			override fun getAmountAsLong(): Long = energyStorage.getAmountAsLong()
 			override fun getCapacityAsLong(): Long = energyStorage.getCapacityAsLong()
-			override fun insert(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int = 0
-			override fun extract(amount: Int, transaction: net.neoforged.neoforge.transfer.transaction.TransactionContext): Int = energyStorage.extract(amount, transaction)
+			override fun insert(amount: Int, transaction: TransactionContext): Int = 0
+			override fun extract(amount: Int, transaction: TransactionContext): Int = energyStorage.extract(amount, transaction)
 		}
 
 	open fun getEnergyCapability(direction: Direction?): EnergyHandler = publicEnergyCapability

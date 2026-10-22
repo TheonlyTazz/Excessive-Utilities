@@ -12,12 +12,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
 import net.minecraft.client.renderer.state.level.CameraRenderState
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer
+import net.minecraft.world.phys.Vec3
 
 class EnderPorcupineBER(
 	val context: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<EnderPorcupineBlockEntity, LegacyBlockEntityRenderState<EnderPorcupineBlockEntity>> {
 	override fun createRenderState() = LegacyBlockEntityRenderState<EnderPorcupineBlockEntity>()
-	override fun extractRenderState(blockEntity: EnderPorcupineBlockEntity, state: LegacyBlockEntityRenderState<EnderPorcupineBlockEntity>, partialTick: Float, cameraPosition: net.minecraft.world.phys.Vec3, crumblingOverlay: net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay?) {
+	override fun extractRenderState(blockEntity: EnderPorcupineBlockEntity, state: LegacyBlockEntityRenderState<EnderPorcupineBlockEntity>, partialTick: Float, cameraPosition: Vec3, crumblingOverlay: ModelFeatureRenderer.CrumblingOverlay?) {
 		BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay)
 		state.currentOffset = blockEntity.getCurrentOffset()
 		state.minimumOffset = blockEntity.minimumOffset
