@@ -19,12 +19,12 @@ import net.minecraft.util.Mth
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
-import mezz.jei.api.recipe.RecipeType as JeiRecipeType
+import mezz.jei.api.recipe.types.IRecipeType
 
 // For fuels that aren't based on actual recipes, but based off some property of the itemstack
 class DynamicItemFuelJeiCategory(
 	generatorBlock: GeneratorBlock,
-	recipeType: JeiRecipeType<Recipe>,
+	recipeType: IRecipeType<Recipe>,
 	guiHelper: IGuiHelper
 ) : AbstractRecipeCategory<DynamicItemFuelJeiCategory.Recipe>(
 	recipeType,
@@ -39,7 +39,7 @@ class DynamicItemFuelJeiCategory(
 			.setStandardSlotBackground()
 
 		for (stack in recipe.stacks) {
-			itemInputSlot.addItemStack(stack)
+			itemInputSlot.add(stack)
 		}
 	}
 

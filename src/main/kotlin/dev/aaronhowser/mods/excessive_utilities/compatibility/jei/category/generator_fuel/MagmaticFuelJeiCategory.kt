@@ -8,13 +8,13 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
-import mezz.jei.api.recipe.RecipeType
+import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class MagmaticFuelJeiCategory(
-	recipeType: RecipeType<RecipeHolder<MagmaticFuelRecipe>>,
+	recipeType: IRecipeType<RecipeHolder<MagmaticFuelRecipe>>,
 	guiHelper: IGuiHelper
 ) : AbstractRecipeCategory<RecipeHolder<MagmaticFuelRecipe>>(
 	recipeType,
@@ -35,7 +35,7 @@ class MagmaticFuelJeiCategory(
 
 		for (fluid in fluidIngredient.ingredient().fluids()) {
 			inputSlot
-				.addFluidStack(fluid.value(), fluidIngredient.amount().toLong())
+				.add(fluid.value(), fluidIngredient.amount().toLong())
 		}
 	}
 
@@ -67,6 +67,6 @@ class MagmaticFuelJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<MagmaticFuelRecipe>): Identifier = recipe.id.identifier()
+	override fun getIdentifier(recipe: RecipeHolder<MagmaticFuelRecipe>): Identifier = recipe.id.identifier()
 
 }

@@ -6,6 +6,7 @@ import dev.aaronhowser.mods.excessive_utilities.item.UnstableIngotItem
 import dev.aaronhowser.mods.excessive_utilities.recipe.crafting.ShapedUnstableRecipe
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
+import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.getItemHolders
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper
 import mezz.jei.api.recipe.IFocusGroup
@@ -41,7 +42,7 @@ class ShapedUnstableRecipeExtension : ICraftingCategoryExtension<ShapedUnstableR
         return recipe.getIngredients().map { optional ->
             if (optional.isEmpty) SlotDisplay.Empty.INSTANCE else {
                 val ingredient = optional.orElseThrow()
-                val stacks = ingredient.items().map(::ItemStack).toList()
+                val stacks = ingredient.getItemHolders().map(::ItemStack).toList()
                 if (stacks.none { it.isItem(ModItems.UNSTABLE_INGOT) }) ingredient.display() else {
                     val variants = stacks.flatMap { stack ->
                         if (!stack.isItem(ModItems.UNSTABLE_INGOT)) listOf(stack) else when (recipe.requiredStability) {

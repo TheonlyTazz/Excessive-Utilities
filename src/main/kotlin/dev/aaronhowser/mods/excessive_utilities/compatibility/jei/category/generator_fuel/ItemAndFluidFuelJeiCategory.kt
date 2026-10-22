@@ -5,11 +5,12 @@ import dev.aaronhowser.mods.excessive_utilities.block.GeneratorBlock
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.ModJeiPlugin
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMenuLang
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.generator_fuel.ItemAndFluidFuelRecipe
+import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.getItemHolders
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
-import mezz.jei.api.recipe.RecipeType
+import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.recipe.category.AbstractRecipeCategory
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
@@ -21,7 +22,7 @@ import net.minecraft.world.level.Level
 
 class ItemAndFluidFuelJeiCategory(
 	generatorBlock: GeneratorBlock,
-	recipeType: RecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>,
+	recipeType: IRecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>,
 	guiHelper: IGuiHelper
 ) : AbstractRecipeCategory<RecipeHolder<ItemAndFluidFuelRecipe>>(
 	recipeType,
@@ -37,7 +38,7 @@ class ItemAndFluidFuelJeiCategory(
 		val itemInputSlot = builder.addInputSlot(9, 1)
 
 		itemInputSlot
-			.addItemStacks(recipe.itemIngredient.items().map(::ItemStack).toList())
+			.addItemStacks(recipe.itemIngredient.getItemHolders().map(::ItemStack).toList())
 			.setStandardSlotBackground()
 
 		val fluidInputSlot = builder.addInputSlot(9, 22)
@@ -48,7 +49,7 @@ class ItemAndFluidFuelJeiCategory(
 
 		for (fluid in fluidIngredient.ingredient().fluids()) {
 			fluidInputSlot
-				.addFluidStack(fluid.value(), fluidIngredient.amount().toLong())
+				.add(fluid.value(), fluidIngredient.amount().toLong())
 		}
 	}
 
@@ -80,7 +81,7 @@ class ItemAndFluidFuelJeiCategory(
 
 	}
 
-	override fun getRegistryName(recipe: RecipeHolder<ItemAndFluidFuelRecipe>): Identifier = recipe.id.identifier()
+	override fun getIdentifier(recipe: RecipeHolder<ItemAndFluidFuelRecipe>): Identifier = recipe.id.identifier()
 
 	companion object {
 		fun registerCategories(registration: IRecipeCategoryRegistration) {
@@ -104,7 +105,7 @@ class ItemAndFluidFuelJeiCategory(
 
 		fun registerCatalysts(registration: IRecipeCatalystRegistration) {
 			for ((generatorType, recipeType) in ModJeiPlugin.ITEM_AND_FLUID_FUELS) {
-				registration.addRecipeCatalyst(generatorType.deferredBlock.get(), recipeType)
+				registration.addCraftingStation(recipeType, generatorType.deferredBlock.get())
 			}
 		}
 

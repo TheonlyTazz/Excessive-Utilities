@@ -8,6 +8,7 @@ import dev.aaronhowser.mods.excessive_utilities.item.DivisionSigilItem
 import dev.aaronhowser.mods.excessive_utilities.recipe.crafting.ShapedDivisionRecipe
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
+import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.getItemHolders
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper
 import mezz.jei.api.recipe.IFocusGroup
@@ -44,7 +45,7 @@ class ShapedDivisionRecipeExtension : ICraftingCategoryExtension<ShapedDivisionR
         return recipe.getIngredients().map { optional ->
             if (optional.isEmpty) SlotDisplay.Empty.INSTANCE else {
                 val ingredient = optional.orElseThrow()
-                val stacks = ingredient.items().map(::ItemStack).toList()
+                val stacks = ingredient.getItemHolders().map(::ItemStack).toList()
                 if (stacks.none { it.isItem(ModItems.DIVISION_SIGIL) }) ingredient.display() else {
                     val variants = stacks.flatMap { stack ->
                         if (!stack.isItem(ModItems.DIVISION_SIGIL)) listOf(stack) else when (recipe.requiredInversion) {

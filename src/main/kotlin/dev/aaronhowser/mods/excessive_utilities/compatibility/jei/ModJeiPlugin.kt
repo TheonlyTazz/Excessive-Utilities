@@ -29,7 +29,7 @@ import dev.aaronhowser.mods.excessive_utilities.recipe.base.ModRecipes
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.constants.RecipeTypes
-import mezz.jei.api.recipe.RecipeType
+import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.*
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
@@ -42,21 +42,21 @@ class ModJeiPlugin : IModPlugin {
 	override fun getPluginUid(): Identifier = ID
 
 	override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
-		registration.addRecipeCatalyst(ModBlocks.FURNACE, RecipeTypes.SMELTING)
-		registration.addRecipeCatalyst(ModBlocks.CRUSHER, CRUSHER)
-		registration.addRecipeCatalyst(ModBlocks.ENCHANTER, ENCHANTER)
-		registration.addRecipeCatalyst(ModBlocks.QED, QED)
-		registration.addRecipeCatalyst(ModBlocks.RESONATOR, RESONATOR)
+		registration.addCraftingStation(RecipeTypes.SMELTING, ModBlocks.FURNACE)
+		registration.addCraftingStation(CRUSHER, ModBlocks.CRUSHER)
+		registration.addCraftingStation(ENCHANTER, ModBlocks.ENCHANTER)
+		registration.addCraftingStation(QED, ModBlocks.QED)
+		registration.addCraftingStation(RESONATOR, ModBlocks.RESONATOR)
 
 		SingleItemFuelJeiCategory.registerCatalysts(registration)
 		ItemAndFluidFuelJeiCategory.registerCatalysts(registration)
-		registration.addRecipeCatalyst(ModBlocks.MAGMATIC_GENERATOR, MAGMATIC_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.CULINARY_GENERATOR, CULINARY_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.FURNACE_GENERATOR, FURNACE_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.SURVIVALIST_GENERATOR, SURVIVALIST_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.OVERCLOCKED_GENERATOR, OVERCLOCKED_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.POTION_GENERATOR, POTION_FUELS)
-		registration.addRecipeCatalyst(ModBlocks.DISENCHANTMENT_GENERATOR, DISENCHANTMENT_FUELS)
+		registration.addCraftingStation(MAGMATIC_FUELS, ModBlocks.MAGMATIC_GENERATOR)
+		registration.addCraftingStation(CULINARY_FUELS, ModBlocks.CULINARY_GENERATOR)
+		registration.addCraftingStation(FURNACE_FUELS, ModBlocks.FURNACE_GENERATOR)
+		registration.addCraftingStation(SURVIVALIST_FUELS, ModBlocks.SURVIVALIST_GENERATOR)
+		registration.addCraftingStation(OVERCLOCKED_FUELS, ModBlocks.OVERCLOCKED_GENERATOR)
+		registration.addCraftingStation(POTION_FUELS, ModBlocks.POTION_GENERATOR)
+		registration.addCraftingStation(DISENCHANTMENT_FUELS, ModBlocks.DISENCHANTMENT_GENERATOR)
 	}
 
 	override fun registerCategories(registration: IRecipeCategoryRegistration) {
@@ -132,26 +132,26 @@ class ModJeiPlugin : IModPlugin {
 	companion object {
 		val ID: Identifier = Identifier.fromNamespaceAndPath(ExcessiveUtilities.MOD_ID, "jei_plugin")
 
-		val CRUSHER: RecipeType<RecipeHolder<CrusherRecipe>> = makeRecipeType("crusher")
-		val ENCHANTER: RecipeType<RecipeHolder<EnchanterRecipe>> = makeRecipeType("enchanter")
-		val QED: RecipeType<RecipeHolder<QedRecipe>> = makeRecipeType("qed")
-		val RESONATOR: RecipeType<RecipeHolder<ResonatorRecipe>> = makeRecipeType("resonator")
+		val CRUSHER: IRecipeType<RecipeHolder<CrusherRecipe>> = makeRecipeType("crusher")
+		val ENCHANTER: IRecipeType<RecipeHolder<EnchanterRecipe>> = makeRecipeType("enchanter")
+		val QED: IRecipeType<RecipeHolder<QedRecipe>> = makeRecipeType("qed")
+		val RESONATOR: IRecipeType<RecipeHolder<ResonatorRecipe>> = makeRecipeType("resonator")
 
-		val MAGMATIC_FUELS: RecipeType<RecipeHolder<MagmaticFuelRecipe>> = makeRecipeType("generator_fuel/magmatic")
-		val CULINARY_FUELS: RecipeType<DynamicItemFuelJeiCategory.Recipe> =
+		val MAGMATIC_FUELS: IRecipeType<RecipeHolder<MagmaticFuelRecipe>> = makeRecipeType("generator_fuel/magmatic")
+		val CULINARY_FUELS: IRecipeType<DynamicItemFuelJeiCategory.Recipe> =
 			dynamicItemFuel("culinary")
-		val FURNACE_FUELS: RecipeType<DynamicItemFuelJeiCategory.Recipe> =
+		val FURNACE_FUELS: IRecipeType<DynamicItemFuelJeiCategory.Recipe> =
 			dynamicItemFuel("furnace")
-		val SURVIVALIST_FUELS: RecipeType<DynamicItemFuelJeiCategory.Recipe> =
+		val SURVIVALIST_FUELS: IRecipeType<DynamicItemFuelJeiCategory.Recipe> =
 			dynamicItemFuel("survivalist")
-		val OVERCLOCKED_FUELS: RecipeType<OverclockedFuelJeiCategory.Recipe> =
-			makeRecipeType("generator_fuel/overclocked", OverclockedFuelJeiCategory.Recipe::class.java)
-		val POTION_FUELS: RecipeType<PotionFuelJeiCategory.Recipe> =
-			makeRecipeType("generator_fuel/potion", PotionFuelJeiCategory.Recipe::class.java)
-		val DISENCHANTMENT_FUELS: RecipeType<DisenchantmentFuelJeiCategory.Recipe> =
-			makeRecipeType("generator_fuel/disenchantment", DisenchantmentFuelJeiCategory.Recipe::class.java)
+		val OVERCLOCKED_FUELS: IRecipeType<OverclockedFuelJeiCategory.Recipe> =
+			IRecipeType.create(ExcessiveUtilities.MOD_ID, "generator_fuel/overclocked", OverclockedFuelJeiCategory.Recipe::class.java)
+		val POTION_FUELS: IRecipeType<PotionFuelJeiCategory.Recipe> =
+			IRecipeType.create(ExcessiveUtilities.MOD_ID, "generator_fuel/potion", PotionFuelJeiCategory.Recipe::class.java)
+		val DISENCHANTMENT_FUELS: IRecipeType<DisenchantmentFuelJeiCategory.Recipe> =
+			IRecipeType.create(ExcessiveUtilities.MOD_ID, "generator_fuel/disenchantment", DisenchantmentFuelJeiCategory.Recipe::class.java)
 
-		val SINGLE_ITEM_FUELS: Map<SingleItemFuelRecipe.GeneratorType, RecipeType<RecipeHolder<SingleItemFuelRecipe>>> by lazy {
+		val SINGLE_ITEM_FUELS: Map<SingleItemFuelRecipe.GeneratorType, IRecipeType<RecipeHolder<SingleItemFuelRecipe>>> by lazy {
 			buildMap {
 				for (type in SingleItemFuelRecipe.GeneratorType.entries) {
 					val name = "generator_fuel/single_item_fuel/${type.id}"
@@ -159,7 +159,7 @@ class ModJeiPlugin : IModPlugin {
 				}
 			}
 		}
-		val ITEM_AND_FLUID_FUELS: Map<ItemAndFluidFuelRecipe.GeneratorType, RecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>> by lazy {
+		val ITEM_AND_FLUID_FUELS: Map<ItemAndFluidFuelRecipe.GeneratorType, IRecipeType<RecipeHolder<ItemAndFluidFuelRecipe>>> by lazy {
 			buildMap {
 				for (type in ItemAndFluidFuelRecipe.GeneratorType.entries) {
 					val name = "generator_fuel/item_and_fluid_fuel/${type.id}"
@@ -168,16 +168,12 @@ class ModJeiPlugin : IModPlugin {
 			}
 		}
 
-		private fun <T : Recipe<*>> makeRecipeType(id: String): RecipeType<RecipeHolder<T>> {
-			return RecipeType.create(ExcessiveUtilities.MOD_ID, id, RecipeHolder::class.java).cast()
+		private fun <T : Recipe<*>> makeRecipeType(id: String): IRecipeType<RecipeHolder<T>> {
+			return IRecipeType.create(ExcessiveUtilities.MOD_ID, id, RecipeHolder::class.java).cast()
 		}
 
-		private fun <T : Any> makeRecipeType(id: String, recipeClass: Class<T>): RecipeType<T> {
-			return RecipeType.create(ExcessiveUtilities.MOD_ID, id, recipeClass)
-		}
-
-		private fun dynamicItemFuel(id: String): RecipeType<DynamicItemFuelJeiCategory.Recipe> {
-			return makeRecipeType("generator_fuel/dynamic_item_fuel/$id", DynamicItemFuelJeiCategory.Recipe::class.java)
+		private fun dynamicItemFuel(id: String): IRecipeType<DynamicItemFuelJeiCategory.Recipe> {
+			return IRecipeType.create(ExcessiveUtilities.MOD_ID, "generator_fuel/dynamic_item_fuel/$id", DynamicItemFuelJeiCategory.Recipe::class.java)
 		}
 
 		private fun shouldLoad(): Boolean = !ModList.get().isLoaded("emi")
